@@ -109,10 +109,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# Supabase Configuration
-SUPABASE_URL = os.environ.get('SUPABASE_URL', '')
-SUPABASE_KEY = os.environ.get('SUPABASE_KEY', '')
-SUPABASE_BUCKET_NAME = os.environ.get('SUPABASE_BUCKET_NAME', 'codestorm-ppt')
+
 
 # Cloudinary Configuration
 CLOUDINARY_STORAGE = {

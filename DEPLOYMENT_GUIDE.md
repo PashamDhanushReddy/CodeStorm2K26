@@ -7,9 +7,6 @@ Add these to your Render dashboard under Environment Variables:
 ### Required Variables:
 ```
 SECRET_KEY=your-secret-key-here
-SUPABASE_URL=https://divhwqupyptmuotlzqpn.supabase.co
-SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpdmh3cXVweXB0bXVvdGx6cXBuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY3NjMxNDIsImV4cCI6MjA4MjMzOTE0Mn0.byZcoPz1SG6olNX_x17jKoqyVwuUKhPeO_JnDauR4A4
-SUPABASE_BUCKET_NAME=codestorm-ppt
 RENDER_EXTERNAL_HOSTNAME=your-app-name.onrender.com
 ```
 
@@ -32,18 +29,11 @@ gunicorn codestorm_project.wsgi:application
 
 ## Important Notes:
 
-1. **Supabase Table Structure**: The registration form now matches your exact table structure with:
-   - Team details: `team_name`, `college`, `branch`, `year_of_study`
-   - Idea details: `idea_title`, `idea_theme` (not `idea_description` or `idea_track`)
-   - PPT uploads: `ppt_file_path` (required field)
-   - YouTube link: `youtube_link` (optional field)
-   - Member details: `member1-6` with `name`, `email`, `phone`, `roll`, and `is_leader` fields
+1. **Database**: The registration form is automatically connected to your PostgreSQL (Neon) database. Ensure the connection URL is provided in the `DATABASE_URL` environment variable.
 
-2. **Supabase Bucket**: If you want PPT uploads to work, create the `codestorm-ppt` bucket in your Supabase dashboard
-
-3. **Database**: The registration system will work with your existing Supabase table with exact column mapping
-
-4. **Static Files**: WhiteNoise is configured to serve static files automatically
+2. **File Uploads**: The PPT handling has been set up to use Cloudinary.
+   
+3. **Static Files**: WhiteNoise is configured to serve static files automatically
 
 5. **Environment Variables**: Make sure all variables are set before deploying
 
@@ -68,5 +58,5 @@ python manage.py runserver
 
 - **CSRF Verification Failed**: Make sure your `RENDER_EXTERNAL_HOSTNAME` is set correctly in Render
 - If `collectstatic` fails, make sure `whitenoise` is in your requirements.txt
-- If Supabase connection fails, check your URL and key in the environment variables
+- If the database connection fails, check your `DATABASE_URL`
 - If the registration form doesn't load, check that all required environment variables are set

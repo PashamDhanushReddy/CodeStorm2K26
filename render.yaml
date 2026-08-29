@@ -19,12 +19,6 @@ services:
         generateValue: true
       - key: DEBUG
         value: "False"
-      - key: SUPABASE_URL
-        sync: false
-      - key: SUPABASE_KEY
-        sync: false
-      - key: SUPABASE_BUCKET_NAME
-        sync: false
       - key: CLOUDINARY_CLOUD_NAME
         sync: false
       - key: CLOUDINARY_API_KEY

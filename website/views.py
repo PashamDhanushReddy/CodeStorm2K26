@@ -233,7 +233,7 @@ def register_team(request):
                             f'member{member_num}_year': year_val
                         }
                 
-                # Prepare data for Supabase - match your table structure exactly
+                # Prepare data for Neon DB - match your table structure exactly
                 registration_data = {
                     'team_name': team_name,
                     'team_size': form.cleaned_data.get('team_size', '4'),
