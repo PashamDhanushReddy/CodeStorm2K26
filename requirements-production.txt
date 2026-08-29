@@ -1,0 +1,20 @@
+# Core Django dependencies
+Django==4.2.7
+whitenoise==6.11.0
+dj-database-url==2.1.0
+gunicorn==21.2.0
+psycopg2-binary==2.9.9
+
+# Supabase and API dependencies
+supabase==2.0.3
+requests==2.32.5
+python-dotenv==1.0.0
+
+# Additional dependencies for production
+sqlparse==0.5.5
+asgiref==3.11.0
+packaging==25.0
+
+# Image processing for payment screenshots
+Pillow>=10.0.0
+cloudinary==1.41.0

@@ -1,0 +1,2040 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CodeStorm 2026 - Team Registration</title>
+
+    <!-- Bootstrap CSS for mobile-first design -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Inter', 'Rajdhani', sans-serif;
+            background-color: #F8FAFC;
+            color: #0F172A;
+            margin: 0; padding: 0; overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container-fluid { padding: 0 15px; }
+        .gradient-text {
+            background: linear-gradient(135deg, #2563EB 0%, #06B6D4 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-family: 'Plus Jakarta Sans', 'Orbitron', sans-serif;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(226, 232, 240, 1);
+            border-radius: 20px; padding: 30px; margin-bottom: 30px;
+            box-shadow: 0 10px 40px -10px rgba(15, 23, 42, 0.08);
+            transition: all 0.4s ease;
+        }
+        .glass-panel:hover { box-shadow: 0 20px 40px -10px rgba(37, 99, 235, 0.15); transform: translateY(-4px); }
+        .member-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #E2E8F0; border-radius: 16px;
+            padding: 24px; margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+        }
+        .member-card:hover {
+            border-color: rgba(37, 99, 235, 0.2);
+            box-shadow: 0 12px 35px rgba(37, 99, 235, 0.1);
+        }
+        .form-control, .form-select, input[type="text"], input[type="email"], input[type="tel"], input[type="url"], input[type="number"], input[type="file"], select, textarea {
+            background: #FFFFFF !important;
+            border: 2px solid #E2E8F0 !important;
+            color: #0F172A !important;
+            border-radius: 12px !important;
+            padding: 14px 18px !important;
+            font-size: 16px !important;
+            min-height: 52px !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02) !important;
+            transition: all 0.3s ease !important;
+            font-weight: 500 !important; width: 100% !important; outline: none !important;
+        }
+        .form-control:focus, .form-select:focus, input:focus, select:focus {
+            border-color: #2563EB !important;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1) !important;
+            background: #FFFFFF !important;
+        }
+        select option {
+            background-color: #FFFFFF !important;
+            color: #0F172A !important;
+        }
+        .form-control::placeholder { color: #94A3B8 !important; font-weight: 400 !important; }
+        
+        .form-label {
+            color: #1E293B; font-weight: 600; font-size: 14px;
+            margin-bottom: 8px; display: block;
+        }
+        .required-field::after { content: " *"; color: #EF4444; }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #2563EB 0%, #4F46E5 100%);
+            color: white; border: none; font-weight: 700;
+            padding: 16px 32px; border-radius: 12px; font-size: 16px;
+            width: 100%; box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
+            transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 15px 35px -5px rgba(37, 99, 235, 0.5); color: white; }
+        
+        .section-title {
+            color: #0F172A; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.5rem;
+            font-weight: 800; margin-bottom: 24px; border-bottom: 2px solid #E2E8F0;
+            padding-bottom: 12px; text-transform: uppercase;
+        }
+        
+        /* Navbar */
+        .navbar {
+            background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);
+            border-bottom: 1px solid #F1F5F9; padding: 15px 0;
+        }
+        .navbar-brand .text-dark { color: #0F172A !important; }
+        .btn-outline-primary { border-color: #2563EB; color: #2563EB; }
+        .btn-outline-primary:hover { background-color: #2563EB; color: #fff; }
+        
+        .text-dark { color: #0F172A !important; }
+        .text-muted { color: #64748B !important; }
+        .text-primary { color: #2563EB !important; }
+        
+        /* Mobile fixes */
+        @media (max-width: 768px) {
+            .glass-panel { padding: 20px; border-radius: 16px; margin: 0 -5px 20px -5px; }
+            .member-card { padding: 15px; }
+        }
+</style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+                <img src="{% static 'images/logo.jpg' %}" alt="CodeStorm Logo" class="me-2"
+                    style="width: 40px; height: 40px; border-radius: 8px;">
+                <div>
+                    <div class="fw-bold text-dark" style="font-family: 'Orbitron', sans-serif; font-size: 1.1rem;">
+                        CODESTORM</div>
+                    <div class="text-primary" style="font-size: 0.7rem;">2K26 EDITION</div>
+                </div>
+            </a>
+            <a class="btn btn-outline-primary btn-sm" href="{% url 'home' %}">Back to Home</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container-fluid" style="margin-top: 100px; padding-bottom: 50px;">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10 col-xl-8">
+                <!-- Header -->
+                <div class="text-center mb-4">
+                    <h1 class="gradient-text display-5 fw-bold mb-3" style="font-family: 'Orbitron', sans-serif;">Team Registration</h1>
+                    <p class="text-muted">Register your team for CodeStorm 2026 - The Ultimate 36-Hour Hackathon</p>
+                </div>
+
+                <!-- Messages -->
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-4" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endfor %}
+                {% endif %}
+
+                <!-- Registration Form -->
+                <div class="glass-panel">
+                    <!-- Registration Info Section -->
+                    <div class="mb-4">
+                        <div class="alert alert-info" style="background: #F0F9FF; border: 1px solid #BAE6FD; border-radius: 15px;">
+                            <h5 class="text-dark mb-3"><i class="fas fa-info-circle me-2"></i>Registration Information</h5>
+                            <div class="row">
+                                <div class="col-12 col-md-6 mb-3">
+                                    <h6 class="text-dark mb-2"><i class="fas fa-tag me-2"></i>Inter-College Discount (10%)</h6>
+                                    <p class="text-dark small mb-0" style="color: #334155 !important;">
+                                        Get a <strong>10% discount</strong> on registration fee if your team has members from both NRCM and other colleges. 
+                                        <br><strong>Base Fee:</strong> ₹600 per person
+                                        <br><strong>Example:</strong> 4 members = ₹2,400 (₹2,160 with discount)
+                                    </p>
+                                </div>
+                                <div class="col-12 col-md-6 mb-3">
+                                    <h6 class="text-dark mb-2"><i class="fas fa-calculator me-2"></i>Calculate Registration Fee</h6>
+                                    <p class="text-dark small mb-0" style="color: #334155 !important;">
+                                        After filling all team member details, click <strong>"Calculate Registration Fee"</strong> to:
+                                        <br>• Validate your form
+                                        <br>• Calculate your registration fee
+                                        <br>• View payment QR code
+                                        <br>• Upload payment screenshot
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <h6 class="text-dark mb-2"><i class="fas fa-list-ol me-2"></i>Registration Flow</h6>
+                                    <ol class="text-dark small mb-0" style="color: #334155 !important; padding-left: 20px;">
+                                        <li>Fill in all team details (Team name, size, theme, and all member information)</li>
+                                        <li>Click <strong>"Calculate Registration Fee"</strong> button</li>
+                                        <li>Review your calculated registration fee (with discount if applicable)</li>
+                                        <li>Scan the QR code and make payment</li>
+                                        <li>Upload payment screenshot</li>
+                                        <li>Click <strong>"Register Team"</strong> to complete registration</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form method="post" enctype="multipart/form-data" id="registrationForm" action="">
+                        {% csrf_token %}
+                        <script>
+                            // Debug CSRF token on page load
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+                                if (csrfToken) {
+                                    console.log('CSRF Token found:', csrfToken.value);
+                                } else {
+                                    console.error('CSRF Token NOT found in form!');
+                                }
+                            });
+                        </script>
+
+                        <!-- Team Details Section -->
+                        <div class="mb-4">
+                            <h2 class="section-title">Team Details</h2>
+                            <div class="row">
+                                <div class="col-12 col-md-6 mb-3">
+                                    <label for="{{ form.team_name.id_for_label }}"
+                                        class="form-label required-field">Team Name</label>
+                                    {{ form.team_name }}
+                                    {% if form.team_name.errors %}
+                                    <div class="text-danger small">{{ form.team_name.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-6 mb-3">
+                                    <label for="{{ form.team_size.id_for_label }}"
+                                        class="form-label required-field">Team Size</label>
+                                    {{ form.team_size }}
+                                    {% if form.team_size.errors %}
+                                    <div class="text-danger small">{{ form.team_size.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Theme Selection Section -->
+                        <div class="mb-4">
+                            <h2 class="section-title">Theme Selection</h2>
+                            <div class="row">
+                                <div class="col-12 col-md-6 mb-3">
+                                    <label for="{{ form.theme.id_for_label }}"
+                                        class="form-label required-field">Theme/Track</label>
+                                    {{ form.theme }}
+                                    {% if form.theme.errors %}
+                                    <div class="text-danger small">{{ form.theme.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Team Members Section -->
+                        <div class="mb-4">
+                            <h2 class="section-title">Team Members</h2>
+                            <p class="text-muted mb-3">Select exactly one member as team leader. Members 1-4 are
+                                required, 5-6 are optional.</p>
+
+                            <!-- Member 1 (Required) -->
+                            <div class="member-card">
+                                <h3 class="h5 text-dark mb-3">Member 1 <span class="text-danger">*</span></h3>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member1_name.id_for_label }}"
+                                            class="form-label required-field">Full Name</label>
+                                        {{ form.member1_name }}
+                                        {% if form.member1_name.errors %}
+                                        <div class="text-danger small">{{ form.member1_name.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member1_email.id_for_label }}"
+                                            class="form-label required-field">Email</label>
+                                        {{ form.member1_email }}
+                                        {% if form.member1_email.errors %}
+                                        <div class="text-danger small">{{ form.member1_email.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member1_phone.id_for_label }}"
+                                            class="form-label required-field">Phone Number</label>
+                                        {{ form.member1_phone }}
+                                        {% if form.member1_phone.errors %}
+                                        <div class="text-danger small">{{ form.member1_phone.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member1_roll.id_for_label }}"
+                                            class="form-label required-field">Roll Number</label>
+                                        {{ form.member1_roll }}
+                                        {% if form.member1_roll.errors %}
+                                        <div class="text-danger small">{{ form.member1_roll.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member1_gender.id_for_label }}"
+                                            class="form-label required-field">Gender</label>
+                                        {{ form.member1_gender }}
+                                        {% if form.member1_gender.errors %}
+                                        <div class="text-danger small">{{ form.member1_gender.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member1_year.id_for_label }}"
+                                            class="form-label required-field">Year</label>
+                                        {{ form.member1_year }}
+                                        {% if form.member1_year.errors %}
+                                        <div class="text-danger small">{{ form.member1_year.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member1_college_name.id_for_label }}"
+                                            class="form-label required-field">College Name</label>
+                                        {{ form.member1_college_name }}
+                                        {% if form.member1_college_name.errors %}
+                                        <div class="text-danger small">{{ form.member1_college_name.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member1_college_code.id_for_label }}"
+                                            class="form-label required-field">College Code</label>
+                                        {{ form.member1_college_code }}
+                                        {% if form.member1_college_code.errors %}
+                                        <div class="text-danger small">{{ form.member1_college_code.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member1_course_name.id_for_label }}"
+                                            class="form-label required-field">Course Name</label>
+                                        {{ form.member1_course_name }}
+                                        {% if form.member1_course_name.errors %}
+                                        <div class="text-danger small">{{ form.member1_course_name.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member1_tshirt_size.id_for_label }}"
+                                            class="form-label required-field">T-Shirt Size</label>
+                                        {{ form.member1_tshirt_size }}
+                                        {% if form.member1_tshirt_size.errors %}
+                                        <div class="text-danger small">{{ form.member1_tshirt_size.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member1_food_preference.id_for_label }}"
+                                            class="form-label required-field">Food Preference</label>
+                                        {{ form.member1_food_preference }}
+                                        {% if form.member1_food_preference.errors %}
+                                        <div class="text-danger small">{{ form.member1_food_preference.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <div class="form-check">
+                                            {{ form.is_leader1 }}
+                                            <label class="form-check-label text-dark"
+                                                for="{{ form.is_leader1.id_for_label }}">
+                                                Team Leader
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Member 2 (Required) -->
+                            <div class="member-card">
+                                <h3 class="h5 text-dark mb-3">Member 2 <span class="text-danger">*</span></h3>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member2_name.id_for_label }}"
+                                            class="form-label required-field">Full Name</label>
+                                        {{ form.member2_name }}
+                                        {% if form.member2_name.errors %}
+                                        <div class="text-danger small">{{ form.member2_name.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member2_email.id_for_label }}"
+                                            class="form-label required-field">Email</label>
+                                        {{ form.member2_email }}
+                                        {% if form.member2_email.errors %}
+                                        <div class="text-danger small">{{ form.member2_email.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member2_phone.id_for_label }}"
+                                            class="form-label required-field">Phone Number</label>
+                                        {{ form.member2_phone }}
+                                        {% if form.member2_phone.errors %}
+                                        <div class="text-danger small">{{ form.member2_phone.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member2_roll.id_for_label }}"
+                                            class="form-label required-field">Roll Number</label>
+                                        {{ form.member2_roll }}
+                                        {% if form.member2_roll.errors %}
+                                        <div class="text-danger small">{{ form.member2_roll.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member2_gender.id_for_label }}"
+                                            class="form-label required-field">Gender</label>
+                                        {{ form.member2_gender }}
+                                        {% if form.member2_gender.errors %}
+                                        <div class="text-danger small">{{ form.member2_gender.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member2_year.id_for_label }}"
+                                            class="form-label required-field">Year</label>
+                                        {{ form.member2_year }}
+                                        {% if form.member2_year.errors %}
+                                        <div class="text-danger small">{{ form.member2_year.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member2_college_name.id_for_label }}"
+                                            class="form-label required-field">College Name</label>
+                                        {{ form.member2_college_name }}
+                                        {% if form.member2_college_name.errors %}
+                                        <div class="text-danger small">{{ form.member2_college_name.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member2_college_code.id_for_label }}"
+                                            class="form-label required-field">College Code</label>
+                                        {{ form.member2_college_code }}
+                                        {% if form.member2_college_code.errors %}
+                                        <div class="text-danger small">{{ form.member2_college_code.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member2_course_name.id_for_label }}"
+                                            class="form-label required-field">Course Name</label>
+                                        {{ form.member2_course_name }}
+                                        {% if form.member2_course_name.errors %}
+                                        <div class="text-danger small">{{ form.member2_course_name.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member2_tshirt_size.id_for_label }}"
+                                            class="form-label required-field">T-Shirt Size</label>
+                                        {{ form.member2_tshirt_size }}
+                                        {% if form.member2_tshirt_size.errors %}
+                                        <div class="text-danger small">{{ form.member2_tshirt_size.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member2_food_preference.id_for_label }}"
+                                            class="form-label required-field">Food Preference</label>
+                                        {{ form.member2_food_preference }}
+                                        {% if form.member2_food_preference.errors %}
+                                        <div class="text-danger small">{{ form.member2_food_preference.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <div class="form-check">
+                                            {{ form.is_leader2 }}
+                                            <label class="form-check-label text-dark"
+                                                for="{{ form.is_leader2.id_for_label }}">
+                                                Team Leader
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Member 3 (Required) -->
+                            <div class="member-card">
+                                <h3 class="h5 text-dark mb-3">Member 3 <span class="text-danger">*</span></h3>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member3_name.id_for_label }}"
+                                            class="form-label required-field">Full Name</label>
+                                        {{ form.member3_name }}
+                                        {% if form.member3_name.errors %}
+                                        <div class="text-danger small">{{ form.member3_name.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member3_email.id_for_label }}"
+                                            class="form-label required-field">Email</label>
+                                        {{ form.member3_email }}
+                                        {% if form.member3_email.errors %}
+                                        <div class="text-danger small">{{ form.member3_email.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member3_phone.id_for_label }}"
+                                            class="form-label required-field">Phone Number</label>
+                                        {{ form.member3_phone }}
+                                        {% if form.member3_phone.errors %}
+                                        <div class="text-danger small">{{ form.member3_phone.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member3_roll.id_for_label }}"
+                                            class="form-label required-field">Roll Number</label>
+                                        {{ form.member3_roll }}
+                                        {% if form.member3_roll.errors %}
+                                        <div class="text-danger small">{{ form.member3_roll.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member3_gender.id_for_label }}"
+                                            class="form-label required-field">Gender</label>
+                                        {{ form.member3_gender }}
+                                        {% if form.member3_gender.errors %}
+                                        <div class="text-danger small">{{ form.member3_gender.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member3_year.id_for_label }}"
+                                            class="form-label required-field">Year</label>
+                                        {{ form.member3_year }}
+                                        {% if form.member3_year.errors %}
+                                        <div class="text-danger small">{{ form.member3_year.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member3_college_name.id_for_label }}"
+                                            class="form-label required-field">College Name</label>
+                                        {{ form.member3_college_name }}
+                                        {% if form.member3_college_name.errors %}
+                                        <div class="text-danger small">{{ form.member3_college_name.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member3_college_code.id_for_label }}"
+                                            class="form-label required-field">College Code</label>
+                                        {{ form.member3_college_code }}
+                                        {% if form.member3_college_code.errors %}
+                                        <div class="text-danger small">{{ form.member3_college_code.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member3_course_name.id_for_label }}"
+                                            class="form-label required-field">Course Name</label>
+                                        {{ form.member3_course_name }}
+                                        {% if form.member3_course_name.errors %}
+                                        <div class="text-danger small">{{ form.member3_course_name.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member3_tshirt_size.id_for_label }}"
+                                            class="form-label required-field">T-Shirt Size</label>
+                                        {{ form.member3_tshirt_size }}
+                                        {% if form.member3_tshirt_size.errors %}
+                                        <div class="text-danger small">{{ form.member3_tshirt_size.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member3_food_preference.id_for_label }}"
+                                            class="form-label required-field">Food Preference</label>
+                                        {{ form.member3_food_preference }}
+                                        {% if form.member3_food_preference.errors %}
+                                        <div class="text-danger small">{{ form.member3_food_preference.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <div class="form-check">
+                                            {{ form.is_leader3 }}
+                                            <label class="form-check-label text-dark"
+                                                for="{{ form.is_leader3.id_for_label }}">
+                                                Team Leader
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Member 4 (Required) -->
+                            <div class="member-card">
+                                <h3 class="h5 text-dark mb-3">Member 4 <span class="text-danger">*</span></h3>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member4_name.id_for_label }}"
+                                            class="form-label required-field">Full Name</label>
+                                        {{ form.member4_name }}
+                                        {% if form.member4_name.errors %}
+                                        <div class="text-danger small">{{ form.member4_name.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member4_email.id_for_label }}"
+                                            class="form-label required-field">Email</label>
+                                        {{ form.member4_email }}
+                                        {% if form.member4_email.errors %}
+                                        <div class="text-danger small">{{ form.member4_email.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member4_phone.id_for_label }}"
+                                            class="form-label required-field">Phone Number</label>
+                                        {{ form.member4_phone }}
+                                        {% if form.member4_phone.errors %}
+                                        <div class="text-danger small">{{ form.member4_phone.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member4_roll.id_for_label }}"
+                                            class="form-label required-field">Roll Number</label>
+                                        {{ form.member4_roll }}
+                                        {% if form.member4_roll.errors %}
+                                        <div class="text-danger small">{{ form.member4_roll.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member4_gender.id_for_label }}"
+                                            class="form-label required-field">Gender</label>
+                                        {{ form.member4_gender }}
+                                        {% if form.member4_gender.errors %}
+                                        <div class="text-danger small">{{ form.member4_gender.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member4_year.id_for_label }}"
+                                            class="form-label required-field">Year</label>
+                                        {{ form.member4_year }}
+                                        {% if form.member4_year.errors %}
+                                        <div class="text-danger small">{{ form.member4_year.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member4_college_name.id_for_label }}"
+                                            class="form-label required-field">College Name</label>
+                                        {{ form.member4_college_name }}
+                                        {% if form.member4_college_name.errors %}
+                                        <div class="text-danger small">{{ form.member4_college_name.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member4_college_code.id_for_label }}"
+                                            class="form-label required-field">College Code</label>
+                                        {{ form.member4_college_code }}
+                                        {% if form.member4_college_code.errors %}
+                                        <div class="text-danger small">{{ form.member4_college_code.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member4_course_name.id_for_label }}"
+                                            class="form-label required-field">Course Name</label>
+                                        {{ form.member4_course_name }}
+                                        {% if form.member4_course_name.errors %}
+                                        <div class="text-danger small">{{ form.member4_course_name.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member4_tshirt_size.id_for_label }}"
+                                            class="form-label required-field">T-Shirt Size</label>
+                                        {{ form.member4_tshirt_size }}
+                                        {% if form.member4_tshirt_size.errors %}
+                                        <div class="text-danger small">{{ form.member4_tshirt_size.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member4_food_preference.id_for_label }}"
+                                            class="form-label required-field">Food Preference</label>
+                                        {{ form.member4_food_preference }}
+                                        {% if form.member4_food_preference.errors %}
+                                        <div class="text-danger small">{{ form.member4_food_preference.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <div class="form-check">
+                                            {{ form.is_leader4 }}
+                                            <label class="form-check-label text-dark"
+                                                for="{{ form.is_leader4.id_for_label }}">
+                                                Team Leader
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Member 5 (Optional) -->
+                            <div class="member-card" id="member5-section" style="display: none;">
+                                <h3 class="h5 text-dark mb-3">Member 5 (Optional)</h3>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member5_name.id_for_label }}" class="form-label">Full
+                                            Name</label>
+                                        {{ form.member5_name }}
+                                        {% if form.member5_name.errors %}
+                                        <div class="text-danger small">{{ form.member5_name.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member5_email.id_for_label }}"
+                                            class="form-label">Email</label>
+                                        {{ form.member5_email }}
+                                        {% if form.member5_email.errors %}
+                                        <div class="text-danger small">{{ form.member5_email.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member5_phone.id_for_label }}" class="form-label">Phone
+                                            Number</label>
+                                        {{ form.member5_phone }}
+                                        {% if form.member5_phone.errors %}
+                                        <div class="text-danger small">{{ form.member5_phone.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member5_roll.id_for_label }}" class="form-label">Roll
+                                            Number</label>
+                                        {{ form.member5_roll }}
+                                        {% if form.member5_roll.errors %}
+                                        <div class="text-danger small">{{ form.member5_roll.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member5_gender.id_for_label }}"
+                                            class="form-label">Gender</label>
+                                        {{ form.member5_gender }}
+                                        {% if form.member5_gender.errors %}
+                                        <div class="text-danger small">{{ form.member5_gender.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member5_year.id_for_label }}"
+                                            class="form-label">Year</label>
+                                        {{ form.member5_year }}
+                                        {% if form.member5_year.errors %}
+                                        <div class="text-danger small">{{ form.member5_year.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member5_college_name.id_for_label }}"
+                                            class="form-label required-field">College Name</label>
+                                        {{ form.member5_college_name }}
+                                        {% if form.member5_college_name.errors %}
+                                        <div class="text-danger small">{{ form.member5_college_name.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member5_college_code.id_for_label }}"
+                                            class="form-label">College Code</label>
+                                        {{ form.member5_college_code }}
+                                        {% if form.member5_college_code.errors %}
+                                        <div class="text-danger small">{{ form.member5_college_code.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member5_course_name.id_for_label }}"
+                                            class="form-label">Course Name</label>
+                                        {{ form.member5_course_name }}
+                                        {% if form.member5_course_name.errors %}
+                                        <div class="text-danger small">{{ form.member5_course_name.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member5_tshirt_size.id_for_label }}"
+                                            class="form-label">T-Shirt Size</label>
+                                        {{ form.member5_tshirt_size }}
+                                        {% if form.member5_tshirt_size.errors %}
+                                        <div class="text-danger small">{{ form.member5_tshirt_size.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member5_food_preference.id_for_label }}"
+                                            class="form-label">Food Preference</label>
+                                        {{ form.member5_food_preference }}
+                                        {% if form.member5_food_preference.errors %}
+                                        <div class="text-danger small">{{ form.member5_food_preference.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <div class="form-check">
+                                            {{ form.is_leader5 }}
+                                            <label class="form-check-label text-dark"
+                                                for="{{ form.is_leader5.id_for_label }}">
+                                                Team Leader
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Member 6 (Optional) -->
+                            <div class="member-card" id="member6-section" style="display: none;">
+                                <h3 class="h5 text-dark mb-3">Member 6 (Optional)</h3>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member6_name.id_for_label }}" class="form-label">Full
+                                            Name</label>
+                                        {{ form.member6_name }}
+                                        {% if form.member6_name.errors %}
+                                        <div class="text-danger small">{{ form.member6_name.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member6_email.id_for_label }}"
+                                            class="form-label">Email</label>
+                                        {{ form.member6_email }}
+                                        {% if form.member6_email.errors %}
+                                        <div class="text-danger small">{{ form.member6_email.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member6_phone.id_for_label }}" class="form-label">Phone
+                                            Number</label>
+                                        {{ form.member6_phone }}
+                                        {% if form.member6_phone.errors %}
+                                        <div class="text-danger small">{{ form.member6_phone.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member6_roll.id_for_label }}" class="form-label">Roll
+                                            Number</label>
+                                        {{ form.member6_roll }}
+                                        {% if form.member6_roll.errors %}
+                                        <div class="text-danger small">{{ form.member6_roll.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member6_gender.id_for_label }}"
+                                            class="form-label">Gender</label>
+                                        {{ form.member6_gender }}
+                                        {% if form.member6_gender.errors %}
+                                        <div class="text-danger small">{{ form.member6_gender.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member6_year.id_for_label }}"
+                                            class="form-label">Year</label>
+                                        {{ form.member6_year }}
+                                        {% if form.member6_year.errors %}
+                                        <div class="text-danger small">{{ form.member6_year.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member6_college_name.id_for_label }}"
+                                            class="form-label required-field">College Name</label>
+                                        {{ form.member6_college_name }}
+                                        {% if form.member6_college_name.errors %}
+                                        <div class="text-danger small">{{ form.member6_college_name.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member6_college_code.id_for_label }}"
+                                            class="form-label">College Code</label>
+                                        {{ form.member6_college_code }}
+                                        {% if form.member6_college_code.errors %}
+                                        <div class="text-danger small">{{ form.member6_college_code.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="{{ form.member6_course_name.id_for_label }}"
+                                            class="form-label">Course Name</label>
+                                        {{ form.member6_course_name }}
+                                        {% if form.member6_course_name.errors %}
+                                        <div class="text-danger small">{{ form.member6_course_name.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member6_tshirt_size.id_for_label }}"
+                                            class="form-label">T-Shirt Size</label>
+                                        {{ form.member6_tshirt_size }}
+                                        {% if form.member6_tshirt_size.errors %}
+                                        <div class="text-danger small">{{ form.member6_tshirt_size.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 col-md-3 mb-3">
+                                        <label for="{{ form.member6_food_preference.id_for_label }}"
+                                            class="form-label">Food Preference</label>
+                                        {{ form.member6_food_preference }}
+                                        {% if form.member6_food_preference.errors %}
+                                        <div class="text-danger small">{{ form.member6_food_preference.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <div class="form-check">
+                                            {{ form.is_leader6 }}
+                                            <label class="form-check-label text-dark"
+                                                for="{{ form.is_leader6.id_for_label }}">
+                                                Team Leader
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Errors -->
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% endif %}
+
+                        <!-- Calculate Money Button -->
+                        <div class="text-center mt-4 mb-4">
+                            <button type="button" class="btn-submit" id="calculateBtn" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                                <i class="fas fa-calculator me-2"></i>
+                                <span id="calculateText">Calculate Registration Fee</span>
+                            </button>
+                        </div>
+
+                        <!-- Fee Calculation Section (Hidden Initially) -->
+                        <div class="mb-4" id="fee-section" style="display: none;">
+                            <h2 class="section-title">Registration Fee</h2>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="glass-panel p-4">
+                                        <div id="fee-calculation">
+                                            <div class="row mb-3">
+                                                <div class="col-12 col-md-6">
+                                                    <p class="mb-2"><strong>Base Fee per Person:</strong> ₹600</p>
+                                                    <p class="mb-2"><strong>Team Size:</strong> <span id="display-team-size">4</span> members</p>
+                                                    <p class="mb-2"><strong>Total Base Fee:</strong> ₹<span id="total-base-fee">2400</span></p>
+                                                </div>
+                                                <div class="col-12 col-md-6">
+                                                    <div id="discount-info" class="d-none">
+                                                        <p class="mb-2 text-success"><strong>Inter-College Discount (10%):</strong> -₹<span id="discount-amount">0</span></p>
+                                                        <p class="mb-2"><strong>Final Amount to Pay:</strong> ₹<span id="final-amount" class="text-amber-400 fw-bold fs-5">2400</span></p>
+                                                    </div>
+                                                    <div id="no-discount-info">
+                                                        <p class="mb-2 text-muted"><small>Add at least one member from a different college to get 10% discount</small></p>
+                                                        <p class="mb-2"><strong>Final Amount to Pay:</strong> ₹<span id="final-amount-no-discount" class="text-amber-400 fw-bold fs-5">2400</span></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="discount-message" class="alert alert-info d-none">
+                                                <i class="fas fa-info-circle"></i> <strong>Inter-College Discount Applied!</strong> Your team qualifies for a 10% discount because you have members from both NRCM and other colleges.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- QR Code Section (Hidden Initially) -->
+                        <div class="mb-4" id="qr-section" style="display: none;">
+                            <h2 class="section-title">Payment QR Code</h2>
+                            <div class="row">
+                                <div class="col-12 col-md-6 mb-3">
+                                    <div class="glass-panel p-4 text-center">
+                                        <p class="mb-3"><strong>Scan this QR code to make payment:</strong></p>
+                                        <div id="qr-code-container" class="mb-3">
+                                            <!-- QR Code will be displayed here -->
+                                            <img src="{% static 'images/payment-qr.png' %}" alt="Payment QR Code" class="img-fluid" style="max-width: 300px; border: 2px solid #fbbf24; border-radius: 10px;" onerror="this.style.display='none'; document.getElementById('qr-placeholder').style.display='block';">
+                                            <div id="qr-placeholder" style="display: none; padding: 40px; background: #1f2937; border: 2px dashed #4b5563; border-radius: 10px;">
+                                                <i class="fas fa-qrcode fa-3x text-gray-500 mb-3"></i>
+                                                <p class="text-muted">QR Code image not found. Please contact organizers for payment details.</p>
+                                            </div>
+                                        </div>
+                                        <p class="text-muted small">Amount to Pay: ₹<span id="qr-amount">2400</span></p>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 mb-3">
+                                    <div class="glass-panel p-4">
+                                        <h5 class="text-dark mb-3">Payment Instructions:</h5>
+                                        <ol class="text-dark" style="color: #334155 !important;">
+                                            <li>Calculate your registration fee above</li>
+                                            <li>Scan the QR code with your payment app</li>
+                                            <li>Pay the exact amount shown</li>
+                                            <li>Take a screenshot of the payment confirmation</li>
+                                            <li>Upload the screenshot below</li>
+                                            <li>Complete your registration</li>
+                                        </ol>
+                                        <div class="alert alert-warning mt-3">
+                                            <i class="fas fa-exclamation-triangle"></i> <strong>Important:</strong> Make sure to pay the exact amount calculated above. Incorrect payments may delay your registration.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Transaction ID Section (Hidden Initially) -->
+                        <div class="mb-4" id="transaction-id-section" style="display: none;">
+                            <h2 class="section-title">Transaction ID</h2>
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <label for="{{ form.transaction_id.id_for_label }}"
+                                        class="form-label required-field">Transaction ID</label>
+                                    {{ form.transaction_id }}
+                                    {% if form.transaction_id.errors %}
+                                    <div class="text-danger small">{{ form.transaction_id.errors.0 }}</div>
+                                    {% endif %}
+                                    <small class="text-muted">Enter the transaction ID from your payment receipt. This must be unique and will be verified.</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Payment Screenshot Section (Hidden Initially) -->
+                        <div class="mb-4" id="payment-screenshot-section" style="display: none;">
+                            <h2 class="section-title">Payment Screenshot</h2>
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <label for="{{ form.payment_screenshot.id_for_label }}"
+                                        class="form-label required-field">Payment Screenshot (.jpg, .jpeg, .png)</label>
+                                    {{ form.payment_screenshot }}
+                                    {% if form.payment_screenshot.errors %}
+                                    <div class="text-danger small">{{ form.payment_screenshot.errors.0 }}</div>
+                                    {% endif %}
+                                    {% if preserved_file_info %}
+                                    <div class="alert alert-info mt-2">
+                                        <i class="fas fa-check-circle me-2"></i>
+                                        <strong>File uploaded:</strong> {{ preserved_file_info.name }} ({{ preserved_file_info.size|filesizeformat }})
+                                        <br><small class="text-muted">This file will be used for your registration. Upload a new file to replace it.</small>
+                                    </div>
+                                    {% endif %}
+                                    <small class="text-muted">Please upload a screenshot of your payment confirmation for the amount shown above.
+                                        The Screenshot must contain the transaction id in it.</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button (Hidden Initially) -->
+                        <div class="text-center mt-4" id="submit-button-container" style="display: none;">
+                            <button type="submit" class="btn-submit" id="submitBtn">
+                                <span id="submitText">Register Team</span>
+                                <span id="submitSpinner" class="spinner-border spinner-border-sm ms-2 d-none"
+                                    role="status"></span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Mobile-first JavaScript
+        let isSubmitting = false; // Global variable for form submission state
+
+        // Fee calculation function (moved outside DOMContentLoaded for global access)
+        function calculateFee() {
+                const baseFeePerPerson = 600;
+                const discountPercentage = 0.10;
+                
+                // Get team size
+                const teamSizeSelect = document.querySelector('[name="team_size"]');
+                const teamSize = teamSizeSelect ? parseInt(teamSizeSelect.value) || 4 : 4;
+                
+                // Collect all college codes
+                const collegeCodes = new Set();
+                for (let i = 1; i <= teamSize; i++) {
+                    const collegeCodeInput = document.querySelector(`[name="member${i}_college_code"]`);
+                    if (collegeCodeInput && collegeCodeInput.value) {
+                        const code = collegeCodeInput.value.trim().toUpperCase();
+                        if (code) {
+                            collegeCodes.add(code);
+                        }
+                    }
+                }
+                
+                // Check discount eligibility
+                const hasNRCM = collegeCodes.has('NRCM');
+                const hasNonNRCM = Array.from(collegeCodes).some(code => code !== 'NRCM');
+                const discountEligible = hasNRCM && hasNonNRCM && collegeCodes.size > 1;
+                
+                // Calculate fees
+                const totalBaseFee = baseFeePerPerson * teamSize;
+                const discountAmount = discountEligible ? totalBaseFee * discountPercentage : 0;
+                const finalAmount = totalBaseFee - discountAmount;
+                
+                // Update display
+                const displayTeamSize = document.getElementById('display-team-size');
+                const totalBaseFeeEl = document.getElementById('total-base-fee');
+                const discountAmountEl = document.getElementById('discount-amount');
+                const finalAmountEl = document.getElementById('final-amount');
+                const finalAmountNoDiscountEl = document.getElementById('final-amount-no-discount');
+                const discountInfo = document.getElementById('discount-info');
+                const noDiscountInfo = document.getElementById('no-discount-info');
+                const discountMessage = document.getElementById('discount-message');
+                const qrAmount = document.getElementById('qr-amount');
+                
+                if (displayTeamSize) displayTeamSize.textContent = teamSize;
+                if (totalBaseFeeEl) totalBaseFeeEl.textContent = totalBaseFee;
+                if (discountAmountEl) discountAmountEl.textContent = discountAmount;
+                if (finalAmountEl) finalAmountEl.textContent = finalAmount;
+                if (finalAmountNoDiscountEl) finalAmountNoDiscountEl.textContent = finalAmount;
+                if (qrAmount) qrAmount.textContent = finalAmount;
+                
+                // Show/hide discount info
+                if (discountEligible) {
+                    if (discountInfo) discountInfo.classList.remove('d-none');
+                    if (noDiscountInfo) noDiscountInfo.classList.add('d-none');
+                    if (discountMessage) discountMessage.classList.remove('d-none');
+                } else {
+                    if (discountInfo) discountInfo.classList.add('d-none');
+                    if (noDiscountInfo) noDiscountInfo.classList.remove('d-none');
+                    if (discountMessage) discountMessage.classList.add('d-none');
+                }
+            }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Team size change handler
+            const teamSizeSelect = document.querySelector('[name="team_size"]');
+            if (teamSizeSelect) {
+                teamSizeSelect.addEventListener('change', function() {
+                    updateMemberVisibility();
+                    // Reset calculate button and hide sections if fee section is visible
+                    const feeSection = document.getElementById('fee-section');
+                    if (feeSection && feeSection.style.display === 'block') {
+                        const calculateBtn = document.getElementById('calculateBtn');
+                        const calculateText = document.getElementById('calculateText');
+                        const submitButtonContainer = document.getElementById('submit-button-container');
+                        
+                        if (calculateBtn) {
+                            calculateBtn.disabled = false;
+                            calculateBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                        }
+                        if (calculateText) {
+                            calculateText.innerHTML = '<i class="fas fa-calculator me-2"></i>Calculate Money';
+                        }
+                        if (submitButtonContainer) {
+                            submitButtonContainer.style.display = 'none';
+                        }
+                        feeSection.style.display = 'none';
+                        const qrSection = document.getElementById('qr-section');
+                        if (qrSection) qrSection.style.display = 'none';
+                        const transactionIdSection = document.getElementById('transaction-id-section');
+                        if (transactionIdSection) transactionIdSection.style.display = 'none';
+                        const paymentScreenshotSection = document.getElementById('payment-screenshot-section');
+                        if (paymentScreenshotSection) paymentScreenshotSection.style.display = 'none';
+                    }
+                });
+                updateMemberVisibility(); // Initialize
+            }
+
+            // Leader checkbox handler
+            setupLeaderCheckboxes();
+            
+            // Remove automatic fee calculation on college code changes
+            // Fee will only be calculated when "Calculate Money" button is clicked
+            
+            // Calculate Money button handler
+            const calculateBtn = document.getElementById('calculateBtn');
+            const feeSection = document.getElementById('fee-section');
+            const qrSection = document.getElementById('qr-section');
+            const paymentScreenshotSection = document.getElementById('payment-screenshot-section');
+            const transactionIdSection = document.getElementById('transaction-id-section');
+            
+            if (calculateBtn) {
+                calculateBtn.addEventListener('click', function() {
+                    // Validate that required fields are filled
+                    const teamSizeSelect = document.querySelector('[name="team_size"]');
+                    const teamSize = teamSizeSelect ? parseInt(teamSizeSelect.value) || 4 : 4;
+                    
+                    let isValid = true;
+                    let errorMessage = '';
+                    
+                    // Check team name
+                    const teamName = document.querySelector('[name="team_name"]');
+                    if (!teamName || !teamName.value.trim()) {
+                        isValid = false;
+                        errorMessage = 'Please enter your team name.';
+                    }
+                    
+                    // Check theme
+                    const theme = document.querySelector('[name="theme"]');
+                    if (!theme || !theme.value) {
+                        isValid = false;
+                        errorMessage = 'Please select a theme.';
+                    }
+                    
+                    // Check required members (1-4)
+                    for (let i = 1; i <= Math.min(teamSize, 4); i++) {
+                        const name = document.querySelector(`[name="member${i}_name"]`);
+                        const email = document.querySelector(`[name="member${i}_email"]`);
+                        const phone = document.querySelector(`[name="member${i}_phone"]`);
+                        const roll = document.querySelector(`[name="member${i}_roll"]`);
+                        const collegeCode = document.querySelector(`[name="member${i}_college_code"]`);
+                        
+                        if (!name || !name.value.trim()) {
+                            isValid = false;
+                            errorMessage = `Please fill in all details for Member ${i}.`;
+                            break;
+                        }
+                        if (!email || !email.value.trim()) {
+                            isValid = false;
+                            errorMessage = `Please fill in all details for Member ${i}.`;
+                            break;
+                        }
+                        if (!phone || !phone.value.trim()) {
+                            isValid = false;
+                            errorMessage = `Please fill in all details for Member ${i}.`;
+                            break;
+                        }
+                        if (!roll || !roll.value.trim()) {
+                            isValid = false;
+                            errorMessage = `Please fill in all details for Member ${i}.`;
+                            break;
+                        }
+                        if (!collegeCode || !collegeCode.value.trim()) {
+                            isValid = false;
+                            errorMessage = `Please enter college code for Member ${i}.`;
+                            break;
+                        }
+                    }
+                    
+                    // Check optional members if team size > 4
+                    if (teamSize > 4) {
+                        for (let i = 5; i <= teamSize; i++) {
+                            const name = document.querySelector(`[name="member${i}_name"]`);
+                            const email = document.querySelector(`[name="member${i}_email"]`);
+                            const phone = document.querySelector(`[name="member${i}_phone"]`);
+                            const roll = document.querySelector(`[name="member${i}_roll"]`);
+                            const collegeCode = document.querySelector(`[name="member${i}_college_code"]`);
+                            
+                            // If any field is filled, all must be filled
+                            if (name && name.value.trim()) {
+                                if (!email || !email.value.trim() || !phone || !phone.value.trim() || 
+                                    !roll || !roll.value.trim() || !collegeCode || !collegeCode.value.trim()) {
+                                    isValid = false;
+                                    errorMessage = `Please fill in all details for Member ${i} or leave all fields empty.`;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    
+                    if (!isValid) {
+                        alert(errorMessage);
+                        return;
+                    }
+                    
+                    // Calculate fee
+                    calculateFee();
+                    
+                    // Show fee, QR, transaction ID, and payment screenshot sections
+                    if (feeSection) {
+                        feeSection.style.display = 'block';
+                        feeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                    if (qrSection) {
+                        qrSection.style.display = 'block';
+                    }
+                    if (transactionIdSection) {
+                        transactionIdSection.style.display = 'block';
+                    }
+                    if (paymentScreenshotSection) {
+                        paymentScreenshotSection.style.display = 'block';
+                    }
+                    
+                    // Show submit button
+                    const submitButtonContainer = document.getElementById('submit-button-container');
+                    if (submitButtonContainer) {
+                        submitButtonContainer.style.display = 'block';
+                    }
+                    
+                    // Update button text to "Recalculate"
+                    const calculateText = document.getElementById('calculateText');
+                    if (calculateText) {
+                        calculateText.innerHTML = '<i class="fas fa-redo me-2"></i>Recalculate Registration Fee';
+                    }
+                    if (calculateBtn) {
+                        calculateBtn.style.background = 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)';
+                        calculateBtn.disabled = false; // Keep it enabled for recalculation
+                    }
+                });
+            }
+
+
+            // Prevent double-tap zoom on mobile
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function (event) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, { passive: false });
+
+            // Prevent zoom on double tap for iOS
+            document.addEventListener('gesturestart', function (e) {
+                e.preventDefault();
+            }, { passive: false });
+            
+            // Prevent touch callouts that might cause flickering
+            document.addEventListener('touchmove', function (e) {
+                // Allow scrolling but prevent other touch behaviors
+            }, { passive: true });
+
+            // Smooth scrolling for better mobile experience - disabled on mobile for performance
+            if (window.innerWidth > 768) {
+                document.documentElement.style.scrollBehavior = 'smooth';
+            }
+
+            // Form submission handler
+            const form = document.getElementById('registrationForm');
+            if (form) {
+                form.addEventListener('submit', function (event) {
+                    console.log('Form submission started...');
+
+                    // Store current file selections BEFORE any validation
+                    const fileInputs = document.querySelectorAll('input[type="file"]');
+                    globalFileData.clear();
+                    fileInputs.forEach(input => {
+                        if (input.files.length > 0) {
+                            globalFileData.set(input.name, Array.from(input.files));
+                        }
+                    });
+                    console.log('Stored file data:', globalFileData.size, 'files');
+
+                    // Validate leader selection
+                    const leaderCheckboxes = document.querySelectorAll('input[type="checkbox"][name^="is_leader"]:checked');
+                    if (leaderCheckboxes.length !== 1) {
+                        alert('Please select exactly one team leader.');
+                        restoreFilesAfterValidation();
+                        event.preventDefault(); // Prevent submission
+                        return;
+                    }
+
+                    // Validate female members
+                    const teamSize = parseInt(document.getElementById('team_size').value) || 0;
+                    let femaleCount = 0;
+                    for (let i = 1; i <= teamSize; i++) {
+                        const genderSelect = document.querySelector(`select[name="member${i}_gender"]`);
+                        if (genderSelect && genderSelect.value === 'Female') {
+                            femaleCount++;
+                        }
+                    }
+                    if (femaleCount === 0) {
+                        alert('At least one team member must be female.');
+                        restoreFilesAfterValidation();
+                        event.preventDefault(); // Prevent submission
+                        return;
+                    }
+
+                    // Validate email fields
+                    const emailFields = document.querySelectorAll('input[type="email"]');
+                    for (let field of emailFields) {
+                        if (field.value && !validateEmail(field.value)) {
+                            field.classList.add('is-invalid');
+                            alert('Please enter a valid email address');
+                            field.focus();
+                            restoreFilesAfterValidation();
+                            event.preventDefault(); // Prevent submission
+                            return;
+                        } else {
+                            field.classList.remove('is-invalid');
+                        }
+                    }
+
+                    // Validate phone fields
+                    const phoneFields = document.querySelectorAll('input[type="tel"]');
+                    for (let field of phoneFields) {
+                        if (field.value && !validatePhone(field.value)) {
+                            field.classList.add('is-invalid');
+                            alert('Phone number must be 10 digits starting with 6, 7, 8, or 9');
+                            field.focus();
+                            restoreFilesAfterValidation();
+                            event.preventDefault(); // Prevent submission
+                            return;
+                        } else {
+                            field.classList.remove('is-invalid');
+                        }
+                    }
+
+                    console.log('All validations passed!');
+
+                    // Show loading state
+                    const submitBtn = document.querySelector('.btn-submit');
+                    const submitText = document.getElementById('submitText');
+                    const submitSpinner = document.getElementById('submitSpinner');
+
+                    if (submitBtn) submitBtn.classList.add('loading');
+                    if (submitText) submitText.textContent = 'SUBMITTING...';
+                    if (submitSpinner) submitSpinner.classList.remove('d-none');
+
+                    // Allow form to submit normally - don't prevent default
+                    console.log('Form will submit normally now...');
+
+                    // Don't prevent default - let the form submit
+                    // Don't return anything - just let the event continue
+                });
+            }
+
+            // Phone number input handlers
+            setupPhoneNumberHandlers();
+
+        });
+
+        // Function definitions (moved outside DOMContentLoaded)
+
+        function updateMemberVisibility() {
+            const teamSizeSelect = document.querySelector('[name="team_size"]');
+            const teamSize = teamSizeSelect ? teamSizeSelect.value : '4';
+            const member5Section = document.getElementById('member5-section');
+            const member6Section = document.getElementById('member6-section');
+
+            // Hide all optional members first
+            if (member5Section) member5Section.style.display = 'none';
+            if (member6Section) member6Section.style.display = 'none';
+
+            // Show based on team size and update labels
+            if (teamSize === '5' || teamSize === '6') {
+                if (member5Section) {
+                    member5Section.style.display = 'block';
+                    // Make fields required for 5+ members
+                    makeFieldsRequired(member5Section, true);
+                    // Update Member 5 label to remove "(Optional)"
+                    const member5Label = member5Section.querySelector('h3');
+                    if (member5Label) {
+                        member5Label.innerHTML = 'Member 5 <span class="text-danger">*</span>';
+                    }
+                }
+            }
+
+            if (teamSize === '6') {
+                if (member6Section) {
+                    member6Section.style.display = 'block';
+                    // Make fields required for 6 members
+                    makeFieldsRequired(member6Section, true);
+                    // Update Member 6 label to remove "(Optional)"
+                    const member6Label = member6Section.querySelector('h3');
+                    if (member6Label) {
+                        member6Label.innerHTML = 'Member 6 <span class="text-danger">*</span>';
+                    }
+                }
+            }
+
+            // Reset labels for optional members when team size is smaller
+            if (teamSize === '4' || teamSize === '3' || teamSize === '2') {
+                if (member5Section) {
+                    makeFieldsRequired(member5Section, false);
+                    const member5Label = member5Section.querySelector('h3');
+                    if (member5Label) {
+                        member5Label.innerHTML = 'Member 5 <span class="text-muted">(Optional)</span>';
+                    }
+                }
+                if (member6Section) {
+                    makeFieldsRequired(member6Section, false);
+                    const member6Label = member6Section.querySelector('h3');
+                    if (member6Label) {
+                        member6Label.innerHTML = 'Member 6 <span class="text-muted">(Optional)</span>';
+                    }
+                }
+            }
+        }
+
+        function makeFieldsRequired(section, required) {
+            const inputs = section.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                if (input.type !== 'checkbox') {
+                    input.required = required;
+                    const label = section.querySelector(`label[for="${input.id}"]`);
+                    if (label) {
+                        if (required) {
+                            label.classList.add('required-field');
+                        } else {
+                            label.classList.remove('required-field');
+                        }
+                    }
+                }
+            });
+        }
+
+        function setupLeaderCheckboxes() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"][name^="is_leader"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function () {
+                    if (this.checked) {
+                        // Uncheck all other leader checkboxes
+                        checkboxes.forEach(other => {
+                            if (other !== this) {
+                                other.checked = false;
+                            }
+                        });
+                    }
+                });
+            });
+        }
+
+        function setupPhoneNumberHandlers() {
+            const phoneInputs = document.querySelectorAll('input[type="tel"]');
+            phoneInputs.forEach(input => {
+                input.addEventListener('input', function () {
+                    // Remove non-numeric characters and limit to 10 digits
+                    this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+
+                    // Validate first digit (must be 6-9)
+                    if (this.value.length > 0 && !/[6-9]/.test(this.value[0])) {
+                        this.value = '';
+                    }
+                });
+
+                // Prevent non-numeric input
+                input.addEventListener('keypress', function (e) {
+                    if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete') {
+                        e.preventDefault();
+                    }
+                });
+
+                // Validate on paste
+                input.addEventListener('paste', function (e) {
+                    e.preventDefault();
+                    const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+                    const cleanedText = pastedText.replace(/[^0-9]/g, '').slice(0, 10);
+
+                    // Validate first digit (must be 6-9)
+                    if (cleanedText.length > 0 && !/[6-9]/.test(cleanedText[0])) {
+                        return;
+                    }
+
+                    this.value = cleanedText;
+                });
+
+                // Add visual feedback for invalid first digit
+                input.addEventListener('blur', function () {
+                    if (this.value.length === 1 && !/[6-9]/.test(this.value[0])) {
+                        this.style.borderColor = '#ef4444';
+                        this.style.boxShadow = '0 0 0 0.2rem rgba(239, 68, 68, 0.25)';
+
+                        // Show error message
+                        let errorDiv = this.parentElement.querySelector('.phone-error');
+                        if (!errorDiv) {
+                            errorDiv = document.createElement('div');
+                            errorDiv.className = 'text-danger small phone-error';
+                            errorDiv.textContent = 'Phone number must start with 6, 7, 8, or 9';
+                            this.parentElement.appendChild(errorDiv);
+                        }
+                    } else if (this.value.length === 0 || /[6-9]/.test(this.value[0])) {
+                        // Remove error styling if valid
+                        this.style.borderColor = '';
+                        this.style.boxShadow = '';
+
+                        // Remove error message
+                        const errorDiv = this.parentElement.querySelector('.phone-error');
+                        if (errorDiv) {
+                            errorDiv.remove();
+                        }
+                    }
+                });
+            });
+        }
+
+        // Global variable to store file data for preservation
+        let globalFileData = new Map();
+
+        // New validation function for form onsubmit
+        function validateForm(event) {
+            console.log('Form validation started...');
+
+            // Store current file selections BEFORE any validation
+            const fileInputs = document.querySelectorAll('input[type="file"]');
+            globalFileData.clear();
+            fileInputs.forEach(input => {
+                if (input.files.length > 0) {
+                    globalFileData.set(input.name, Array.from(input.files));
+                }
+            });
+            console.log('Stored file data:', globalFileData.size, 'files');
+
+            // Validate leader selection
+            const leaderCheckboxes = document.querySelectorAll('input[type="checkbox"][name^="is_leader"]:checked');
+            if (leaderCheckboxes.length !== 1) {
+                alert('Please select exactly one team leader.');
+                restoreFilesAfterValidation();
+                event.preventDefault(); // Prevent form submission
+                return false;
+            }
+
+            // Validate female members
+            const teamSize = parseInt(document.getElementById('team_size').value) || 0;
+            let femaleCount = 0;
+            for (let i = 1; i <= teamSize; i++) {
+                const genderSelect = document.querySelector(`select[name="member${i}_gender"]`);
+                if (genderSelect && genderSelect.value === 'Female') {
+                    femaleCount++;
+                }
+            }
+            if (femaleCount === 0) {
+                alert('At least one team member must be female.');
+                restoreFilesAfterValidation();
+                event.preventDefault(); // Prevent form submission
+                return false;
+            }
+
+            // Validate email fields
+            const emailFields = document.querySelectorAll('input[type="email"]');
+            for (let field of emailFields) {
+                if (field.value && !validateEmail(field.value)) {
+                    field.classList.add('is-invalid');
+                    alert('Please enter a valid email address');
+                    field.focus();
+                    restoreFilesAfterValidation();
+                    event.preventDefault(); // Prevent form submission
+                    return false;
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            }
+
+            // Validate phone fields
+            const phoneFields = document.querySelectorAll('input[type="tel"]');
+            for (let field of phoneFields) {
+                if (field.value && !validatePhone(field.value)) {
+                    field.classList.add('is-invalid');
+                    alert('Phone number must be 10 digits starting with 6, 7, 8, or 9');
+                    field.focus();
+                    restoreFilesAfterValidation();
+                    event.preventDefault(); // Prevent form submission
+                    return false;
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            }
+
+            console.log('All validations passed!');
+
+            // Show loading state
+            const submitBtn = document.querySelector('.btn-submit');
+            const submitText = document.getElementById('submitText');
+            const submitSpinner = document.getElementById('submitSpinner');
+
+            if (submitBtn) submitBtn.classList.add('loading');
+            if (submitText) submitText.textContent = 'SUBMITTING...';
+            if (submitSpinner) submitSpinner.classList.remove('d-none');
+
+            // Allow form to submit normally - don't prevent default
+            console.log('Form will submit normally now...');
+
+            // Return true to allow form submission
+            return true;
+        }
+
+        // Function to restore files after validation fails
+        function restoreFilesAfterValidation() {
+            console.log('Restoring files after validation failure...');
+
+            globalFileData.forEach((files, inputName) => {
+                const input = document.querySelector(`input[name="${inputName}"]`);
+                if (input && files.length > 0) {
+                    try {
+                        // Use the restoreFile method if available
+                        if (input.restoreFile) {
+                            input.restoreFile();
+                        } else {
+                            // Fallback method
+                            const dataTransfer = new DataTransfer();
+                            files.forEach(file => {
+                                dataTransfer.items.add(file);
+                            });
+                            input.files = dataTransfer.files;
+
+                        }
+                    } catch (error) {
+                        console.warn('Could not restore file selection:', error);
+                    }
+                }
+            });
+        }
+
+        // Helper function to restore file selections
+        function restoreFileSelections(fileData) {
+            fileData.forEach((files, inputName) => {
+                const input = document.querySelector(`input[name="${inputName}"]`);
+                if (input && files.length > 0) {
+                    try {
+                        // Fallback for file inputs
+                        const dataTransfer = new DataTransfer();
+                        files.forEach(file => {
+                            dataTransfer.items.add(file);
+                        });
+                        input.files = dataTransfer.files;
+                    } catch (error) {
+                        console.warn('Could not restore file selection:', error);
+                    }
+                }
+            });
+        }
+
+        function handleFormSubmit(e) {
+            console.log('Form submission started...');
+
+            // Always prevent default first - we'll manually submit if validation passes
+            e.preventDefault();
+
+            // Debug CSRF token before submission
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+            if (!csrfToken) {
+                console.error('CSRF token missing before form submission!');
+                alert('CSRF token missing. Please refresh the page and try again.');
+                return false;
+            }
+
+            console.log('CSRF token found:', csrfToken.value);
+
+            if (isSubmitting) {
+                return false;
+            }
+
+            // Store current file selections to preserve them if validation fails
+            const fileInputs = document.querySelectorAll('input[type="file"]');
+            const fileData = new Map();
+            fileInputs.forEach(input => {
+                if (input.files.length > 0) {
+                    fileData.set(input.name, Array.from(input.files));
+                }
+            });
+
+            // Validate that exactly one leader is selected
+            const leaderCheckboxes = document.querySelectorAll('input[type="checkbox"][name^="is_leader"]:checked');
+            console.log('Leader checkboxes found:', leaderCheckboxes.length);
+            if (leaderCheckboxes.length !== 1) {
+                alert('Please select exactly one team leader.');
+                // Restore file selections
+                restoreFileSelections(fileData);
+                return false;
+            }
+
+            // Validate that at least one team member is female
+            const teamSize = document.querySelector('[name="team_size"]')?.value || '4';
+            const size = parseInt(teamSize);
+            let femaleCount = 0;
+
+            for (let i = 1; i <= size; i++) {
+                const memberName = document.querySelector(`[name="member${i}_name"]`)?.value;
+                const memberGender = document.querySelector(`[name="member${i}_gender"]`)?.value;
+
+                if (memberName && memberGender === 'Female') {
+                    femaleCount++;
+                }
+            }
+
+            console.log('Female members found:', femaleCount);
+            if (femaleCount === 0) {
+                alert('At least one team member must be female.');
+                // Restore file selections
+                restoreFileSelections(fileData);
+                return false;
+            }
+
+            // Validate email fields
+            const emailFields = document.querySelectorAll('input[type="email"]');
+            for (let field of emailFields) {
+                if (field.value && !validateEmail(field.value)) {
+                    field.classList.add('is-invalid');
+                    alert('Please enter a valid email address');
+                    field.focus();
+                    // Restore file selections
+                    restoreFileSelections(fileData);
+                    return false;
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            }
+
+            // Validate phone fields
+            const phoneFields = document.querySelectorAll('input[type="tel"]');
+            for (let field of phoneFields) {
+                if (field.value && !validatePhone(field.value)) {
+                    field.classList.add('is-invalid');
+                    alert('Phone number must be 10 digits starting with 6, 7, 8, or 9');
+                    field.focus();
+                    // Restore file selections
+                    restoreFileSelections(fileData);
+                    return false;
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            }
+
+            // Convert college codes and course names to uppercase
+            const collegeCodeFields = document.querySelectorAll('input[name$="_college_code"]');
+            const courseNameFields = document.querySelectorAll('input[name$="_course_name"]');
+            [...collegeCodeFields, ...courseNameFields].forEach(field => {
+                if (field.value && field.value !== field.value.toUpperCase()) {
+                    field.value = field.value.toUpperCase();
+                }
+            });
+
+            console.log('All validations passed. Form will submit normally.');
+
+            // If we reach here, all validations passed - submit the form manually
+            isSubmitting = true;
+
+            // Show loading state
+            const submitBtn = document.querySelector('.btn-submit');
+            const submitText = document.querySelector('.submit-text');
+            const submitSpinner = document.querySelector('.submit-spinner');
+
+            if (submitBtn) submitBtn.classList.add('loading');
+            if (submitText) submitText.textContent = 'SUBMITTING...';
+            if (submitSpinner) submitSpinner.classList.remove('d-none');
+
+            // Submit the form using the native submit method
+            const form = document.getElementById('registrationForm');
+            if (form) {
+                console.log('Submitting form manually...');
+                form.submit();
+            }
+
+            return false; // Prevent default form submission since we're handling it manually
+        }
+
+        // Handle visibility change (when user switches tabs/apps)
+        document.addEventListener('visibilitychange', function () {
+            if (document.visibilityState === 'visible') {
+                // Force repaint when returning to the page
+                document.body.style.display = 'none';
+                document.body.offsetHeight; // Trigger reflow
+                document.body.style.display = '';
+            }
+        });
+
+        // Handle orientation change
+        window.addEventListener('orientationchange', function () {
+            setTimeout(function () {
+                window.scrollTo(0, 0);
+            }, 100);
+        });
+
+        // Prevent pull-to-refresh on iOS
+        document.addEventListener('touchstart', function (e) {
+            if (e.touches.length > 1) {
+                e.preventDefault();
+            }
+        });
+
+        // Mobile-friendly viewport handling
+        window.addEventListener('load', function () {
+            // Ensure proper viewport without restricting zoom
+            const viewport = document.querySelector('meta[name="viewport"]');
+            if (viewport) {
+                viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes');
+            }
+
+            // Add mobile class to body for CSS targeting
+            if (window.innerWidth <= 768) {
+                document.body.classList.add('mobile-device');
+            }
+
+            // Force mobile layout recalculation
+            setTimeout(function () {
+                document.body.style.display = 'none';
+                document.body.offsetHeight; // Trigger reflow
+                document.body.style.display = '';
+            }, 100);
+        });
+
+        // Handle orientation changes
+        window.addEventListener('orientationchange', function () {
+            setTimeout(function () {
+                window.scrollTo(0, 0);
+            }, 100);
+        });
+
+        // Handle resize events
+        window.addEventListener('resize', function () {
+            if (window.innerWidth <= 768) {
+                document.body.classList.add('mobile-device');
+            } else {
+                document.body.classList.remove('mobile-device');
+            }
+        });
+
+        // Update leader checkbox function (missing from original template)
+        function updateLeaderCheckbox(memberNumber) {
+            const checkbox = document.querySelector(`input[name="is_leader${memberNumber}"]`);
+            if (checkbox && checkbox.checked) {
+                // Uncheck all other leader checkboxes
+                for (let i = 1; i <= 6; i++) {
+                    if (i !== memberNumber) {
+                        const otherCheckbox = document.querySelector(`input[name="is_leader${i}"]`);
+                        if (otherCheckbox) {
+                            otherCheckbox.checked = false;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Email validation function
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Phone number validation function
+        function validatePhone(phone) {
+            const phoneRegex = /^[6-9]\d{9}$/;
+            return phoneRegex.test(phone);
+        }
+
+        // Convert to uppercase function
+        function convertToUppercase(input) {
+            input.value = input.value.toUpperCase();
+        }
+
+        // Enhanced form validation
+        function validateForm() {
+            const form = document.getElementById('registrationForm');
+            if (!form) return true;
+
+            let isValid = true;
+            const errors = [];
+
+            // Validate email fields
+            const emailFields = form.querySelectorAll('input[type="email"]');
+            emailFields.forEach(field => {
+                if (field.value && !validateEmail(field.value)) {
+                    isValid = false;
+                    const fieldName = field.placeholder || field.name;
+                    errors.push(`${fieldName}: Please enter a valid email address`);
+                    field.classList.add('is-invalid');
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+
+            // Validate phone fields
+            const phoneFields = form.querySelectorAll('input[type="tel"]');
+            phoneFields.forEach(field => {
+                if (field.value && !validatePhone(field.value)) {
+                    isValid = false;
+                    const fieldName = field.placeholder || field.name;
+                    errors.push(`${fieldName}: Phone number must be 10 digits starting with 6, 7, 8, or 9`);
+                    field.classList.add('is-invalid');
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+
+            // Validate college code and course name fields (must be uppercase)
+            const collegeCodeFields = form.querySelectorAll('input[name$="_college_code"]');
+            const courseNameFields = form.querySelectorAll('input[name$="_course_name"]');
+
+            [...collegeCodeFields, ...courseNameFields].forEach(field => {
+                if (field.value && field.value !== field.value.toUpperCase()) {
+                    field.value = field.value.toUpperCase();
+                }
+            });
+
+            // Display errors if any
+            if (!isValid && errors.length > 0) {
+                alert('Please fix the following errors:\n\n' + errors.join('\n'));
+            }
+
+            return isValid;
+        }
+
+        // Add real-time validation for email fields
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('registrationForm');
+            if (form) {
+                // Add real-time validation for email fields
+                const emailFields = form.querySelectorAll('input[type="email"]');
+                emailFields.forEach(field => {
+                    field.addEventListener('blur', function () {
+                        if (this.value && !validateEmail(this.value)) {
+                            this.classList.add('is-invalid');
+                            alert('Please enter a valid email address');
+                        } else {
+                            this.classList.remove('is-invalid');
+                        }
+                    });
+                });
+
+                // Add real-time validation for phone fields
+                const phoneFields = form.querySelectorAll('input[type="tel"]');
+                phoneFields.forEach(field => {
+                    field.addEventListener('blur', function () {
+                        if (this.value && !validatePhone(this.value)) {
+                            this.classList.add('is-invalid');
+                            alert('Phone number must be 10 digits starting with 6, 7, 8, or 9');
+                        } else {
+                            this.classList.remove('is-invalid');
+                        }
+                    });
+                });
+
+                // Add uppercase conversion for college code and course name
+                const collegeCodeFields = form.querySelectorAll('input[name$="_college_code"]');
+                const courseNameFields = form.querySelectorAll('input[name$="_course_name"]');
+
+                [...collegeCodeFields, ...courseNameFields].forEach(field => {
+                    field.addEventListener('input', function () {
+                        convertToUppercase(this);
+                    });
+                });
+            }
+        });
+
+        // Handle orientation changes
+        window.addEventListener('orientationchange', function () {
+            setTimeout(function () {
+                window.scrollTo(0, 0);
+            }, 100);
+        });
+    </script>
+</body>
+
+</html>

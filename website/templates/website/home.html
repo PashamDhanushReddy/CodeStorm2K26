@@ -1,0 +1,1040 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeStorm 2026 - The Ultimate 36 Hours Hackathon Challenge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        rajdhani: ['Rajdhani', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#f59e0b',
+                        secondary: '#8b5cf6',
+                        dark: '#0f172a',
+                        darker: '#020617',
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: 1, boxShadow: '0 0 20px rgba(245, 158, 11, 0.5)' },
+                            '50%': { opacity: .8, boxShadow: '0 0 40px rgba(245, 158, 11, 0.8)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #334155; /* slate-700 */
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f8fafc; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #4f46e5, #e11d48); border-radius: 4px; }
+        
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .animate-blob { animation: none !important; }
+            .animation-delay-2000 { animation: none !important; }
+            .glass-card:hover { transform: none; box-shadow: none; }
+            html, body { overflow-x: hidden; width: 100%; }
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.95);
+            border-color: rgba(79, 70, 229, 0.3);
+            box-shadow: 0 15px 35px -5px rgba(79, 70, 229, 0.15);
+            transform: translateY(-5px);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 50%, #818cf8 100%); /* Indigo */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .gradient-text-alt {
+            background: linear-gradient(135deg, #e11d48 0%, #f43f5e 50%, #fb7185 100%); /* Rose */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-bg {
+            position: relative;
+            background: transparent;
+            padding-top: 100px;
+        }
+        .btn-neon {
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+            z-index: 1;
+        }
+        .btn-neon::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+        .btn-neon:hover::before { left: 100%; }
+        .btn-neon:hover {
+            box-shadow: 0 0 15px rgba(79, 70, 229, 0.4);
+        }
+        #vanta-bg { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 0; }
+        .clip-path-slant { clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%); }
+        .cyber-grid {
+            background-image: linear-gradient(rgba(79, 70, 229, 0.08) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(79, 70, 229, 0.08) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        
+        /* Chatbot Styling */
+        #chatbot-window { transform: translateZ(0); will-change: transform; }
+        @media (max-width: 768px) {
+            #chatbot-window {
+                position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
+                width: 100vw !important; height: 100vh !important; border-radius: 0 !important; z-index: 9999 !important;
+            }
+            #chatbot-messages { max-height: calc(100vh - 200px) !important; }
+        }
+        @media (min-width: 769px) {
+            #chatbot-window {
+                position: fixed !important; bottom: 100px !important; right: 32px !important; width: 420px !important;
+                max-height: 650px !important; border-radius: 16px !important; backdrop-filter: blur(16px) !important;
+                background: rgba(255, 255, 255, 0.98) !important; border: 2px solid rgba(79, 70, 229, 0.3) !important;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.1) !important;
+            }
+            #chatbot-messages { max-height: 350px !important; }
+        }
+        @keyframes messageShimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .message-animate {
+            background: linear-gradient(90deg, transparent, rgba(79, 70, 229, 0.1), transparent);
+            background-size: 200% 100%;
+            animation: messageShimmer 2s ease-in-out;
+        }
+
+
+        /* ---- Right-side Video ---- */
+        #hero-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 24px;
+            box-shadow: 0 30px 80px -10px rgba(79, 70, 229, 0.25),
+                        0 0 0 1px rgba(79, 70, 229, 0.1);
+            display: block;
+        }
+        .video-wrapper {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+        }
+        /* Subtle glow ring behind the video */
+        .video-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, rgba(79,70,229,0.35) 0%, rgba(225,29,72,0.25) 100%);
+            z-index: -1;
+            filter: blur(16px);
+        }
+        @media (max-width: 1023px) {
+            .hero-video-col {
+                display: none !important;
+            }
+        }
+
+
+        /* Nav Highlight */
+        .nav-link.active {
+            color: #4f46e5;
+            font-weight: 700;
+        }
+        .nav-link.active::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-indigo-500 selection:text-white bg-slate-50 text-slate-800 overflow-x-hidden">
+
+
+    <nav class="fixed w-full z-50 top-0 left-0 transition-all duration-300 border-b border-black/5 bg-white/80 backdrop-blur-md md:py-4" id="navbar">
+        <div class="container mx-auto px-4 py-3 md:py-0 flex justify-between items-center">
+            <a href="#" class="flex items-center gap-2 group">
+                <img src="{% static 'website/images/logo.jpg' %}" alt="CodeStorm Logo" class="w-10 h-10 rounded-lg object-cover transform group-hover:scale-110 transition duration-300">
+                <div class="flex flex-col py-0">
+                    <span class="text-xl font-bold font-orbitron text-slate-900 tracking-wider group-hover:text-indigo-600 transition whitespace-nowrap">CODESTORM</span>
+                    <span class="text-xs text-indigo-500 font-rajdhani tracking-[0.2em]">2K26</span>
+                </div>
+            </a>
+            <div class="hidden lg:flex items-center space-x-8">
+                <a href="#about" class="nav-link text-slate-600 hover:text-indigo-600 font-medium tracking-wide transition relative group">About
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#tracks" class="nav-link text-slate-600 hover:text-indigo-600 font-medium tracking-wide transition relative group">Tracks
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#steps" class="nav-link text-slate-600 hover:text-indigo-600 font-medium tracking-wide transition relative group">Registration Guide
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#timeline" class="nav-link text-slate-600 hover:text-indigo-600 font-medium tracking-wide transition relative group">Timeline
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#event-schedule" class="nav-link text-slate-600 hover:text-indigo-600 font-medium tracking-wide transition relative group">Schedule
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#facilities" class="nav-link text-slate-600 hover:text-indigo-600 font-medium tracking-wide transition relative group">Facilities
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#team" class="nav-link text-slate-600 hover:text-indigo-600 font-medium tracking-wide transition relative group">Organizers
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 transition-all group-hover:w-full"></span>
+                </a>
+            </div>
+            <a href="{% url 'register' %}" class="hidden md:inline-flex items-center justify-center px-6 py-2 border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white font-bold rounded-sm transition-all duration-300 btn-neon shadow-indigo-600/70 group font-orbitron text-sm animate-pulse">
+                <span>REGISTER TEAM</span>
+                <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition"></i>
+            </a>
+            <button class="md:hidden text-slate-900 focus:outline-none" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <section id="hero" class="bg-white min-h-screen flex items-center relative overflow-hidden">
+        <!-- Removed cyber-grid and blobs to allow clean white background for seamless video integration -->
+
+        <!-- Mobile Video Background -->
+        <div class="absolute inset-0 z-0 lg:hidden pointer-events-none">
+            <video autoplay muted loop playsinline preload="auto" class="w-full h-full object-cover filter brightness-90">
+                <source src="/static/bg_video/animated_video.webm" type="video/webm">
+            </video>
+            <div class="absolute inset-0 bg-gradient-to-b from-white/60 via-white/80 to-white/95"></div>
+        </div>
+
+        <div class="container mx-auto px-4 md:px-6 relative z-10 py-24 lg:py-32">
+            <div class="flex flex-col lg:flex-row items-center justify-end">
+
+                <!-- LEFT: Video (hidden on mobile, absolute left on desktop) -->
+                <div class="hidden lg:flex absolute left-0 bottom-16 w-[55vw] max-w-[1100px] z-10 pointer-events-none items-end" data-aos="fade-right" data-aos-delay="200">
+                    <video autoplay muted loop playsinline preload="auto"
+                        class="w-full h-auto object-contain origin-bottom-left transform scale-110 xl:scale-125">
+                        <source src="/static/bg_video/animated_video.webm" type="video/webm">
+                    </video>
+                </div>
+
+                <!-- RIGHT: Text Content -->
+                <div class="w-full lg:w-7/12 xl:w-6/12 text-center lg:text-right relative z-20 mt-20 lg:mt-0">
+                    <div class="mb-4 flex justify-end" data-aos="fade-down">
+                        <div class="px-5 py-1.5 rounded-full border border-slate-200 flex items-center gap-2 bg-white/50 backdrop-blur-sm shadow-sm">
+                            <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+                            <span class="text-xs font-bold tracking-widest text-slate-600">NRCM UGC AUTONOMOUS</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-end mb-6" data-aos="zoom-in" data-aos-duration="1000">
+                        <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-[5rem] xl:text-[5.5rem] font-black font-orbitron leading-none tracking-tighter w-full text-right">
+                            <span class="text-[#0a1128]">CODE</span><span class="text-indigo-600 drop-shadow-[0_0_40px_rgba(79,70,229,0.5)]">STORM</span>
+                        </h1>
+                        <div class="text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] font-bold font-orbitron text-rose-500 mt-2 tracking-wide" data-aos="fade-up" data-aos-delay="200">
+                            2K26
+                        </div>
+                    </div>
+                    <p class="text-lg sm:text-xl lg:text-2xl text-slate-500 mb-2 font-light" data-aos="fade-up" data-aos-delay="300">
+                        A <span class="text-indigo-600 font-bold">36-HOUR</span> NATIONAL LEVEL HACKATHON
+                    </p>
+                    <p class="text-slate-900 font-bold tracking-widest mb-10 text-sm sm:text-base" data-aos="fade-up" data-aos-delay="350">
+                        IDEAS TODAY, IMPACT TOMORROW.
+                    </p>
+
+                    <!-- Stats Row -->
+                    <div class="flex flex-wrap justify-center lg:justify-end gap-6 mb-10" data-aos="fade-up" data-aos-delay="400">
+                        <div class="w-48 p-5 rounded-2xl border-2 border-indigo-500 flex flex-col items-center justify-center bg-transparent">
+                            <p class="text-slate-500 text-[10px] sm:text-xs uppercase tracking-widest mb-2">Prize Pool</p>
+                            <p class="text-2xl sm:text-3xl font-bold font-orbitron text-indigo-600">₹2,00,000</p>
+                        </div>
+                        <div class="w-48 p-5 rounded-2xl border-2 border-rose-500 flex flex-col items-center justify-center bg-transparent">
+                            <p class="text-slate-500 text-[10px] sm:text-xs uppercase tracking-widest mb-2">Duration</p>
+                            <p class="text-2xl sm:text-3xl font-bold font-orbitron text-rose-500">36 HOURS</p>
+                        </div>
+                    </div>
+
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-col sm:flex-row justify-center lg:justify-end gap-5" data-aos="fade-up" data-aos-delay="500">
+                        <a href="{% url 'register' %}" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-3 px-10 rounded-xl text-base hover:shadow-lg hover:shadow-indigo-500/40 transition-all duration-300">
+                            REGISTER NOW!
+                        </a>
+                        <a href="#tracks" class="px-10 py-3 rounded-xl border border-slate-300 hover:border-slate-800 text-slate-800 font-bold transition duration-300 text-center bg-transparent">
+                            EXPLORE TRACKS
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-24 bg-white relative">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+                <div class="w-full md:w-1/2" data-aos="fade-right">
+                    <h3 class="text-xl md:text-2xl font-bold text-slate-800 font-orbitron mb-4 flex items-center gap-2">
+                        <i class="fas fa-camera-retro text-indigo-600"></i>
+                        Highlights Freshers CodeStorm-2K26
+                    </h3>
+                    <div class="relative overflow-hidden rounded-2xl shadow-2xl border border-white/20 h-64 sm:h-80 md:h-96 group">
+                        <div class="absolute -inset-2 md:-inset-4 bg-gradient-to-r from-indigo-500 to-rose-600 rounded-lg opacity-30 blur-lg"></div>
+                        <style>
+                            @keyframes scrollImages {
+                                0% { transform: translateX(0); }
+                                100% { transform: translateX(-50%); }
+                            }
+                            .scroll-track {
+                                display: flex;
+                                width: 1000%;
+                                min-width: 1000%; /* Force width */
+                                height: 100%;
+                                animation: scrollImages 50s linear infinite;
+                            }
+                            .scroll-track:hover {
+                                animation-play-state: paused;
+                            }
+                            .scroll-item {
+                                width: 5%; /* 1/20th of 1000% track = 50% container width */
+                                flex: 0 0 5%; /* Explicit flex basis */
+                                padding: 0.5rem;
+                            }
+                            .scroll-item img {
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                                border-radius: 1rem;
+                                border: 2px solid rgba(255,255,255,0.3);
+                                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+                            }
+                        </style>
+                        <div class="relative h-full w-full overflow-hidden bg-slate-50/50 backdrop-blur-sm rounded-2xl p-2">
+                            <div class="scroll-track">
+                                <!-- Original Set -->
+                                <div class="scroll-item"><img src="{% static 'images/highlights/1.jpeg' %}" alt="CodeStorm Highlight 1"></div>
+                                <div class="scroll-item"><img src="{% static 'images/highlights/2.jpeg' %}" alt="CodeStorm Highlight 2"></div>
+                                <div class="scroll-item"><img src="{% static 'images/highlights/3.jpeg' %}" alt="CodeStorm Highlight 3"></div>
+                                <div class="scroll-item"><img src="{% static 'images/highlights/4.jpeg' %}" alt="CodeStorm Highlight 4"></div>
+                                <div class="scroll-item"><img src="{% static 'images/highlights/5.jpeg' %}" alt="CodeStorm Highlight 5"></div>
+                                <div class="scroll-item"><img src="{% static 'images/highlights/6.jpeg' %}" alt="CodeStorm Highlight 6"></div>
+                                <div class="scroll-item"><img src="{% static 'images/highlights/7.jpeg' %}" alt="CodeStorm Highlight 7"></div>
+                                <div class="scroll-item"><img src="{% static 'images/highlights/8.jpeg' %}" alt="CodeStorm Highlight 8"></div>
+                                <div class="scroll-item"><img src="{% static 'images/highlights/9.jpeg' %}" alt="CodeStorm Highlight 9"></div>
+                                <div class="scroll-item"><img src="{% static 'images/highlights/10.jpeg' %}" alt="CodeStorm Highlight 10"></div>
+                                <!-- Duplicate Set for seamless infinite loop -->
+                                <div class="scroll-item"><img src="{% static 'images/highlights/1.jpeg' %}" alt="CodeStorm Highlight 1"></div>
+                                <div class="scroll-item"><img src="{% static 'images/highlights/2.jpeg' %}" alt="CodeStorm Highlight 2"></div>
+                                <div class="scroll-item"><img src="{% static 'images/highlights/3.jpeg' %}" alt="CodeStorm Highlight 3"></div>
+                                <div class="scroll-item"><img src="{% static 'images/highlights/4.jpeg' %}" alt="CodeStorm Highlight 4"></div>
+                                <div class="scroll-item"><img src="{% static 'images/highlights/5.jpeg' %}" alt="CodeStorm Highlight 5"></div>
+                                <div class="scroll-item"><img src="{% static 'images/highlights/6.jpeg' %}" alt="CodeStorm Highlight 6"></div>
+                                <div class="scroll-item"><img src="{% static 'images/highlights/7.jpeg' %}" alt="CodeStorm Highlight 7"></div>
+                                <div class="scroll-item"><img src="{% static 'images/highlights/8.jpeg' %}" alt="CodeStorm Highlight 8"></div>
+                                <div class="scroll-item"><img src="{% static 'images/highlights/9.jpeg' %}" alt="CodeStorm Highlight 9"></div>
+                                <div class="scroll-item"><img src="{% static 'images/highlights/10.jpeg' %}" alt="CodeStorm Highlight 10"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2" data-aos="fade-left">
+                    <h4 class="text-indigo-600 font-bold tracking-widest mb-2 font-orbitron text-sm md:text-base">THE EVENT</h4>
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 md:mb-6 font-orbitron">Ignite Your <span class="gradient-text">Coding Potential</span></h2>
+                    <p class="text-base md:text-lg text-slate-600 mb-4 md:mb-6 leading-relaxed">
+                        CodeStorm 2026 isn't just a hackathon; it's a crucible for innovation. For 36 relentless hours, you'll collaborate with the brightest minds to solve real-world problems.
+                        <strong class="text-slate-900 block mt-2">No Idea Submission Required! Direct Registration is Open.</strong>
+                    </p>
+                    <ul class="space-y-3 md:space-y-4 mb-6 md:mb-8">
+                        <li class="flex items-center gap-2 md:gap-3 text-slate-600 text-sm md:text-base">
+                            <i class="fas fa-lightbulb text-indigo-600"></i>
+                            <span>Innovate Real-World Solutions</span>
+                        </li>
+                        <li class="flex items-center gap-2 md:gap-3 text-slate-600 text-sm md:text-base">
+                            <i class="fas fa-users text-rose-500"></i>
+                            <span>Collaborate With Bright Minds</span>
+                        </li>
+                        <li class="flex items-center gap-2 md:gap-3 text-slate-600 text-sm md:text-base">
+                            <i class="fas fa-code text-indigo-500"></i>
+                            <span>Build Beyond Boundaries</span>
+                        </li>
+                        <li class="flex items-center gap-2 md:gap-3 text-slate-600 text-sm md:text-base">
+                            <i class="fas fa-trophy text-indigo-600"></i>
+                            <span>Compete & Win Exciting Prizes</span>
+                        </li>
+                    </ul>
+                    <p class="text-indigo-600 font-bold tracking-wider mt-4">STUDENTS, INNOVATORS, FUTURE LEADERS, ALL UNDER ONE ROOF.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="tracks" class="py-24 bg-slate-50 relative">
+        <div class="absolute inset-0 cyber-grid opacity-10"></div>
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-4xl md:text-5xl font-bold font-orbitron text-slate-900 mb-4">10 Hackathon <span class="text-indigo-600">Tracks</span></h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">Specific problem statements within these domains will be released On-Spot.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+                <div class="tilt-card glass-card p-8 rounded-2xl group relative overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition pointer-events-none">
+                        <i class="fas fa-brain text-8xl text-indigo-600"></i>
+                    </div>
+                    <div class="w-14 h-14 bg-indigo-100 rounded-xl flex items-center justify-center mb-6 border border-indigo-200 relative z-10"><i class="fas fa-brain text-2xl text-indigo-600"></i></div>
+                    <h3 class="text-xl font-bold font-orbitron text-slate-900 mb-3 relative z-10">Generative Al & LLM Applications</h3>
+                </div>
+
+                <div class="tilt-card glass-card p-8 rounded-2xl group relative overflow-hidden" data-aos="fade-up" data-aos-delay="200">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition pointer-events-none">
+                        <i class="fas fa-robot text-8xl text-rose-500"></i>
+                    </div>
+                    <div class="w-14 h-14 bg-rose-100 rounded-xl flex items-center justify-center mb-6 border border-rose-200 relative z-10"><i class="fas fa-robot text-2xl text-rose-500"></i></div>
+                    <h3 class="text-xl font-bold font-orbitron text-slate-900 mb-3 relative z-10">Robotics & Autonomous Systems</h3>
+                </div>
+
+                <div class="tilt-card glass-card p-8 rounded-2xl group relative overflow-hidden" data-aos="fade-up" data-aos-delay="300">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition pointer-events-none">
+                        <i class="fas fa-shield-alt text-8xl text-indigo-600"></i>
+                    </div>
+                    <div class="w-14 h-14 bg-indigo-100 rounded-xl flex items-center justify-center mb-6 border border-indigo-200 relative z-10"><i class="fas fa-shield-alt text-2xl text-indigo-600"></i></div>
+                    <h3 class="text-xl font-bold font-orbitron text-slate-900 mb-3 relative z-10">Cybersecurity & Threat Intelligence</h3>
+                </div>
+
+                <div class="tilt-card glass-card p-8 rounded-2xl group relative overflow-hidden" data-aos="fade-up" data-aos-delay="400">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition pointer-events-none">
+                        <i class="fas fa-heartbeat text-8xl text-emerald-500"></i>
+                    </div>
+                    <div class="w-14 h-14 bg-emerald-100 rounded-xl flex items-center justify-center mb-6 border border-emerald-200 relative z-10"><i class="fas fa-heartbeat text-2xl text-emerald-500"></i></div>
+                    <h3 class="text-xl font-bold font-orbitron text-slate-900 mb-3 relative z-10">HealthTech & MedAl</h3>
+                </div>
+
+                <div class="tilt-card glass-card p-8 rounded-2xl group relative overflow-hidden" data-aos="fade-up" data-aos-delay="500">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition pointer-events-none">
+                        <i class="fas fa-coins text-8xl text-indigo-500"></i>
+                    </div>
+                    <div class="w-14 h-14 bg-indigo-100 rounded-xl flex items-center justify-center mb-6 border border-indigo-200 relative z-10"><i class="fas fa-coins text-2xl text-indigo-500"></i></div>
+                    <h3 class="text-xl font-bold font-orbitron text-slate-900 mb-3 relative z-10">FinTech & Blockchain</h3>
+                </div>
+
+                <div class="tilt-card glass-card p-8 rounded-2xl group relative overflow-hidden" data-aos="fade-up" data-aos-delay="600">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition pointer-events-none">
+                        <i class="fas fa-city text-8xl text-indigo-600"></i>
+                    </div>
+                    <div class="w-14 h-14 bg-indigo-100 rounded-xl flex items-center justify-center mb-6 border border-indigo-200 relative z-10"><i class="fas fa-city text-2xl text-indigo-600"></i></div>
+                    <h3 class="text-xl font-bold font-orbitron text-slate-900 mb-3 relative z-10">Smart Cities & IoT</h3>
+                </div>
+
+                <div class="tilt-card glass-card p-8 rounded-2xl group relative overflow-hidden" data-aos="fade-up" data-aos-delay="700">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition pointer-events-none">
+                        <i class="fas fa-leaf text-8xl text-emerald-500"></i>
+                    </div>
+                    <div class="w-14 h-14 bg-emerald-100 rounded-xl flex items-center justify-center mb-6 border border-emerald-200 relative z-10"><i class="fas fa-leaf text-2xl text-emerald-500"></i></div>
+                    <h3 class="text-xl font-bold font-orbitron text-slate-900 mb-3 relative z-10">Green Tech & Energy</h3>
+                </div>
+
+                <div class="tilt-card glass-card p-8 rounded-2xl group relative overflow-hidden" data-aos="fade-up" data-aos-delay="800">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition pointer-events-none">
+                        <i class="fas fa-seedling text-8xl text-emerald-600"></i>
+                    </div>
+                    <div class="w-14 h-14 bg-emerald-100 rounded-xl flex items-center justify-center mb-6 border border-emerald-200 relative z-10"><i class="fas fa-seedling text-2xl text-emerald-600"></i></div>
+                    <h3 class="text-xl font-bold font-orbitron text-slate-900 mb-3 relative z-10">Agritech & Rural Innovation</h3>
+                </div>
+
+                <div class="tilt-card glass-card p-8 rounded-2xl group relative overflow-hidden" data-aos="fade-up" data-aos-delay="900">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition pointer-events-none">
+                        <i class="fas fa-truck text-8xl text-rose-500"></i>
+                    </div>
+                    <div class="w-14 h-14 bg-rose-100 rounded-xl flex items-center justify-center mb-6 border border-rose-200 relative z-10"><i class="fas fa-truck text-2xl text-rose-500"></i></div>
+                    <h3 class="text-xl font-bold font-orbitron text-slate-900 mb-3 relative z-10">Transportation & Logistics</h3>
+                </div>
+
+                <div class="tilt-card glass-card p-8 rounded-2xl group relative overflow-hidden" data-aos="fade-up" data-aos-delay="1000">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition pointer-events-none">
+                        <i class="fas fa-lightbulb text-8xl text-indigo-600"></i>
+                    </div>
+                    <div class="w-14 h-14 bg-indigo-100 rounded-xl flex items-center justify-center mb-6 border border-indigo-200 relative z-10"><i class="fas fa-lightbulb text-2xl text-indigo-600"></i></div>
+                    <h3 class="text-xl font-bold font-orbitron text-slate-900 mb-3 relative z-10">Open Innovation (Wildcard)</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="steps" class="py-24 bg-white relative overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
+            <h2 class="text-4xl md:text-5xl font-bold font-orbitron text-slate-900 mb-16 text-center" data-aos="fade-down">Two-Step <span class="text-indigo-600">Process</span></h2>
+            <div class="max-w-4xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="glass-panel p-8 rounded-xl border-l-4 border-indigo-600 hover:bg-slate-50 transition" data-aos="fade-right">
+                        <div class="flex items-start gap-4">
+                            <span class="text-6xl font-bold text-indigo-100 absolute right-4 top-4">01</span>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900 mb-2">TEAM REGISTRATION</h3>
+                                <p class="text-slate-600 mb-3 text-sm">Form your team and register directly. No abstract needed!</p>
+                                <div class="bg-slate-100 p-3 rounded-lg border border-slate-200">
+                                    <p class="text-indigo-600 text-sm font-bold mb-1">🔴 Deadline: 25 September 2026</p>
+                                    <p class="text-slate-600 text-xs">• Team Size: 4–6 members</p>
+                                    <p class="text-slate-600 text-xs">• Fee: ₹700 per student</p>
+                                    <p class="text-emerald-600 text-xs font-bold">• 10% Discount for Inter-college teams</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-panel p-8 rounded-xl border-l-4 border-rose-500 hover:bg-slate-50 transition" data-aos="fade-left">
+                        <div class="flex items-start gap-4">
+                            <span class="text-6xl font-bold text-rose-100 absolute right-4 top-4">02</span>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900 mb-2">REPORT & COMPETE</h3>
+                                <p class="text-slate-600 mb-3 text-sm">Report to NRCM, get the problem statement, and start building.</p>
+                                <div class="bg-slate-100 p-3 rounded-lg border border-slate-200">
+                                    <p class="text-rose-500 text-sm font-bold mb-1">🗓 Date: 30 September 2026</p>
+                                    <p class="text-slate-600 text-xs">• Reporting: Before 10:00 AM</p>
+                                    <p class="text-slate-600 text-xs">• Challenge Release: 10:30 AM</p>
+                                    <p class="text-slate-600 text-xs">• Hackathon Start: 11:00 AM</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-12" data-aos="fade-up">
+                    <a href="{% url 'register' %}" class="inline-flex items-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-lg transition duration-300 shadow-lg shadow-indigo-600/50">
+                        <i class="fas fa-user-plus mr-2"></i>
+                        Register Your Team Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="timeline" class="py-24 bg-slate-50 relative overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
+            <h2 class="text-4xl md:text-5xl font-bold font-orbitron text-slate-900 mb-16 text-center" data-aos="fade-down">Event <span class="text-indigo-600">Timeline</span></h2>
+            <div class="relative max-w-5xl mx-auto">
+                <div class="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-indigo-500 via-rose-600 to-indigo-500 opacity-20 ml-6 md:ml-0"></div>
+                
+                <div class="relative mb-12 md:mb-24" data-aos="fade-right">
+                    <div class="flex flex-col md:flex-row items-center w-full">
+                        <div class="w-full md:w-1/2 md:pr-12 pl-12 md:pl-0">
+                            <div class="glass-panel p-6 rounded-xl border-r-4 border-rose-500 text-left md:text-right hover:bg-white transition">
+                                <h3 class="text-2xl font-bold text-slate-900 font-orbitron">25 SEP 2026</h3>
+                                <p class="text-rose-500 font-bold mb-2">Registration Closes</p>
+                                <p class="text-slate-600 text-sm">Last date to register your team. No idea submission required.</p>
+                            </div>
+                        </div>
+                        <div class="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 w-12 h-12 bg-white border-4 border-rose-500 rounded-full flex items-center justify-center z-10 ml-0.5 md:ml-0">
+                            <i class="fas fa-stopwatch text-rose-500 text-sm"></i>
+                        </div>
+                        <div class="w-full md:w-1/2"></div>
+                    </div>
+                </div>
+
+                <div class="relative mb-12 md:mb-24" data-aos="fade-left">
+                    <div class="flex flex-col md:flex-row items-center w-full">
+                        <div class="w-full md:w-1/2"></div>
+                        <div class="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 w-12 h-12 bg-indigo-600 rounded-full flex items-center justify-center z-10 shadow-lg shadow-indigo-600/50 animate-pulse ml-0.5 md:ml-0">
+                             <i class="fas fa-rocket text-white text-sm"></i>
+                        </div>
+                        <div class="w-full md:w-1/2 md:pl-12 pl-12 md:pl-0">
+                            <div class="glass-panel p-6 rounded-xl border-l-4 border-indigo-600 hover:bg-white transition">
+                                <h3 class="text-2xl font-bold text-slate-900 font-orbitron">30 SEP 2026</h3>
+                                <p class="text-indigo-600 font-bold mb-2">The Grand Start</p>
+                                <ul class="text-slate-600 text-sm space-y-1">
+                                    <li>• <span class="text-slate-900">10:00 AM:</span> Reporting & Registration</li>
+                                    <li>• <span class="text-slate-900">10:30 AM:</span> On-Spot Challenge Release</li>
+                                    <li>• <span class="text-slate-900">11:00 AM:</span> 36-Hour Clock Starts</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative" data-aos="fade-right">
+                    <div class="flex flex-col md:flex-row items-center w-full">
+                        <div class="w-full md:w-1/2 md:pr-12 pl-12 md:pl-0">
+                            <div class="glass-panel p-6 rounded-xl border-r-4 border-indigo-600 text-left md:text-right hover:bg-white transition">
+                                <h3 class="text-2xl font-bold text-slate-900 font-orbitron">01 OCT 2026</h3>
+                                <p class="text-indigo-600 font-bold mb-2">Grand Finale</p>
+                                <p class="text-slate-600 text-sm">4:00 PM: Final Submission Deadline, followed by Judging & Prize Distribution.</p>
+                            </div>
+                        </div>
+                        <div class="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 w-12 h-12 bg-white border-4 border-indigo-600 rounded-full flex items-center justify-center z-10 ml-0.5 md:ml-0">
+                             <i class="fas fa-trophy text-indigo-600 text-sm"></i>
+                        </div>
+                        <div class="w-full md:w-1/2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="event-schedule" class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12" data-aos="fade-up">
+                <h2 class="text-4xl md:text-5xl font-bold font-orbitron text-slate-900 mb-4">Event <span class="text-indigo-600">Summary</span></h2>
+            </div>
+            <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-6" data-aos="fade-up" data-aos-delay="150">
+                <div class="glass-panel rounded-xl border border-dashed border-indigo-300 p-6">
+                   <h3 class="text-xl font-orbitron text-indigo-600 mb-4 border-b border-slate-200 pb-2">Day 1: 30 Sep</h3>
+                   <ul class="space-y-4">
+                       <li class="flex justify-between text-slate-600 border-b border-slate-100 pb-2">
+                           <span>Reporting</span>
+                           <span class="font-bold text-slate-900">Before 10:00 AM</span>
+                       </li>
+                       <li class="flex justify-between text-slate-600 border-b border-slate-100 pb-2">
+                           <span>Challenge Release</span>
+                           <span class="font-bold text-slate-900">10:30 AM</span>
+                       </li>
+                       <li class="flex justify-between text-slate-600">
+                           <span>Hackathon Begins</span>
+                           <span class="font-bold text-indigo-600">11:00 AM</span>
+                       </li>
+                   </ul>
+                </div>
+                <div class="glass-panel rounded-xl border border-dashed border-rose-300 p-6">
+                    <h3 class="text-xl font-orbitron text-rose-600 mb-4 border-b border-slate-200 pb-2">Day 2: 01 Oct</h3>
+                    <ul class="space-y-4">
+                        <li class="flex justify-between text-slate-600 border-b border-slate-100 pb-2">
+                            <span>Mentoring Rounds</span>
+                            <span class="font-bold text-slate-900">Throughout Day</span>
+                        </li>
+                        <li class="flex justify-between text-slate-600 border-b border-slate-100 pb-2">
+                            <span>Final Submission</span>
+                            <span class="font-bold text-rose-500">04:00 PM</span>
+                        </li>
+                        <li class="flex justify-between text-slate-600">
+                            <span>Valedictory</span>
+                            <span class="font-bold text-slate-900">05:00 PM Onwards</span>
+                        </li>
+                    </ul>
+                 </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="facilities" class="py-24 bg-slate-50 clip-path-slant pb-40">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl md:text-5xl font-bold font-orbitron text-slate-900 mb-16 text-center">Premium <span class="text-indigo-600">Facilities</span></h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="glass-card p-6 rounded-xl text-center group" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="w-16 h-16 mx-auto bg-slate-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-indigo-600 transition duration-500">
+                        <i class="fas fa-wifi text-2xl text-indigo-600 group-hover:text-white"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 mb-1">Ultra-Fast WiFi</h3>
+                    <p class="text-xs text-slate-600">Dedicated Bandwidth</p>
+                </div>
+                <div class="glass-card p-6 rounded-xl text-center group" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="w-16 h-16 mx-auto bg-slate-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-indigo-600 transition duration-500">
+                        <i class="fas fa-utensils text-2xl text-indigo-600 group-hover:text-white"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 mb-1">Food & Snacks</h3>
+                    <p class="text-xs text-slate-600">4 Meals + Refreshments</p>
+                </div>
+                <div class="glass-card p-6 rounded-xl text-center group" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="w-16 h-16 mx-auto bg-slate-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-indigo-600 transition duration-500">
+                        <i class="fas fa-bed text-2xl text-indigo-600 group-hover:text-white"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 mb-1">Rest Zones</h3>
+                    <p class="text-xs text-slate-600">Night Stay Arrangements</p>
+                </div>
+                <div class="glass-card p-6 rounded-xl text-center group" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="w-16 h-16 mx-auto bg-slate-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-indigo-600 transition duration-500">
+                        <i class="fas fa-tshirt text-2xl text-indigo-600 group-hover:text-white"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 mb-1">Swag Kits</h3>
+                    <p class="text-xs text-slate-600">T-Shirts & Goodies</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="register" class="py-24 bg-white relative">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="max-w-6xl mx-auto" data-aos="fade-up">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold font-orbitron text-slate-900 mb-4">CodeStorm <span class="text-indigo-600">2K26</span></h2>
+                    <p class="text-xl text-slate-600 max-w-3xl mx-auto">The Ultimate 36-Hour Hackathon Challenge</p>
+                </div>
+                
+                <div class="glass-panel rounded-3xl p-6 md:p-8 lg:p-12 border border-indigo-100 shadow-[0_0_50px_rgba(79,70,229,0.1)]">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                        <div class="order-2 lg:order-1">
+                            <div class="relative">
+                                <div class="absolute -inset-2 md:-inset-4 bg-gradient-to-r from-indigo-500 to-rose-600 rounded-2xl opacity-20 blur-lg"></div>
+                                <img src="{% static 'website/images/Screenshot 2025-12-24 225413.png' %}" alt="CodeStorm 2026" class="relative rounded-2xl shadow-2xl border border-slate-100 w-full object-cover max-w-full h-auto">
+                                <div class="absolute -top-2 -right-2 md:-top-4 md:-right-4 bg-indigo-600 text-white font-bold px-3 py-1 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-orbitron">
+                                    36 HOURS
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="order-1 lg:order-2">
+                            <h3 class="text-2xl md:text-3xl font-bold font-orbitron text-slate-900 mb-4 md:mb-6">Event Details</h3>
+                            
+                            <div class="space-y-4 md:space-y-6">
+                                <div class="flex items-start gap-3 md:gap-4">
+                                    <div class="w-10 h-10 md:w-12 md:h-12 bg-indigo-100 rounded-xl flex items-center justify-center flex-shrink-0 border border-indigo-200">
+                                        <i class="fas fa-calendar-alt text-indigo-600 text-base md:text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-base md:text-lg font-bold text-slate-900 mb-1">Important Dates</h4>
+                                        <p class="text-sm md:text-base text-slate-600 leading-relaxed"><span class="text-rose-500 font-bold">Reg Close: Sep 25, 2026</span> | Event: Sep 30 - Oct 1</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start gap-3 md:gap-4">
+                                    <div class="w-10 h-10 md:w-12 md:h-12 bg-rose-100 rounded-xl flex items-center justify-center flex-shrink-0 border border-rose-200">
+                                        <i class="fas fa-users text-rose-500 text-base md:text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-base md:text-lg font-bold text-slate-900 mb-1">Registration</h4>
+                                        <p class="text-sm md:text-base text-slate-600 leading-relaxed">Fee: ₹700/student. Team: 4-6 members.<br><span class="text-emerald-600 font-bold">10% Off for Inter-college teams.</span></p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start gap-3 md:gap-4">
+                                    <div class="w-10 h-10 md:w-12 md:h-12 bg-indigo-100 rounded-xl flex items-center justify-center flex-shrink-0 border border-indigo-200">
+                                        <i class="fas fa-trophy text-indigo-600 text-base md:text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-base md:text-lg font-bold text-slate-900 mb-1">Prize Pool</h4>
+                                        <p class="text-sm md:text-base text-slate-600 leading-relaxed">Total Prize Worth: ₹2,00,000</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start gap-3 md:gap-4">
+                                    <div class="w-10 h-10 md:w-12 md:h-12 bg-emerald-100 rounded-xl flex items-center justify-center flex-shrink-0 border border-emerald-200">
+                                        <i class="fas fa-lightbulb text-emerald-600 text-base md:text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-base md:text-lg font-bold text-slate-900 mb-1">Format</h4>
+                                        <p class="text-sm md:text-base text-slate-600 leading-relaxed"><strong class="text-slate-900">No Idea Submission.</strong> On-Spot Open Challenges.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6 p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <i class="fas fa-external-link-alt text-emerald-600 text-lg"></i>
+                                    <h4 class="text-base font-bold text-emerald-700">Registration Open</h4>
+                                </div>
+                                <a href="{% url 'register' %}" class="inline-flex items-center bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 w-full justify-center">
+                                    <i class="fas fa-file-signature mr-2"></i>
+                                    Register Team Now
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="team" class="py-24 bg-slate-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center font-orbitron text-slate-900 mb-16">The <span class="text-indigo-600">Organizers</span></h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+                <div data-aos="fade-right">
+                    <h3 class="text-2xl font-orbitron text-slate-900 mb-8 border-l-4 border-indigo-600 pl-4">Conveners</h3>
+                    <div class="grid gap-4">
+                        <div class="glass-card p-4 rounded-lg flex items-center gap-4">
+                            <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center"><i class="fas fa-user-tie text-indigo-600"></i></div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">D. NIKHITHA</h4>
+                                <p class="text-sm text-slate-600">Convener (Dean - CDC)</p>
+                            </div>
+                        </div>
+                        <div class="glass-card p-4 rounded-lg flex items-center gap-4">
+                            <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center"><i class="fas fa-user-tie text-indigo-600"></i></div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">Dr. K. Anuradha</h4>
+                                <p class="text-sm text-slate-600">Co-Convener (Dean - SDC)</p>
+                            </div>
+                        </div>
+                        <div class="glass-card p-4 rounded-lg flex items-center gap-4">
+                            <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center"><i class="fas fa-user-tie text-indigo-600"></i></div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">Dr. Srinivasa Naveen Kumar G</h4>
+                                <p class="text-sm text-slate-600">Co-Convener (HoD, Dept. of CSE-II)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div data-aos="fade-left">
+                    <h3 class="text-2xl font-orbitron text-slate-900 mb-8 border-l-4 border-rose-500 pl-4">Faculty Co-ordinators</h3>
+                    <div class="grid gap-4">
+                        <div class="glass-card p-4 rounded-lg flex items-center gap-4">
+                            <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center"><i class="fas fa-user-graduate text-rose-500"></i></div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">Dr. P Ramesh Babu</h4>
+                                <p class="text-sm text-slate-600">HOD - CSE</p>
+                            </div>
+                        </div>
+                        <div class="glass-card p-4 rounded-lg flex items-center gap-4">
+                            <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center"><i class="fas fa-user-graduate text-rose-500"></i></div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">Prof. G V Vara Prasad</h4>
+                                <p class="text-sm text-slate-600">HOD - CSE(AI&ML)</p>
+                            </div>
+                        </div>
+                        <div class="glass-card p-4 rounded-lg flex items-center gap-4">
+                            <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center"><i class="fas fa-user-graduate text-rose-500"></i></div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">Dr. Vellanki Srilakshmi</h4>
+                                <p class="text-sm text-slate-600">HOD - CSE(CS)</p>
+                            </div>
+                        </div>
+                        <div class="glass-card p-4 rounded-lg flex items-center gap-4">
+                            <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center"><i class="fas fa-user-graduate text-rose-500"></i></div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">Prof. M Sowmya</h4>
+                                <p class="text-sm text-slate-600">HOD - IT</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-white py-12 border-t border-slate-200">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0 text-center md:text-left">
+                    <h3 class="text-3xl font-orbitron font-bold text-slate-900">NRCM</h3>
+                    <p class="text-slate-500 text-sm mt-2">Narsimha Reddy Engineering College</p>
+                    <p class="text-slate-500 text-sm">Maisammaguda (V), Kompally - 500100, Hyderabad.</p>
+                </div>
+                <div class="flex space-x-6 items-center">
+                    <a href="https://www.facebook.com/NarasimhaReddyEngineeringCollege.NRCM/" target="_blank" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-indigo-600 hover:text-white transition duration-300"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/narsimhareddycollege_nrcm/?hl=en" target="_blank" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-rose-600 hover:text-white transition duration-300"><i class="fab fa-instagram"></i></a>
+                    <a href="https://admin-page-i3l3.onrender.com" target="_blank" class="bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                        <i class="fas fa-user-shield mr-2"></i>
+                        Admin Login
+                    </a>
+                </div>
+            </div>
+            <div class="border-t border-slate-100 mt-10 pt-8 text-center text-slate-500 text-sm">
+                <p>© 2026 CodeStorm Hackathon, NRCMEC. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="mobile-menu" class="md:hidden fixed top-0 right-0 h-full w-64 bg-white border-l border-slate-100 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-[100]">
+        <div class="p-6">
+            <button onclick="toggleMobileMenu()" class="text-slate-900 text-2xl mb-8 hover:text-indigo-600 transition">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="flex flex-col space-y-6">
+        </div>
+    </div>
+    <div id="mobile-overlay" class="md:hidden fixed inset-0 bg-black/50 opacity-0 pointer-events-none transition-opacity duration-300 z-40 w-full h-full" onclick="toggleMobileMenu()"></div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+    <script>
+        AOS.init({ once: true, offset: 50, duration: 800, easing: 'ease-out-cubic' });
+        
+        if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+            VanillaTilt.init(document.querySelectorAll(".tilt-card"), { max: 15, speed: 400, glare: true, "max-glare": 0.2 });
+        }
+        
+        // Navbar Behavior
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.innerWidth < 768) { navbar.classList.add('py-3'); }
+        });
+        
+        // SCROLL SPY & Navbar Animation
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            
+            // Navbar Size
+            if (window.innerWidth >= 768) {
+                if (window.scrollY > 50) { navbar.classList.add('py-2', 'shadow-lg'); navbar.classList.remove('py-4'); }
+                else { navbar.classList.add('py-4'); navbar.classList.remove('py-2', 'shadow-lg'); }
+            }
+
+            // Scroll Spy Logic
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+        
+        // Mobile Menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const overlay = document.getElementById('mobile-overlay');
+            if (menu.classList.contains('translate-x-full')) {
+                menu.classList.remove('translate-x-full'); menu.classList.add('translate-x-0');
+                overlay.classList.remove('opacity-0', 'pointer-events-none'); overlay.classList.add('opacity-100', 'pointer-events-auto');
+                document.body.style.overflow = 'hidden';
+            } else {
+                menu.classList.remove('translate-x-0'); menu.classList.add('translate-x-full');
+                overlay.classList.remove('opacity-100', 'pointer-events-auto'); overlay.classList.add('opacity-0', 'pointer-events-none');
+                document.body.style.overflow = 'auto';
+            }
+        }
+        
+    </script>
+    
+    <div id="chatbot-container" class="fixed bottom-4 right-4 z-[9999] sm:bottom-8 sm:right-8">
+        <button id="chatbot-toggle" class="relative bg-gradient-to-r from-indigo-500 via-indigo-600 to-rose-500 hover:from-indigo-600 hover:via-indigo-700 hover:to-rose-600 text-white font-bold py-3 px-4 rounded-full shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-110 group overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-r from-indigo-400 via-rose-400 to-indigo-400 opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
+            <i class="fas fa-comments relative z-10"></i>
+        </button>
+        <div id="chatbot-window" class="hidden fixed bottom-16 right-0 w-screen h-screen bg-white border border-slate-200 rounded-lg shadow-2xl overflow-hidden flex flex-col sm:absolute sm:bottom-16 sm:right-0 sm:w-80 sm:h-auto sm:max-h-[80vh] z-[9998]">
+            <div class="bg-gradient-to-r from-indigo-600 via-rose-500 to-indigo-600 text-white p-4 relative overflow-hidden flex-shrink-0 z-10">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-bold text-lg">CodeStorm Assistant</h3>
+                    <button id="chatbot-close" class="text-white hover:text-slate-200"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+            <div id="chatbot-messages" class="flex-1 overflow-y-auto p-4 space-y-3 min-h-0 bg-slate-50">
+                <div class="flex justify-start message-animate">
+                    <div class="bg-white text-slate-800 rounded-xl px-4 py-3 max-w-xs shadow-md border border-slate-100">
+                        <div class="text-sm">Hello! I'm here to help with CodeStorm 2K26. Ask me about registration, dates, or fees!</div>
+                    </div>
+                </div>
+            </div>
+            <div id="typing-indicator" class="hidden px-4 pb-2 bg-slate-50">
+                <div class="flex justify-start">
+                    <div class="bg-white text-slate-800 rounded-xl px-4 py-3 max-w-xs shadow-md border border-slate-100">
+                        <div class="flex space-x-1"><div class="w-2 h-2 bg-indigo-400 rounded-full animate-bounce"></div><div class="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style="animation-delay: 150ms"></div><div class="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style="animation-delay: 300ms"></div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-3 sm:p-4 border-t border-slate-200 max-h-32 sm:max-h-48 overflow-y-auto flex-shrink-0 bg-slate-50">
+                <p class="text-slate-500 text-xs sm:text-sm mb-2 sm:mb-3 hidden sm:block font-medium">Choose a question:</p>
+                <div class="space-y-2 sm:space-y-3">
+                    <button class="question-btn w-full text-left bg-white hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 px-2 sm:px-3 py-1 sm:py-2 rounded-xl border border-slate-200 hover:border-indigo-300 transition-all text-xs sm:text-sm font-medium shadow-sm" data-question="registration">📋 How to Register?</button>
+                    <button class="question-btn w-full text-left bg-white hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 px-2 sm:px-3 py-1 sm:py-2 rounded-xl border border-slate-200 hover:border-indigo-300 transition-all text-xs sm:text-sm font-medium shadow-sm" data-question="team">👥 Team Formation?</button>
+                    <button class="question-btn w-full text-left bg-white hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 px-2 sm:px-3 py-1 sm:py-2 rounded-xl border border-slate-200 hover:border-indigo-300 transition-all text-xs sm:text-sm font-medium shadow-sm" data-question="dates">📅 Deadlines?</button>
+                    <button class="question-btn w-full text-left bg-white hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 px-2 sm:px-3 py-1 sm:py-2 rounded-xl border border-slate-200 hover:border-indigo-300 transition-all text-xs sm:text-sm font-medium shadow-sm" data-question="venue">📍 Venue?</button>
+                </div>
+            </div>
+            <div class="p-3 sm:p-4 border-t border-slate-200 bg-white flex-shrink-0">
+                <div class="flex space-x-3">
+                    <input type="text" id="chatbot-input" placeholder="Type your message..." class="flex-1 bg-slate-100 text-slate-800 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-400 border border-slate-200 text-sm sm:text-base placeholder-slate-400">
+                    <button id="chatbot-send" class="bg-gradient-to-r from-indigo-600 to-rose-500 hover:from-indigo-700 hover:to-rose-600 text-white px-4 py-3 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-md"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const chatbotToggle = document.getElementById('chatbot-toggle');
+        const chatbotWindow = document.getElementById('chatbot-window');
+        const chatbotClose = document.getElementById('chatbot-close');
+        const chatbotMessages = document.getElementById('chatbot-messages');
+        const chatbotInput = document.getElementById('chatbot-input');
+        const chatbotSend = document.getElementById('chatbot-send');
+
+        chatbotToggle.addEventListener('click', () => chatbotWindow.classList.toggle('hidden'));
+        chatbotClose.addEventListener('click', () => chatbotWindow.classList.add('hidden'));
+
+        function addMessage(message, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `flex ${isUser ? 'justify-end' : 'justify-start'} message-animate`;
+            messageDiv.innerHTML = `<div class="${isUser ? 'bg-gradient-to-br from-indigo-500 to-indigo-600 text-white shadow-md' : 'bg-white text-slate-800 shadow-sm border border-slate-100'} rounded-xl px-4 py-3 max-w-xs"><div class="text-sm">${message}</div></div>`;
+            chatbotMessages.appendChild(messageDiv);
+            setTimeout(() => chatbotMessages.scrollTo({ top: chatbotMessages.scrollHeight, behavior: 'smooth' }), 100);
+        }
+
+        function showTypingIndicator() { document.getElementById('typing-indicator').classList.remove('hidden'); setTimeout(() => chatbotMessages.scrollTo({ top: chatbotMessages.scrollHeight, behavior: 'smooth' }), 50); }
+        function hideTypingIndicator() { document.getElementById('typing-indicator').classList.add('hidden'); }
+
+        function getBotResponse(questionType) {
+            const responses = {
+                'registration': 'Direct registration is open! Deadline: <b>Sep 25, 2026</b>. No idea submission required.',
+                'team': 'Teams: 4-6 members. Fee: ₹700/student. Inter-college teams get 10% discount!',
+                'dates': 'Reg Deadline: Sep 25. Hackathon: Sep 30 (11 AM) to Oct 1 (4 PM).',
+                'venue': 'Venue: NRCM, Kompally. Report on Sep 30 before 10:00 AM.',
+                'tracks': 'Problem statements released On-Spot on Sep 30 (10:30 AM). Open Challenges.'
+            };
+            return responses[questionType] || 'I can help with the new registration process! Pick a question below.';
+        }
+
+        document.querySelectorAll('.question-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const qType = btn.getAttribute('data-question');
+                addMessage(btn.textContent, true);
+                showTypingIndicator();
+                setTimeout(() => { hideTypingIndicator(); addMessage(getBotResponse(qType), false); }, 1000);
+            });
+        });
+
+        chatbotSend.addEventListener('click', () => {
+            if(chatbotInput.value.trim()){ addMessage(chatbotInput.value, true); chatbotInput.value = ''; showTypingIndicator(); setTimeout(() => { hideTypingIndicator(); addMessage("Please use the predefined buttons for accurate info about the new schedule.", false); }, 1000); }
+        });
+    </script>
+</body>
+</html>
