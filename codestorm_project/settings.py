@@ -139,6 +139,13 @@ SESSION_COOKIE_SECURE = not DEBUG  # Use secure cookies in production
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = 'Lax'
 
+# Additional Security Settings
+SECURE_SSL_REDIRECT = not DEBUG
+if not DEBUG:
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+
 # Add trusted origins for production
 if RENDER_EXTERNAL_HOSTNAME:
     CSRF_TRUSTED_ORIGINS.append(f'https://{RENDER_EXTERNAL_HOSTNAME}')
