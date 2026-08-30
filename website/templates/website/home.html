@@ -288,7 +288,7 @@
                             2K26
                         </div>
                     </div>
-                    <p class="text-lg sm:text-xl lg:text-2xl text-slate-500 mb-2 font-light" data-aos="fade-up" data-aos-delay="300">
+                    <p class="text-lg sm:text-xl lg:text-2xl text-slate-900 mb-2 font-semibold" data-aos="fade-up" data-aos-delay="300">
                         A <span class="text-indigo-600 font-bold">36-HOUR</span> NATIONAL LEVEL HACKATHON
                     </p>
                     <p class="text-slate-900 font-bold tracking-widest mb-10 text-sm sm:text-base" data-aos="fade-up" data-aos-delay="350">
@@ -874,11 +874,21 @@
     </footer>
 
     <div id="mobile-menu" class="md:hidden fixed top-0 right-0 h-full w-64 bg-white border-l border-slate-100 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-[100]">
-        <div class="p-6">
+        <div class="p-6 overflow-y-auto h-full pb-20">
             <button onclick="toggleMobileMenu()" class="text-slate-900 text-2xl mb-8 hover:text-indigo-600 transition">
                 <i class="fas fa-times"></i>
             </button>
             <div class="flex flex-col space-y-6">
+                <a href="#about" class="text-slate-800 font-bold text-lg hover:text-indigo-600 transition" onclick="toggleMobileMenu()">About</a>
+                <a href="#tracks" class="text-slate-800 font-bold text-lg hover:text-indigo-600 transition" onclick="toggleMobileMenu()">Tracks</a>
+                <a href="#steps" class="text-slate-800 font-bold text-lg hover:text-indigo-600 transition" onclick="toggleMobileMenu()">Registration Guide</a>
+                <a href="#timeline" class="text-slate-800 font-bold text-lg hover:text-indigo-600 transition" onclick="toggleMobileMenu()">Timeline</a>
+                <a href="#event-schedule" class="text-slate-800 font-bold text-lg hover:text-indigo-600 transition" onclick="toggleMobileMenu()">Schedule</a>
+                <a href="#facilities" class="text-slate-800 font-bold text-lg hover:text-indigo-600 transition" onclick="toggleMobileMenu()">Facilities</a>
+                <a href="#team" class="text-slate-800 font-bold text-lg hover:text-indigo-600 transition" onclick="toggleMobileMenu()">Organizers</a>
+                <hr class="border-slate-200">
+                <a href="{% url 'register' %}" class="bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg text-center mt-2 hover:bg-indigo-700 transition">REGISTER TEAM</a>
+            </div>
         </div>
     </div>
     <div id="mobile-overlay" class="md:hidden fixed inset-0 bg-black/50 opacity-0 pointer-events-none transition-opacity duration-300 z-40 w-full h-full" onclick="toggleMobileMenu()"></div>
@@ -978,8 +988,9 @@
                 <div class="space-y-2 sm:space-y-3">
                     <button class="question-btn w-full text-left bg-white hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 px-2 sm:px-3 py-1 sm:py-2 rounded-xl border border-slate-200 hover:border-indigo-300 transition-all text-xs sm:text-sm font-medium shadow-sm" data-question="registration">📋 How to Register?</button>
                     <button class="question-btn w-full text-left bg-white hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 px-2 sm:px-3 py-1 sm:py-2 rounded-xl border border-slate-200 hover:border-indigo-300 transition-all text-xs sm:text-sm font-medium shadow-sm" data-question="team">👥 Team Formation?</button>
-                    <button class="question-btn w-full text-left bg-white hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 px-2 sm:px-3 py-1 sm:py-2 rounded-xl border border-slate-200 hover:border-indigo-300 transition-all text-xs sm:text-sm font-medium shadow-sm" data-question="dates">📅 Deadlines?</button>
-                    <button class="question-btn w-full text-left bg-white hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 px-2 sm:px-3 py-1 sm:py-2 rounded-xl border border-slate-200 hover:border-indigo-300 transition-all text-xs sm:text-sm font-medium shadow-sm" data-question="venue">📍 Venue?</button>
+                    <button class="question-btn w-full text-left bg-white hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 px-2 sm:px-3 py-1 sm:py-2 rounded-xl border border-slate-200 hover:border-indigo-300 transition-all text-xs sm:text-sm font-medium shadow-sm" data-question="dates">📅 Event Dates?</button>
+                    <button class="question-btn w-full text-left bg-white hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 px-2 sm:px-3 py-1 sm:py-2 rounded-xl border border-slate-200 hover:border-indigo-300 transition-all text-xs sm:text-sm font-medium shadow-sm" data-question="venue">📍 Venue Details?</button>
+                    <button class="question-btn w-full text-left bg-white hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 px-2 sm:px-3 py-1 sm:py-2 rounded-xl border border-slate-200 hover:border-indigo-300 transition-all text-xs sm:text-sm font-medium shadow-sm" data-question="prizes">🏆 Prize Pool?</button>
                 </div>
             </div>
             <div class="p-3 sm:p-4 border-t border-slate-200 bg-white flex-shrink-0">
@@ -1014,13 +1025,13 @@
 
         function getBotResponse(questionType) {
             const responses = {
-                'registration': 'Direct registration is open! Deadline: <b>Sep 25, 2026</b>. No idea submission required.',
+                'registration': 'Direct registration is open! <b>No idea submission required.</b> Students, innovators, future leaders, all under one roof!',
                 'team': 'Teams: 4-6 members. Fee: ₹700/student. Inter-college teams get 10% discount!',
-                'dates': 'Reg Deadline: Sep 25. Hackathon: Sep 30 (11 AM) to Oct 1 (4 PM).',
-                'venue': 'Venue: NRCM, Kompally. Report on Sep 30 before 10:00 AM.',
-                'tracks': 'Problem statements released On-Spot on Sep 30 (10:30 AM). Open Challenges.'
+                'dates': 'Hackathon Dates: <b>30-SEP-2026 to 01-OCT-2026</b>. A 36-Hour National Level Hackathon!',
+                'venue': 'Location: <b>Narsimha Reddy Engineering College</b>, Kompally, Hyderabad. <br><a href="https://maps.app.goo.gl/zKNNHTounqhwPmvX9" target="_blank" class="text-indigo-600 underline font-semibold mt-1 inline-block"><i class="fas fa-map-marker-alt"></i> View on Google Maps</a>',
+                'prizes': 'We have a massive prize pool of <b>₹2,00,000</b>! Compete and win exciting prizes.'
             };
-            return responses[questionType] || 'I can help with the new registration process! Pick a question below.';
+            return responses[questionType] || 'I can help with the registration process! Pick a question below.';
         }
 
         document.querySelectorAll('.question-btn').forEach(btn => {
@@ -1033,7 +1044,7 @@
         });
 
         chatbotSend.addEventListener('click', () => {
-            if(chatbotInput.value.trim()){ addMessage(chatbotInput.value, true); chatbotInput.value = ''; showTypingIndicator(); setTimeout(() => { hideTypingIndicator(); addMessage("Please use the predefined buttons for accurate info about the new schedule.", false); }, 1000); }
+            if(chatbotInput.value.trim()){ addMessage(chatbotInput.value, true); chatbotInput.value = ''; showTypingIndicator(); setTimeout(() => { hideTypingIndicator(); addMessage("For any other questions, please <a href='#team' class='text-indigo-600 underline font-semibold' onclick='document.getElementById(\"chatbot-window\").classList.add(\"hidden\")'>contact the event organizers</a>.", false); }, 1000); }
         });
     </script>
 </body>

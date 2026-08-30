@@ -41,7 +41,7 @@ def register_team(request):
     """Handle team registration"""
     preserved_file_info = None
     if request.method == 'POST':
-        # Debug CSRF token
+        
         csrf_token = request.POST.get('csrfmiddlewaretoken')
         print(f"=== CSRF DEBUG ===")
         print(f"CSRF token in POST: {csrf_token[:20] if csrf_token else 'MISSING'}...")
