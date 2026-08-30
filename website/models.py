@@ -1,14 +1,12 @@
 from django.db import models
 
 class TeamRegistration(models.Model):
-    # Team details
     team_name = models.CharField(max_length=255, unique=True)
     team_size = models.IntegerField()
     theme = models.CharField(max_length=255)
     transaction_id = models.CharField(max_length=100, unique=True)
     payment_screenshot = models.URLField(max_length=500, blank=True, null=True)
 
-    # Member 1 (Leader default or required)
     member1_name = models.CharField(max_length=255)
     member1_email = models.EmailField()
     member1_phone = models.CharField(max_length=20)
@@ -22,7 +20,6 @@ class TeamRegistration(models.Model):
     member1_food_preference = models.CharField(max_length=50)
     is_leader1 = models.BooleanField(default=False)
 
-    # Member 2 (Required for minimum team size 4)
     member2_name = models.CharField(max_length=255)
     member2_email = models.EmailField()
     member2_phone = models.CharField(max_length=20)
@@ -36,7 +33,6 @@ class TeamRegistration(models.Model):
     member2_food_preference = models.CharField(max_length=50)
     is_leader2 = models.BooleanField(default=False)
 
-    # Member 3 (Required for minimum team size 4)
     member3_name = models.CharField(max_length=255)
     member3_email = models.EmailField()
     member3_phone = models.CharField(max_length=20)
@@ -50,7 +46,6 @@ class TeamRegistration(models.Model):
     member3_food_preference = models.CharField(max_length=50)
     is_leader3 = models.BooleanField(default=False)
 
-    # Member 4 (Required for minimum team size 4)
     member4_name = models.CharField(max_length=255)
     member4_email = models.EmailField()
     member4_phone = models.CharField(max_length=20)
@@ -64,7 +59,6 @@ class TeamRegistration(models.Model):
     member4_food_preference = models.CharField(max_length=50)
     is_leader4 = models.BooleanField(default=False)
 
-    # Member 5 (Optional)
     member5_name = models.CharField(max_length=255, blank=True, null=True)
     member5_email = models.EmailField(blank=True, null=True)
     member5_phone = models.CharField(max_length=20, blank=True, null=True)
@@ -78,7 +72,6 @@ class TeamRegistration(models.Model):
     member5_food_preference = models.CharField(max_length=50, blank=True, null=True)
     is_leader5 = models.BooleanField(default=False)
 
-    # Member 6 (Optional)
     member6_name = models.CharField(max_length=255, blank=True, null=True)
     member6_email = models.EmailField(blank=True, null=True)
     member6_phone = models.CharField(max_length=20, blank=True, null=True)

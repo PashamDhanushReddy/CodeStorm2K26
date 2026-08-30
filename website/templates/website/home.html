@@ -54,16 +54,16 @@
     <style>
         body {
             font-family: 'Rajdhani', sans-serif;
-            background-color: #f8fafc; /* slate-50 */
-            color: #334155; /* slate-700 */
+            background-color: #f8fafc;
+            color: #334155;
             overflow-x: hidden;
         }
 
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f8fafc; }
         ::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #4f46e5, #e11d48); border-radius: 4px; }
-        
-        /* Mobile Optimizations */
+
+
         @media (max-width: 768px) {
             .animate-blob { animation: none !important; }
             .animation-delay-2000 { animation: none !important; }
@@ -91,13 +91,13 @@
             transform: translateY(-5px);
         }
         .gradient-text {
-            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 50%, #818cf8 100%); /* Indigo */
+            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 50%, #818cf8 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         .gradient-text-alt {
-            background: linear-gradient(135deg, #e11d48 0%, #f43f5e 50%, #fb7185 100%); /* Rose */
+            background: linear-gradient(135deg, #e11d48 0%, #f43f5e 50%, #fb7185 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -133,8 +133,8 @@
             linear-gradient(90deg, rgba(79, 70, 229, 0.08) 1px, transparent 1px);
             background-size: 40px 40px;
         }
-        
-        /* Chatbot Styling */
+
+
         #chatbot-window { transform: translateZ(0); will-change: transform; }
         @media (max-width: 768px) {
             #chatbot-window {
@@ -163,7 +163,7 @@
         }
 
 
-        /* ---- Right-side Video ---- */
+
         #hero-video {
             width: 100%;
             height: 100%;
@@ -178,7 +178,7 @@
             border-radius: 24px;
             overflow: hidden;
         }
-        /* Subtle glow ring behind the video */
+
         .video-wrapper::before {
             content: '';
             position: absolute;
@@ -195,7 +195,7 @@
         }
 
 
-        /* Nav Highlight */
+
         .nav-link.active {
             color: #4f46e5;
             font-weight: 700;
@@ -251,11 +251,11 @@
     </nav>
 
     <section id="hero" class="bg-white min-h-screen flex items-center relative overflow-hidden">
-        <!-- Removed cyber-grid and blobs to allow clean white background for seamless video integration -->
 
-        <!-- Mobile Video Background -->
+
+
         <div class="absolute inset-0 z-0 lg:hidden pointer-events-none">
-            <video autoplay muted loop playsinline preload="auto" class="w-full h-full object-contain transform scale-[1.35] filter brightness-90">
+            <video autoplay muted loop playsinline preload="auto" class="w-full h-full object-contain transform scale-[1.35]">
                 <source src="/static/bg_video/animated_video.webm" type="video/webm">
             </video>
             <div class="absolute inset-0 bg-gradient-to-b from-white/60 via-white/80 to-white/95"></div>
@@ -264,7 +264,7 @@
         <div class="container mx-auto px-4 md:px-6 relative z-10 py-24 lg:py-32">
             <div class="flex flex-col lg:flex-row items-center justify-end">
 
-                <!-- LEFT: Video (hidden on mobile, absolute left on desktop) -->
+
                 <div class="hidden lg:flex absolute left-0 bottom-16 w-[55vw] max-w-[1100px] z-10 pointer-events-none items-end" data-aos="fade-right" data-aos-delay="200">
                     <video autoplay muted loop playsinline preload="auto"
                         class="w-full h-auto object-contain origin-bottom-left transform scale-110 xl:scale-125">
@@ -272,7 +272,7 @@
                     </video>
                 </div>
 
-                <!-- RIGHT: Text Content -->
+
                 <div class="w-full lg:w-7/12 xl:w-6/12 text-center lg:text-right relative z-20 mt-4 lg:mt-0">
                     <div class="mb-4 flex justify-center lg:justify-end" data-aos="fade-down">
                         <div class="px-5 py-1.5 rounded-full border border-slate-200 flex items-center gap-2 bg-white/50 backdrop-blur-sm shadow-sm">
@@ -295,7 +295,7 @@
                         IDEAS TODAY, IMPACT TOMORROW.
                     </p>
 
-                    <!-- Stats Row -->
+
                     <div class="flex flex-wrap justify-center lg:justify-end gap-6 mb-10" data-aos="fade-up" data-aos-delay="400">
                         <div class="w-48 p-5 rounded-2xl border-2 border-indigo-500 flex flex-col items-center justify-center bg-transparent">
                             <p class="text-slate-500 text-[10px] sm:text-xs uppercase tracking-widest mb-2">Prize Pool</p>
@@ -307,7 +307,7 @@
                         </div>
                     </div>
 
-                    <!-- CTA Buttons -->
+
                     <div class="flex flex-col sm:flex-row justify-center lg:justify-end gap-5" data-aos="fade-up" data-aos-delay="500">
                         <a href="{% url 'register' %}" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-3 px-10 rounded-xl text-base hover:shadow-lg hover:shadow-indigo-500/40 transition-all duration-300">
                             REGISTER NOW!
@@ -340,7 +340,7 @@
                             .scroll-track {
                                 display: flex;
                                 width: 1000%;
-                                min-width: 1000%; /* Force width */
+                                min-width: 1000%;
                                 height: 100%;
                                 animation: scrollImages 50s linear infinite;
                             }
@@ -348,8 +348,8 @@
                                 animation-play-state: paused;
                             }
                             .scroll-item {
-                                width: 5%; /* 1/20th of 1000% track = 50% container width */
-                                flex: 0 0 5%; /* Explicit flex basis */
+                                width: 5%;
+                                flex: 0 0 5%;
                                 padding: 0.5rem;
                             }
                             .scroll-item img {
@@ -363,7 +363,7 @@
                         </style>
                         <div class="relative h-full w-full overflow-hidden bg-slate-50/50 backdrop-blur-sm rounded-2xl p-2">
                             <div class="scroll-track">
-                                <!-- Original Set -->
+
                                 <div class="scroll-item"><img src="{% static 'images/highlights/1.jpeg' %}" alt="CodeStorm Highlight 1"></div>
                                 <div class="scroll-item"><img src="{% static 'images/highlights/2.jpeg' %}" alt="CodeStorm Highlight 2"></div>
                                 <div class="scroll-item"><img src="{% static 'images/highlights/3.jpeg' %}" alt="CodeStorm Highlight 3"></div>
@@ -374,7 +374,7 @@
                                 <div class="scroll-item"><img src="{% static 'images/highlights/8.jpeg' %}" alt="CodeStorm Highlight 8"></div>
                                 <div class="scroll-item"><img src="{% static 'images/highlights/9.jpeg' %}" alt="CodeStorm Highlight 9"></div>
                                 <div class="scroll-item"><img src="{% static 'images/highlights/10.jpeg' %}" alt="CodeStorm Highlight 10"></div>
-                                <!-- Duplicate Set for seamless infinite loop -->
+
                                 <div class="scroll-item"><img src="{% static 'images/highlights/1.jpeg' %}" alt="CodeStorm Highlight 1"></div>
                                 <div class="scroll-item"><img src="{% static 'images/highlights/2.jpeg' %}" alt="CodeStorm Highlight 2"></div>
                                 <div class="scroll-item"><img src="{% static 'images/highlights/3.jpeg' %}" alt="CodeStorm Highlight 3"></div>
@@ -427,7 +427,7 @@
                 <h2 class="text-4xl md:text-5xl font-bold font-orbitron text-slate-900 mb-4">10 Hackathon <span class="text-indigo-600">Tracks</span></h2>
                 <p class="text-slate-600 max-w-2xl mx-auto">Specific problem statements within these domains will be released On-Spot.</p>
             </div>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
                 <div class="tilt-card glass-card p-8 rounded-2xl group relative overflow-hidden" data-aos="fade-up" data-aos-delay="100">
                     <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition pointer-events-none">
@@ -526,13 +526,12 @@
                                 <div class="bg-slate-100 p-3 rounded-lg border border-slate-200">
                                     <p class="text-indigo-600 text-sm font-bold mb-1">🔴 Deadline: 25 September 2026</p>
                                     <p class="text-slate-600 text-xs">• Team Size: 4–6 members</p>
-                                    <p class="text-slate-600 text-xs">• Fee: ₹700 per student</p>
-                                    <p class="text-emerald-600 text-xs font-bold">• 10% Discount for Inter-college teams</p>
+                                    <p class="text-slate-600 text-xs">• Fee: ₹699 per student</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="glass-panel p-8 rounded-xl border-l-4 border-rose-500 hover:bg-slate-50 transition" data-aos="fade-left">
                         <div class="flex items-start gap-4">
                             <span class="text-6xl font-bold text-rose-100 absolute right-4 top-4">02</span>
@@ -549,7 +548,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="text-center mt-12" data-aos="fade-up">
                     <a href="{% url 'register' %}" class="inline-flex items-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-lg transition duration-300 shadow-lg shadow-indigo-600/50">
                         <i class="fas fa-user-plus mr-2"></i>
@@ -565,7 +564,7 @@
             <h2 class="text-4xl md:text-5xl font-bold font-orbitron text-slate-900 mb-16 text-center" data-aos="fade-down">Event <span class="text-indigo-600">Timeline</span></h2>
             <div class="relative max-w-5xl mx-auto">
                 <div class="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-indigo-500 via-rose-600 to-indigo-500 opacity-20 ml-6 md:ml-0"></div>
-                
+
                 <div class="relative mb-12 md:mb-24" data-aos="fade-right">
                     <div class="flex flex-col md:flex-row items-center w-full">
                         <div class="w-full md:w-1/2 md:pr-12 pl-12 md:pl-0">
@@ -708,7 +707,7 @@
                     <h2 class="text-4xl md:text-5xl font-bold font-orbitron text-slate-900 mb-4">CodeStorm <span class="text-indigo-600">2K26</span></h2>
                     <p class="text-xl text-slate-600 max-w-3xl mx-auto">The Ultimate 36-Hour Hackathon Challenge</p>
                 </div>
-                
+
                 <div class="glass-panel rounded-3xl p-6 md:p-8 lg:p-12 border border-indigo-100 shadow-[0_0_50px_rgba(79,70,229,0.1)]">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                         <div class="order-2 lg:order-1">
@@ -720,10 +719,10 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="order-1 lg:order-2">
                             <h3 class="text-2xl md:text-3xl font-bold font-orbitron text-slate-900 mb-4 md:mb-6">Event Details</h3>
-                            
+
                             <div class="space-y-4 md:space-y-6">
                                 <div class="flex items-start gap-3 md:gap-4">
                                     <div class="w-10 h-10 md:w-12 md:h-12 bg-indigo-100 rounded-xl flex items-center justify-center flex-shrink-0 border border-indigo-200">
@@ -734,17 +733,17 @@
                                         <p class="text-sm md:text-base text-slate-600 leading-relaxed"><span class="text-rose-500 font-bold">Reg Close: Sep 25, 2026</span> | Event: Sep 30 - Oct 1</p>
                                     </div>
                                 </div>
-                                
+
                                 <div class="flex items-start gap-3 md:gap-4">
                                     <div class="w-10 h-10 md:w-12 md:h-12 bg-rose-100 rounded-xl flex items-center justify-center flex-shrink-0 border border-rose-200">
                                         <i class="fas fa-users text-rose-500 text-base md:text-xl"></i>
                                     </div>
-                                    <div>
-                                        <h4 class="text-base md:text-lg font-bold text-slate-900 mb-1">Registration</h4>
-                                        <p class="text-sm md:text-base text-slate-600 leading-relaxed">Fee: ₹700/student. Team: 4-6 members.<br><span class="text-emerald-600 font-bold">10% Off for Inter-college teams.</span></p>
+                                    <div class="ml-4">
+                                        <h4 class="text-base font-bold text-slate-900 mb-1 font-orbitron">Registration Detail</h4>
+                                        <p class="text-sm md:text-base text-slate-600 leading-relaxed">Fee: ₹699/student. Team: 4-6 members.</p>
                                     </div>
                                 </div>
-                                
+
                                 <div class="flex items-start gap-3 md:gap-4">
                                     <div class="w-10 h-10 md:w-12 md:h-12 bg-indigo-100 rounded-xl flex items-center justify-center flex-shrink-0 border border-indigo-200">
                                         <i class="fas fa-trophy text-indigo-600 text-base md:text-xl"></i>
@@ -754,7 +753,7 @@
                                         <p class="text-sm md:text-base text-slate-600 leading-relaxed">Total Prize Worth: ₹2,00,000</p>
                                     </div>
                                 </div>
-                                
+
                                 <div class="flex items-start gap-3 md:gap-4">
                                     <div class="w-10 h-10 md:w-12 md:h-12 bg-emerald-100 rounded-xl flex items-center justify-center flex-shrink-0 border border-emerald-200">
                                         <i class="fas fa-lightbulb text-emerald-600 text-base md:text-xl"></i>
@@ -765,7 +764,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="mt-6 p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
                                 <div class="flex items-center gap-3 mb-3">
                                     <i class="fas fa-external-link-alt text-emerald-600 text-lg"></i>
@@ -895,35 +894,31 @@
     <div id="mobile-overlay" class="md:hidden fixed inset-0 bg-black/50 opacity-0 pointer-events-none transition-opacity duration-300 z-40 w-full h-full" onclick="toggleMobileMenu()"></div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
     <script>
         AOS.init({ once: true, offset: 50, duration: 800, easing: 'ease-out-cubic' });
-        
+
         if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
             VanillaTilt.init(document.querySelectorAll(".tilt-card"), { max: 15, speed: 400, glare: true, "max-glare": 0.2 });
         }
-        
-        // Navbar Behavior
+
         document.addEventListener('DOMContentLoaded', function() {
             const navbar = document.getElementById('navbar');
             if (window.innerWidth < 768) { navbar.classList.add('py-3'); }
         });
-        
-        // SCROLL SPY & Navbar Animation
+
         window.addEventListener('scroll', function() {
             const navbar = document.getElementById('navbar');
-            
-            // Navbar Size
+
             if (window.innerWidth >= 768) {
                 if (window.scrollY > 50) { navbar.classList.add('py-2', 'shadow-lg'); navbar.classList.remove('py-4'); }
                 else { navbar.classList.add('py-4'); navbar.classList.remove('py-2', 'shadow-lg'); }
             }
 
-            // Scroll Spy Logic
             const sections = document.querySelectorAll('section');
             const navLinks = document.querySelectorAll('.nav-link');
-            
+
             let current = '';
 
             sections.forEach(section => {
@@ -940,8 +935,7 @@
                 }
             });
         });
-        
-        // Mobile Menu
+
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             const overlay = document.getElementById('mobile-overlay');
@@ -955,9 +949,9 @@
                 document.body.style.overflow = 'auto';
             }
         }
-        
+
     </script>
-    
+
     <div id="chatbot-container" class="fixed bottom-4 right-4 z-[9999] sm:bottom-8 sm:right-8">
         <button id="chatbot-toggle" class="relative bg-gradient-to-r from-indigo-500 via-indigo-600 to-rose-500 hover:from-indigo-600 hover:via-indigo-700 hover:to-rose-600 text-white font-bold py-3 px-4 rounded-full shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-110 group overflow-hidden">
             <div class="absolute inset-0 bg-gradient-to-r from-indigo-400 via-rose-400 to-indigo-400 opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
@@ -1026,8 +1020,8 @@
 
         function getBotResponse(questionType) {
             const responses = {
-                'registration': 'Direct registration is open! <b>No idea submission required.</b> Students, innovators, future leaders, all under one roof!',
-                'team': 'Teams: 4-6 members. Fee: ₹700/student. Inter-college teams get 10% discount!',
+                'registration': 'Click the "Register Team" button at the top! Fill the form with your team details (4-6 members) and pay the base fee of ₹699/student.',
+                'team': 'Teams: 4-6 members. Fee: ₹699/student.',
                 'dates': 'Hackathon Dates: <b>30-SEP-2026 to 01-OCT-2026</b>. A 36-Hour National Level Hackathon!',
                 'venue': 'Location: <b>Narsimha Reddy Engineering College</b>, Kompally, Hyderabad. <br><a href="https://maps.app.goo.gl/zKNNHTounqhwPmvX9" target="_blank" class="text-indigo-600 underline font-semibold mt-1 inline-block"><i class="fas fa-map-marker-alt"></i> View on Google Maps</a>',
                 'prizes': 'We have a massive prize pool of <b>₹2,00,000</b>! Compete and win exciting prizes.'

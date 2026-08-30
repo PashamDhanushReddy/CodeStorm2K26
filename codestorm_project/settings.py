@@ -9,12 +9,11 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 import os
 
-# Try to load environment variables from .env file
+
 try:
     from dotenv import load_dotenv
     load_dotenv()
 except ImportError:
-    # dotenv not available in production, environment variables should be set directly
     pass
 import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -111,7 +110,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 
-# Cloudinary Configuration
+
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME', 'avz3xnha'),
     'API_KEY': os.environ.get('CLOUDINARY_API_KEY', '924415596467153'),
@@ -125,31 +124,31 @@ cloudinary.config(
     api_secret=CLOUDINARY_STORAGE['API_SECRET']
 )
 
-# CSRF Configuration for Production
-CSRF_COOKIE_SECURE = not DEBUG  # Use secure cookies in production
+
+CSRF_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SAMESITE = 'Lax'
 CSRF_TRUSTED_ORIGINS = []
 
-# Session Security
-SESSION_COOKIE_SECURE = not DEBUG  # Use secure cookies in production
+
+SESSION_COOKIE_SECURE = not DEBUG
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = 'Lax'
 
-# Additional Security Settings
+
 SECURE_SSL_REDIRECT = not DEBUG
 if not DEBUG:
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
 
-# Add trusted origins for production
+
 if RENDER_EXTERNAL_HOSTNAME:
     CSRF_TRUSTED_ORIGINS.append(f'https://{RENDER_EXTERNAL_HOSTNAME}')
 elif RENDER_EXTERNAL_URL:
     CSRF_TRUSTED_ORIGINS.append(RENDER_EXTERNAL_URL.rstrip('/'))
 
-# Allow all origins in development
+
 if DEBUG:
     CSRF_TRUSTED_ORIGINS.append('http://localhost:8000')
     CSRF_TRUSTED_ORIGINS.append('http://127.0.0.1:8000')
