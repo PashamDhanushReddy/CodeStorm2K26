@@ -1356,21 +1356,7 @@
                         return;
                     }
 
-                    // Validate female members
-                    const teamSize = parseInt(document.getElementById('team_size').value) || 0;
-                    let femaleCount = 0;
-                    for (let i = 1; i <= teamSize; i++) {
-                        const genderSelect = document.querySelector(`select[name="member${i}_gender"]`);
-                        if (genderSelect && genderSelect.value === 'Female') {
-                            femaleCount++;
-                        }
-                    }
-                    if (femaleCount === 0) {
-                        alert('At least one team member must be female.');
-                        restoreFilesAfterValidation();
-                        event.preventDefault(); // Prevent submission
-                        return;
-                    }
+
 
                     // Validate email fields
                     const emailFields = document.querySelectorAll('input[type="email"]');
@@ -1606,22 +1592,6 @@
                 return false;
             }
 
-            // Validate female members
-            const teamSize = parseInt(document.getElementById('team_size').value) || 0;
-            let femaleCount = 0;
-            for (let i = 1; i <= teamSize; i++) {
-                const genderSelect = document.querySelector(`select[name="member${i}_gender"]`);
-                if (genderSelect && genderSelect.value === 'Female') {
-                    femaleCount++;
-                }
-            }
-            if (femaleCount === 0) {
-                alert('At least one team member must be female.');
-                restoreFilesAfterValidation();
-                event.preventDefault(); // Prevent form submission
-                return false;
-            }
-
             // Validate email fields
             const emailFields = document.querySelectorAll('input[type="email"]');
             for (let field of emailFields) {
@@ -1750,28 +1720,6 @@
             console.log('Leader checkboxes found:', leaderCheckboxes.length);
             if (leaderCheckboxes.length !== 1) {
                 alert('Please select exactly one team leader.');
-                // Restore file selections
-                restoreFileSelections(fileData);
-                return false;
-            }
-
-            // Validate that at least one team member is female
-            const teamSize = document.querySelector('[name="team_size"]')?.value || '4';
-            const size = parseInt(teamSize);
-            let femaleCount = 0;
-
-            for (let i = 1; i <= size; i++) {
-                const memberName = document.querySelector(`[name="member${i}_name"]`)?.value;
-                const memberGender = document.querySelector(`[name="member${i}_gender"]`)?.value;
-
-                if (memberName && memberGender === 'Female') {
-                    femaleCount++;
-                }
-            }
-
-            console.log('Female members found:', femaleCount);
-            if (femaleCount === 0) {
-                alert('At least one team member must be female.');
                 // Restore file selections
                 restoreFileSelections(fileData);
                 return false;

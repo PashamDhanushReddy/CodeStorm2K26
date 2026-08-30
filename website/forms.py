@@ -928,33 +928,13 @@ class TeamRegistrationForm(forms.Form):
         if cleaned_data.get('is_leader6') and not cleaned_data.get('member6_name'):
             raise forms.ValidationError('Member 6 cannot be leader if not provided.')
         
-        # Validate that at least one female member is in the team
-        team_size_str = cleaned_data.get('team_size', '4')
-        try:
-            team_size = int(team_size_str)
-        except (ValueError, TypeError):
-            team_size = 4
-        
         # Validate payment screenshot - either new file or preserved file
         payment_screenshot = cleaned_data.get('payment_screenshot')
         has_preserved_file = hasattr(self, 'preserved_file_info')
         
         if not payment_screenshot and not has_preserved_file:
             raise forms.ValidationError('Payment screenshot is required. Please upload a screenshot of your payment confirmation.')
-        
-        female_count = 0
-        
-        for i in range(1, team_size + 1):
-            gender = cleaned_data.get(f'member{i}_gender', '')
-            member_name = cleaned_data.get(f'member{i}_name', '')
-            # Only count if member exists and is female
-            # Check both with and without stripping whitespace
-            if member_name and str(gender).strip() == 'Female':
-                female_count += 1
-        
-        if female_count == 0:
-            raise forms.ValidationError('At least one team member must be female.')
-        
+
         # Validate inter-college discount eligibility
         team_size_str = cleaned_data.get('team_size', '4')
         try:
