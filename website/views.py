@@ -115,7 +115,7 @@ def register_team(request):
                 team_size = int(form.cleaned_data.get('team_size', '4'))
                 
                 # Calculate fee with discount
-                base_fee_per_person = 600
+                base_fee_per_person = 700
                 discount_eligible = form.cleaned_data.get('_discount_eligible', False)
                 discount_percentage = 0.10 if discount_eligible else 0
                 
@@ -357,6 +357,7 @@ def register_team(request):
                     
                     del request.session['preserved_payment_screenshot']
                 
+                request.session['registered_team_name'] = form.cleaned_data.get('team_name', '')
                 return redirect('registration_success')
                 
             except Exception as e:
@@ -394,7 +395,7 @@ def register_team(request):
             del request.session['preserved_payment_screenshot']
     
     # Default fee calculation for initial page load
-    base_fee_per_person = 600
+    base_fee_per_person = 700
     default_team_size = 4
     default_total = base_fee_per_person * default_team_size
     
@@ -410,7 +411,8 @@ def register_team(request):
 
 def registration_success(request):
     """Show success page after registration"""
-    return render(request, 'website/registration_success.html')
+    team_name = request.session.get('registered_team_name', '')
+    return render(request, 'website/registration_success.html', {'team_name': team_name})
 
 def home(request):
     """Home page view"""
