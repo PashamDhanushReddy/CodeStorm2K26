@@ -203,10 +203,27 @@
         .nav-link.active::after {
             width: 100%;
         }
+
+        /* iOS WebM Alpha Channel Fix */
+        @supports (-webkit-touch-callout: none) {
+            .ios-video-fix {
+                filter: url(#remove-black) !important;
+            }
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-indigo-500 selection:text-white bg-slate-50 text-slate-800 overflow-x-hidden">
 
+    <!-- SVG Filter for iOS Video Black Background Bug -->
+    <svg width="0" height="0" class="absolute pointer-events-none">
+        <filter id="remove-black" color-interpolation-filters="sRGB">
+            <feColorMatrix type="matrix" values="
+                1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                33 33 33 0 -2" />
+        </filter>
+    </svg>
 
     <nav class="fixed w-full z-50 top-0 left-0 transition-all duration-300 border-b border-black/5 bg-white/80 backdrop-blur-md md:py-4" id="navbar">
         <div class="container mx-auto px-4 py-3 md:py-0 flex justify-between items-center">
@@ -255,7 +272,7 @@
 
 
         <div class="absolute inset-0 z-0 lg:hidden pointer-events-none">
-            <video autoplay muted loop playsinline preload="auto" class="w-full h-full object-cover">
+            <video autoplay muted loop playsinline preload="auto" class="w-full h-full object-contain transform scale-[1.35] ios-video-fix">
                 <source src="/static/bg_video/animated_video.webm" type="video/webm">
             </video>
             <div class="absolute inset-0 bg-gradient-to-b from-white/60 via-white/80 to-white/95"></div>
@@ -267,7 +284,7 @@
 
                 <div class="hidden lg:flex absolute left-0 bottom-16 w-[55vw] max-w-[1100px] z-10 pointer-events-none items-end" data-aos="fade-right" data-aos-delay="200">
                     <video autoplay muted loop playsinline preload="auto"
-                        class="w-full h-auto object-contain origin-bottom-left transform scale-110 xl:scale-125">
+                        class="w-full h-auto object-contain origin-bottom-left transform scale-110 xl:scale-125 ios-video-fix">
                         <source src="/static/bg_video/animated_video.webm" type="video/webm">
                     </video>
                 </div>
