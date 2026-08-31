@@ -148,8 +148,7 @@ class TeamRegistrationForm(forms.Form):
             ('M', 'M'),
             ('L', 'L'),
             ('XL', 'XL'),
-            ('XXL', 'XXL'),
-            ('XXXL', 'XXXL')
+            ('XXL', 'XXL')
         ],
         widget=forms.Select(attrs={
             'class': 'w-full px-4 py-3 form-control',
@@ -251,8 +250,7 @@ class TeamRegistrationForm(forms.Form):
             ('M', 'M'),
             ('L', 'L'),
             ('XL', 'XL'),
-            ('XXL', 'XXL'),
-            ('XXXL', 'XXXL')
+            ('XXL', 'XXL')
         ],
         widget=forms.Select(attrs={
             'class': 'w-full px-4 py-3 form-control',
@@ -354,8 +352,7 @@ class TeamRegistrationForm(forms.Form):
             ('M', 'M'),
             ('L', 'L'),
             ('XL', 'XL'),
-            ('XXL', 'XXL'),
-            ('XXXL', 'XXXL')
+            ('XXL', 'XXL')
         ],
         widget=forms.Select(attrs={
             'class': 'w-full px-4 py-3 form-control',
@@ -457,8 +454,7 @@ class TeamRegistrationForm(forms.Form):
             ('M', 'M'),
             ('L', 'L'),
             ('XL', 'XL'),
-            ('XXL', 'XXL'),
-            ('XXXL', 'XXXL')
+            ('XXL', 'XXL')
         ],
         widget=forms.Select(attrs={
             'class': 'w-full px-4 py-3 form-control',
@@ -570,8 +566,7 @@ class TeamRegistrationForm(forms.Form):
             ('M', 'M'),
             ('L', 'L'),
             ('XL', 'XL'),
-            ('XXL', 'XXL'),
-            ('XXXL', 'XXXL')
+            ('XXL', 'XXL')
         ],
         widget=forms.Select(attrs={
             'class': 'w-full px-4 py-3 form-control',
@@ -684,8 +679,7 @@ class TeamRegistrationForm(forms.Form):
             ('M', 'M'),
             ('L', 'L'),
             ('XL', 'XL'),
-            ('XXL', 'XXL'),
-            ('XXXL', 'XXXL')
+            ('XXL', 'XXL')
         ],
         widget=forms.Select(attrs={
             'class': 'w-full px-4 py-3 form-control',
