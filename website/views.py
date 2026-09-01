@@ -379,21 +379,27 @@ def register_team(request):
                             'whatsapp_link': '#', # Placeholder for WhatsApp link
                         }
                         
-                        # Render HTML email
-                        html_content = render_to_string('website/registration_receipt.html', context)
-                        text_content = strip_tags(html_content)
-                        
-                        # Create email
-                        subject = f"Registration Successful - CodeStorm ({registration_data['team_name']})"
-                        from_email = settings.DEFAULT_FROM_EMAIL
-                        
-                        msg = EmailMultiAlternatives(subject, text_content, from_email, recipient_list)
-                        msg.attach_alternative(html_content, "text/html")
-                        msg.send(fail_silently=False)
-                        print(f"Successfully sent registration receipt to {recipient_list}")
+                        def send_email_async(ctx, recipients, sender):
+                            try:
+                                html_content = render_to_string('website/registration_receipt.html', ctx)
+                                text_content = strip_tags(html_content)
+                                subject = f"Registration Successful - CodeStorm ({ctx['team_name']})"
+                                msg = EmailMultiAlternatives(subject, text_content, sender, recipients)
+                                msg.attach_alternative(html_content, "text/html")
+                                msg.send(fail_silently=False)
+                                print(f"Successfully sent registration receipt to {recipients}")
+                            except Exception as e:
+                                print(f"Error sending registration email: {str(e)}")
+
+                        import threading
+                        email_thread = threading.Thread(
+                            target=send_email_async, 
+                            args=(context, recipient_list, settings.DEFAULT_FROM_EMAIL)
+                        )
+                        email_thread.start()
                 except Exception as e:
                     # Log error but don't break the registration flow
-                    print(f"Error sending registration email: {str(e)}")
+                    print(f"Error starting email thread: {str(e)}")
                 # ---------------------------
 
                 request.session['registered_team_name'] = form.cleaned_data.get('team_name', '')
