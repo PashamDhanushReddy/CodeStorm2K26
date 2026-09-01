@@ -11,7 +11,9 @@ import cloudinary.api
 from .forms import TeamRegistrationForm
 from .models import TeamRegistration
 from django.db import IntegrityError
-
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 cloudinary.config(
   cloud_name = settings.CLOUDINARY_STORAGE['CLOUD_NAME'],
@@ -356,6 +358,43 @@ def register_team(request):
                             print(f"Error cleaning up temporary file: {str(e)}")
 
                     del request.session['preserved_payment_screenshot']
+
+                # --- Email Sending Logic ---
+                try:
+                    # Collect all member emails
+                    recipient_list = []
+                    for i in range(1, 7):
+                        email_key = f'member{i}_email'
+                        email_val = registration_data.get(email_key)
+                        if email_val:
+                            recipient_list.append(email_val)
+                    
+                    if recipient_list:
+                        # Prepare context for email template
+                        context = {
+                            'team_name': registration_data['team_name'],
+                            'team_size': registration_data['team_size'],
+                            'theme': registration_data['theme'],
+                            'transaction_id': registration_data['transaction_id'],
+                            'whatsapp_link': '#', # Placeholder for WhatsApp link
+                        }
+                        
+                        # Render HTML email
+                        html_content = render_to_string('website/registration_receipt.html', context)
+                        text_content = strip_tags(html_content)
+                        
+                        # Create email
+                        subject = f"Registration Successful - CodeStorm ({registration_data['team_name']})"
+                        from_email = settings.DEFAULT_FROM_EMAIL
+                        
+                        msg = EmailMultiAlternatives(subject, text_content, from_email, recipient_list)
+                        msg.attach_alternative(html_content, "text/html")
+                        msg.send(fail_silently=False)
+                        print(f"Successfully sent registration receipt to {recipient_list}")
+                except Exception as e:
+                    # Log error but don't break the registration flow
+                    print(f"Error sending registration email: {str(e)}")
+                # ---------------------------
 
                 request.session['registered_team_name'] = form.cleaned_data.get('team_name', '')
                 return redirect('registration_success')
