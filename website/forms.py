@@ -5,12 +5,12 @@ class TeamRegistrationForm(forms.Form):
 
     team_size = forms.ChoiceField(
         choices=[
-            ('4', '4 Members'),
-            ('5', '5 Members'),
-            ('6', '6 Members')
+            ('4', '4 Members')
         ],
         widget=forms.Select(attrs={
-            'class': 'w-full px-4 py-3 form-control',
+            'class': 'w-full px-4 py-3 form-control bg-gray-100',
+            'readonly': 'readonly',
+            'style': 'pointer-events: none;'
         })
     )
 

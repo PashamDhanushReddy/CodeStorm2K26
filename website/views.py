@@ -376,7 +376,7 @@ def register_team(request):
                             'team_size': registration_data['team_size'],
                             'theme': registration_data['theme'],
                             'transaction_id': registration_data['transaction_id'],
-                            'whatsapp_link': '#', # Placeholder for WhatsApp link
+                            'whatsapp_link': 'https://chat.whatsapp.com/BvK5lvkkm9y8Qg9NoM6gIy', # WhatsApp link
                         }
                         
                         # Store email data in session for the frontend to trigger
