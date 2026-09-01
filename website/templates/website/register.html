@@ -1042,39 +1042,11 @@
                         <div class="text-center mt-4 mb-4">
                             <button type="button" class="btn-submit" id="calculateBtn"
                                 style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-                                <i class="fas fa-calculator me-2"></i>
-                                <span id="calculateText">Calculate Registration Fee</span>
+                                <i class="fas fa-credit-card me-2"></i>
+                                <span id="calculateText">Proceed to Payment</span>
                             </button>
                         </div>
 
-
-                        <div class="mb-4" id="fee-section" style="display: none;">
-                            <h2 class="section-title">Registration Fee</h2>
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="glass-panel p-4">
-                                        <div id="fee-calculation">
-                                            <div class="row mb-3">
-                                                <div class="col-12 col-md-6">
-                                                    <p class="mb-2"><strong>Base Fee per Person:</strong> ₹699</p>
-                                                    <p class="mb-2"><strong>Team Size:</strong> <span
-                                                            id="display-team-size">4</span> members</p>
-                                                    <p class="mb-2"><strong>Total Base Fee:</strong> ₹<span
-                                                            id="total-base-fee">2796</span></p>
-                                                </div>
-                                                <div class="col-12 col-md-6">
-                                                    <div id="no-discount-info">
-                                                        <p class="mb-2"><strong>Final Amount to Pay:</strong> ₹<span
-                                                                id="final-amount-no-discount"
-                                                                class="text-amber-400 fw-bold fs-5">2796</span></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
 
                         <div class="mb-4" id="qr-section" style="display: none;">
@@ -1082,7 +1054,7 @@
                             <div class="row">
                                 <div class="col-12 col-md-6 mb-3">
                                     <div class="glass-panel p-4 text-center">
-                                        <p class="mb-3"><strong>Scan this QR code to make payment:</strong></p>
+                                        <p class="mb-3"><strong>Scan this QR code to make payment of ₹2,796:</strong></p>
                                         <div id="qr-code-container"
                                             class="mb-3 d-flex flex-row overflow-auto gap-3 pb-2"
                                             style="scrollbar-width: thin;">
@@ -1420,14 +1392,9 @@
                         return;
                     }
 
-                    calculateFee();
-
-                    if (feeSection) {
-                        feeSection.style.display = 'block';
-                        feeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
                     if (qrSection) {
                         qrSection.style.display = 'block';
+                        qrSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }
                     if (transactionIdSection) {
                         transactionIdSection.style.display = 'block';
@@ -1439,15 +1406,6 @@
                     const submitButtonContainer = document.getElementById('submit-button-container');
                     if (submitButtonContainer) {
                         submitButtonContainer.style.display = 'block';
-                    }
-
-                    const calculateText = document.getElementById('calculateText');
-                    if (calculateText) {
-                        calculateText.innerHTML = '<i class="fas fa-redo me-2"></i>Recalculate Registration Fee';
-                    }
-                    if (calculateBtn) {
-                        calculateBtn.style.background = 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)';
-                        calculateBtn.disabled = false;
                     }
                 });
             }
