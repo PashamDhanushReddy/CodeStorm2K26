@@ -11,4 +11,5 @@ urlpatterns = [
     path('registration-success', views.registration_success),
     path('CS2026/registration-success/', views.registration_success),
     path('CS2026/registration-success.html', views.registration_success),
+    path('send-receipt-email/', views.send_receipt_email, name='send_receipt_email'),
 ]

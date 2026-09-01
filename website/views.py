@@ -379,28 +379,12 @@ def register_team(request):
                             'whatsapp_link': '#', # Placeholder for WhatsApp link
                         }
                         
-                        def send_email_async(ctx, recipients, sender):
-                            try:
-                                html_content = render_to_string('website/registration_receipt.html', ctx)
-                                text_content = strip_tags(html_content)
-                                subject = f"Registration Successful - CodeStorm ({ctx['team_name']})"
-                                msg = EmailMultiAlternatives(subject, text_content, sender, recipients)
-                                msg.attach_alternative(html_content, "text/html")
-                                msg.send(fail_silently=False)
-                                print(f"Successfully sent registration receipt to {recipients}")
-                            except Exception as e:
-                                print(f"Error sending registration email: {str(e)}")
+                        # Store email data in session for the frontend to trigger
+                        request.session['email_context'] = context
+                        request.session['email_recipients'] = recipient_list
 
-                        import threading
-                        email_thread = threading.Thread(
-                            target=send_email_async, 
-                            args=(context, recipient_list, settings.DEFAULT_FROM_EMAIL)
-                        )
-                        email_thread.start()
                 except Exception as e:
-                    # Log error but don't break the registration flow
-                    print(f"Error starting email thread: {str(e)}")
-                # ---------------------------
+                    print(f"Error setting up email session: {str(e)}")
 
                 request.session['registered_team_name'] = form.cleaned_data.get('team_name', '')
                 return redirect('registration_success')
@@ -462,3 +446,54 @@ def registration_success(request):
 def home(request):
     """Home page view"""
     return render(request, 'website/home.html')
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def send_receipt_email(request):
+    if request.method == 'POST':
+        try:
+            pdf_file = request.FILES.get('pdf')
+            if not pdf_file:
+                return JsonResponse({'error': 'No PDF provided'}, status=400)
+                
+            context = request.session.get('email_context')
+            recipients = request.session.get('email_recipients')
+            
+            if not context or not recipients:
+                return JsonResponse({'error': 'Email context missing in session'}, status=400)
+                
+            # Render HTML email
+            html_content = render_to_string('website/registration_receipt.html', context)
+            text_content = strip_tags(html_content)
+            subject = f"Registration Successful - CodeStorm ({context['team_name']})"
+            
+            msg = EmailMultiAlternatives(subject, text_content, settings.DEFAULT_FROM_EMAIL, recipients)
+            msg.attach_alternative(html_content, "text/html")
+            
+            # Attach the PDF blob from frontend
+            msg.attach('CodeStorm_Registration_Receipt.pdf', pdf_file.read(), 'application/pdf')
+            
+            # Send async
+            import threading
+            def send_async(m):
+                try:
+                    m.send(fail_silently=False)
+                    print("Successfully sent email with frontend PDF.")
+                except Exception as e:
+                    print(f"Error sending email async: {e}")
+            
+            t = threading.Thread(target=send_async, args=(msg,))
+            t.start()
+            
+            # Prevent resending on reload, but allow them to stay on the page
+            if 'email_context' in request.session:
+                del request.session['email_context']
+            if 'email_recipients' in request.session:
+                del request.session['email_recipients']
+                
+            return JsonResponse({'status': 'success'})
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    return JsonResponse({'error': 'Invalid method'}, status=405)
