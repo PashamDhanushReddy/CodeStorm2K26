@@ -975,7 +975,7 @@
                 <div class="card h-100 animate__animated animate__fadeInRight" style="animation-delay: 0.5s;">
                     <div class="card-header bg-white border-0 py-3">
                         <h5 class="mb-0 fw-bold">
-                            <i class="fas fa-chart-pie me-2 text-primary"></i>Status Overview
+                            <i class="fas fa-chart-bar me-2 text-primary"></i>Daily Registrations
                         </h5>
                     </div>
                     <div class="card-body d-flex align-items-center justify-content-center">
@@ -1545,50 +1545,51 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Get data from template
-            const statuses = [
+            const dates = [
                 {% for reg in registrations %}
-                    "{{ reg.selection_status|default:'pending' }}",
+                    {% if reg.registration_date != 'N/A' %}
+                    "{{ reg.registration_date|date:'Y-m-d' }}",
+                    {% endif %}
                 {% endfor %}
             ];
             
-            // Count occurrences
-            const statusCounts = {
-                'pending': 0,
-                'selected': 0,
-                'rejected': 0,
-                'waitlisted': 0
-            };
+            // Count occurrences per date
+            const dateCounts = {};
             
-            statuses.forEach(status => {
-                if (statusCounts.hasOwnProperty(status)) {
-                    statusCounts[status]++;
-                } else {
-                    statusCounts['pending']++; // Default fallback
+            dates.forEach(dateStr => {
+                if (dateStr && dateStr.trim() !== '') {
+                    if (dateCounts.hasOwnProperty(dateStr)) {
+                        dateCounts[dateStr]++;
+                    } else {
+                        dateCounts[dateStr] = 1;
+                    }
                 }
+            });
+            
+            // Sort dates
+            const sortedDates = Object.keys(dateCounts).sort();
+            const dateLabels = [];
+            const dateData = [];
+            
+            sortedDates.forEach(date => {
+                dateLabels.push(date);
+                dateData.push(dateCounts[date]);
             });
             
             // Setup Chart
             const ctx = document.getElementById('statusChart').getContext('2d');
             
             new Chart(ctx, {
-                type: 'doughnut',
+                type: 'bar',
                 data: {
-                    labels: ['Selected', 'Pending', 'Waitlisted', 'Rejected'],
+                    labels: dateLabels,
                     datasets: [{
-                        data: [
-                            statusCounts['selected'], 
-                            statusCounts['pending'], 
-                            statusCounts['waitlisted'],
-                            statusCounts['rejected']
-                        ],
-                        backgroundColor: [
-                            '#2ecc71',
-                            '#95a5a6',
-                            '#f1c40f',
-                            '#e74c3c'
-                        ],
-                        borderWidth: 0,
-                        hoverOffset: 4
+                        label: 'Teams Registered',
+                        data: dateData,
+                        backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                        borderColor: '#667eea',
+                        borderWidth: 1,
+                        borderRadius: 4
                     }]
                 },
                 options: {
@@ -1596,15 +1597,7 @@
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            position: 'bottom',
-                            labels: {
-                                font: {
-                                    family: "'Poppins', sans-serif",
-                                    size: 11
-                                },
-                                usePointStyle: true,
-                                padding: 20
-                            }
+                            display: false
                         },
                         tooltip: {
                             backgroundColor: 'rgba(255, 255, 255, 0.9)',
@@ -1613,14 +1606,19 @@
                             borderColor: '#ddd',
                             borderWidth: 1,
                             padding: 10,
-                            displayColors: true,
-                            usePointStyle: true
+                            displayColors: false
                         }
                     },
-                    cutout: '70%',
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0 // Show only integers
+                            }
+                        }
+                    },
                     animation: {
-                        animateScale: true,
-                        animateRotate: true
+                        duration: 1000
                     }
                 }
             });

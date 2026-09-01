@@ -256,11 +256,12 @@ def dashboard_view(request):
             continue
         
         # Parse registration date
-        registration_date = reg.get('registration_date', 'N/A')
+        registration_date = reg.get('registration_date') or reg.get('created_at', 'N/A')
         if registration_date != 'N/A' and registration_date:
             try:
-                # Parse the ISO format date string
-                registration_date = datetime.fromisoformat(registration_date.replace('Z', '+00:00'))
+                # Parse the ISO format date string if it's a string, or just use the datetime directly
+                if isinstance(registration_date, str):
+                    registration_date = datetime.fromisoformat(registration_date.replace('Z', '+00:00'))
             except (ValueError, AttributeError):
                 registration_date = 'N/A'
         
@@ -378,7 +379,8 @@ def export_registrations_view(request):
                 continue
                 
         # Parse date for filtering
-        reg_date_str = reg.get('registration_date', '')
+        reg_date_raw = reg.get('registration_date') or reg.get('created_at', '')
+        reg_date_str = reg_date_raw.isoformat() if isinstance(reg_date_raw, datetime) else reg_date_raw
         if date_filter and reg_date_str:
              try:
                  reg_date_obj = datetime.fromisoformat(reg_date_str.replace('Z', '+00:00')).date()
@@ -441,7 +443,7 @@ def export_registrations_view(request):
             'Team Size': team_size,
             'Payment Status': selection_status,
             'Team Members': "; ".join(members_list),
-            'Registration Date': reg.get('registration_date', 'N/A'),
+            'Registration Date': reg_date_str or 'N/A',
             'Theme': idea_theme,
             'Idea Title': reg.get('idea_title', 'N/A'),
             'Payment Proof': ppt_path,
