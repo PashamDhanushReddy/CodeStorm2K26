@@ -7,3 +7,4 @@ requests==2.32.5
 python-dotenv==1.0.0
 cloudinary==1.41.0
 Pillow==10.4.0
+django-anymail[brevo]==10.3

@@ -197,71 +197,51 @@
             });
         }
         
-        function uploadPDFInBackground() {
-            const element = document.getElementById('receipt-content');
-            
-            // 1. Save original DOM state
-            const originalParent = element.parentElement;
-            const originalNextSibling = element.nextSibling;
-            const originalMaxWidth = element.style.maxWidth;
-            const originalMargin = element.style.margin;
-            
-            // 2. Create a clean, absolute wrapper hidden behind the main page
-            const wrapper = document.createElement('div');
-            wrapper.style.position = 'absolute';
-            wrapper.style.top = '0';
-            wrapper.style.left = '0';
-            wrapper.style.width = '800px'; // Force perfect desktop layout
-            wrapper.style.zIndex = '-9999'; // Hide it from user view
-            
-            // 3. Move the element into the clean wrapper
-            wrapper.appendChild(element);
-            document.body.appendChild(wrapper);
-            
-            // 4. Strip centering rules so it sits perfectly at (0,0) in the wrapper
-            element.style.maxWidth = 'none';
-            element.style.margin = '0';
-            element.classList.remove('mx-auto');
-            
-            const opt = {
-                margin:       0.5,
-                filename:     'CodeStorm-Registration.pdf',
-                image:        { type: 'jpeg', quality: 1.0 },
-                html2canvas:  { 
-                    scale: 2, 
-                    useCORS: true,
-                    scrollY: 0,
-                    backgroundColor: '#ffffff'
-                },
-                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-            };
-            
-            html2pdf().set(opt).from(element).output('blob').then(function(pdfBlob) {
-                // Restore DOM
-                element.style.maxWidth = originalMaxWidth;
-                element.style.margin = originalMargin;
-                element.classList.add('mx-auto');
+        async function uploadPDFInBackground() {
+            try {
+                console.log("Starting PDF generation in background...");
+                const element = document.getElementById('receipt-content');
                 
-                if (originalNextSibling) {
-                    originalParent.insertBefore(element, originalNextSibling);
-                } else {
-                    originalParent.appendChild(element);
-                }
-                document.body.removeChild(wrapper);
+                // Keep element exactly as is, don't modify DOM to avoid race conditions
+                const opt = {
+                    margin:       0.5,
+                    filename:     'CodeStorm-Registration.pdf',
+                    image:        { type: 'jpeg', quality: 1.0 },
+                    html2canvas:  { 
+                        scale: 2, 
+                        useCORS: true,
+                        scrollY: 0,
+                        backgroundColor: '#ffffff'
+                    },
+                    jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+                };
+                
+                console.log("Calling html2pdf().output('blob')...");
+                const pdfBlob = await html2pdf().set(opt).from(element).outputPdf('blob');
+                
+                console.log("Blob generated! Size:", pdfBlob.size);
                 
                 // Upload to server
                 const formData = new FormData();
                 formData.append('pdf', pdfBlob, 'CodeStorm_Registration_Receipt.pdf');
                 
-                fetch('/send-receipt-email/', {
+                console.log("Sending POST to /send-receipt-email/ ...");
+                const response = await fetch('/send-receipt-email/', {
                     method: 'POST',
                     body: formData
-                }).then(response => {
-                    console.log('PDF emailed successfully');
-                }).catch(err => {
-                    console.error('Error emailing PDF:', err);
                 });
-            });
+                
+                if (!response.ok) {
+                    const text = await response.text();
+                    console.error("Server error:", response.status, text);
+                    alert("Failed to send email. Server returned: " + response.status + " " + text);
+                } else {
+                    console.log('PDF emailed successfully! Server response:', await response.json());
+                }
+            } catch (err) {
+                console.error("Error in uploadPDFInBackground:", err);
+                alert("Error generating or sending PDF: " + err.message);
+            }
         }
         
         // Trigger upload instantly when page loads

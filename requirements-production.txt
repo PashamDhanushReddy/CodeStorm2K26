@@ -17,3 +17,4 @@ packaging==25.0
 # Image processing for payment screenshots
 Pillow>=10.0.0
 cloudinary==1.41.0
+django-anymail[brevo]==10.3
