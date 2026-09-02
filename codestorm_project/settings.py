@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'codestorm_project.wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(
         default='postgresql://neondb_owner:npg_sZgQT1cO3Lem@ep-round-wind-azo9oag6-pooler.c-3.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require',
-        conn_max_age=600
+        conn_max_age=0
     )
 }
 AUTH_PASSWORD_VALIDATORS = [
