@@ -16,6 +16,21 @@
         rel="stylesheet">
 
     <style>
+        /* SweetAlert Mobile Responsiveness */
+        @media screen and (max-width: 768px) {
+            .swal2-popup {
+                width: 90% !important;
+                padding: 1rem !important;
+                font-size: 0.9rem !important;
+            }
+            .swal2-title {
+                font-size: 1.25rem !important;
+            }
+            .swal2-content, .swal2-html-container {
+                font-size: 0.95rem !important;
+            }
+        }
+
         * {
             box-sizing: border-box;
         }
@@ -214,6 +229,8 @@
             }
         }
     </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -246,12 +263,37 @@
 
 
                 {% if messages %}
-                {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-4" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-                {% endfor %}
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        let errorMessages = [];
+                        let successMessages = [];
+                        {% for message in messages %}
+                        {% if message.tags == 'error' %}
+                        errorMessages.push("{{ message|escapejs }}");
+                        {% elif message.tags == 'success' %}
+                        successMessages.push("{{ message|escapejs }}");
+                        {% else %}
+                        errorMessages.push("{{ message|escapejs }}");
+                        {% endif %}
+                        {% endfor %}
+
+                        if (errorMessages.length > 0) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Notice',
+                                html: errorMessages.join('<br>'),
+                                confirmButtonColor: '#2563EB',
+                            });
+                        } else if (successMessages.length > 0) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                html: successMessages.join('<br>'),
+                                confirmButtonColor: '#2563EB',
+                            });
+                        }
+                    });
+                </script>
                 {% endif %}
 
 
@@ -267,7 +309,9 @@
                                     <h6 class="text-dark mb-2"><i class="fas fa-tag me-2"></i>Registration Fee</h6>
                                     <p class="text-dark small mb-0" style="color: #334155 !important;">
                                         <strong>Base Fee:</strong> ₹699 per person
-                                        <br><strong>Example:</strong> 4 members = ₹2,796
+                                        <br><strong>Example:</strong> 3 members = ₹2,097 ,4 members = ₹2,796, 5 members
+                                        =
+                                        ₹3,495 .
                                     </p>
                                 </div>
                                 <div class="col-12 col-md-12 mb-3">
@@ -320,9 +364,6 @@
                                     <label for="{{ form.team_name.id_for_label }}"
                                         class="form-label required-field">Team Name</label>
                                     {{ form.team_name }}
-                                    {% if form.team_name.errors %}
-                                    <div class="text-danger small">{{ form.team_name.errors.0 }}</div>
-                                    {% endif %}
                                 </div>
                             </div>
                             <div class="row">
@@ -330,9 +371,6 @@
                                     <label for="{{ form.team_size.id_for_label }}"
                                         class="form-label required-field">Team Size</label>
                                     {{ form.team_size }}
-                                    {% if form.team_size.errors %}
-                                    <div class="text-danger small">{{ form.team_size.errors.0 }}</div>
-                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -345,9 +383,6 @@
                                     <label for="{{ form.theme.id_for_label }}"
                                         class="form-label required-field">Theme/Track</label>
                                     {{ form.theme }}
-                                    {% if form.theme.errors %}
-                                    <div class="text-danger small">{{ form.theme.errors.0 }}</div>
-                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -366,17 +401,11 @@
                                         <label for="{{ form.member1_name.id_for_label }}"
                                             class="form-label required-field">Full Name</label>
                                         {{ form.member1_name }}
-                                        {% if form.member1_name.errors %}
-                                        <div class="text-danger small">{{ form.member1_name.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="{{ form.member1_email.id_for_label }}"
                                             class="form-label required-field">Email</label>
                                         {{ form.member1_email }}
-                                        {% if form.member1_email.errors %}
-                                        <div class="text-danger small">{{ form.member1_email.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -384,17 +413,11 @@
                                         <label for="{{ form.member1_phone.id_for_label }}"
                                             class="form-label required-field">Phone Number</label>
                                         {{ form.member1_phone }}
-                                        {% if form.member1_phone.errors %}
-                                        <div class="text-danger small">{{ form.member1_phone.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="{{ form.member1_roll.id_for_label }}"
                                             class="form-label required-field">Roll Number</label>
                                         {{ form.member1_roll }}
-                                        {% if form.member1_roll.errors %}
-                                        <div class="text-danger small">{{ form.member1_roll.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -402,33 +425,21 @@
                                         <label for="{{ form.member1_gender.id_for_label }}"
                                             class="form-label required-field">Gender</label>
                                         {{ form.member1_gender }}
-                                        {% if form.member1_gender.errors %}
-                                        <div class="text-danger small">{{ form.member1_gender.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-3 mb-3">
                                         <label for="{{ form.member1_year.id_for_label }}"
                                             class="form-label required-field">Year</label>
                                         {{ form.member1_year }}
-                                        {% if form.member1_year.errors %}
-                                        <div class="text-danger small">{{ form.member1_year.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="{{ form.member1_college_name.id_for_label }}"
                                             class="form-label required-field">College Name</label>
                                         {{ form.member1_college_name }}
-                                        {% if form.member1_college_name.errors %}
-                                        <div class="text-danger small">{{ form.member1_college_name.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-3 mb-3">
                                         <label for="{{ form.member1_college_code.id_for_label }}"
                                             class="form-label required-field">College Code</label>
                                         {{ form.member1_college_code }}
-                                        {% if form.member1_college_code.errors %}
-                                        <div class="text-danger small">{{ form.member1_college_code.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -436,25 +447,16 @@
                                         <label for="{{ form.member1_course_name.id_for_label }}"
                                             class="form-label required-field">Course Name</label>
                                         {{ form.member1_course_name }}
-                                        {% if form.member1_course_name.errors %}
-                                        <div class="text-danger small">{{ form.member1_course_name.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-3 mb-3">
                                         <label for="{{ form.member1_tshirt_size.id_for_label }}"
                                             class="form-label required-field">T-Shirt Size</label>
                                         {{ form.member1_tshirt_size }}
-                                        {% if form.member1_tshirt_size.errors %}
-                                        <div class="text-danger small">{{ form.member1_tshirt_size.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-3 mb-3">
                                         <label for="{{ form.member1_food_preference.id_for_label }}"
                                             class="form-label required-field">Food Preference</label>
                                         {{ form.member1_food_preference }}
-                                        {% if form.member1_food_preference.errors %}
-                                        <div class="text-danger small">{{ form.member1_food_preference.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -478,17 +480,11 @@
                                         <label for="{{ form.member2_name.id_for_label }}"
                                             class="form-label required-field">Full Name</label>
                                         {{ form.member2_name }}
-                                        {% if form.member2_name.errors %}
-                                        <div class="text-danger small">{{ form.member2_name.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="{{ form.member2_email.id_for_label }}"
                                             class="form-label required-field">Email</label>
                                         {{ form.member2_email }}
-                                        {% if form.member2_email.errors %}
-                                        <div class="text-danger small">{{ form.member2_email.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -496,17 +492,11 @@
                                         <label for="{{ form.member2_phone.id_for_label }}"
                                             class="form-label required-field">Phone Number</label>
                                         {{ form.member2_phone }}
-                                        {% if form.member2_phone.errors %}
-                                        <div class="text-danger small">{{ form.member2_phone.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="{{ form.member2_roll.id_for_label }}"
                                             class="form-label required-field">Roll Number</label>
                                         {{ form.member2_roll }}
-                                        {% if form.member2_roll.errors %}
-                                        <div class="text-danger small">{{ form.member2_roll.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -514,33 +504,21 @@
                                         <label for="{{ form.member2_gender.id_for_label }}"
                                             class="form-label required-field">Gender</label>
                                         {{ form.member2_gender }}
-                                        {% if form.member2_gender.errors %}
-                                        <div class="text-danger small">{{ form.member2_gender.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-3 mb-3">
                                         <label for="{{ form.member2_year.id_for_label }}"
                                             class="form-label required-field">Year</label>
                                         {{ form.member2_year }}
-                                        {% if form.member2_year.errors %}
-                                        <div class="text-danger small">{{ form.member2_year.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="{{ form.member2_college_name.id_for_label }}"
                                             class="form-label required-field">College Name</label>
                                         {{ form.member2_college_name }}
-                                        {% if form.member2_college_name.errors %}
-                                        <div class="text-danger small">{{ form.member2_college_name.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-3 mb-3">
                                         <label for="{{ form.member2_college_code.id_for_label }}"
                                             class="form-label required-field">College Code</label>
                                         {{ form.member2_college_code }}
-                                        {% if form.member2_college_code.errors %}
-                                        <div class="text-danger small">{{ form.member2_college_code.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -548,25 +526,16 @@
                                         <label for="{{ form.member2_course_name.id_for_label }}"
                                             class="form-label required-field">Course Name</label>
                                         {{ form.member2_course_name }}
-                                        {% if form.member2_course_name.errors %}
-                                        <div class="text-danger small">{{ form.member2_course_name.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-3 mb-3">
                                         <label for="{{ form.member2_tshirt_size.id_for_label }}"
                                             class="form-label required-field">T-Shirt Size</label>
                                         {{ form.member2_tshirt_size }}
-                                        {% if form.member2_tshirt_size.errors %}
-                                        <div class="text-danger small">{{ form.member2_tshirt_size.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-3 mb-3">
                                         <label for="{{ form.member2_food_preference.id_for_label }}"
                                             class="form-label required-field">Food Preference</label>
                                         {{ form.member2_food_preference }}
-                                        {% if form.member2_food_preference.errors %}
-                                        <div class="text-danger small">{{ form.member2_food_preference.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -590,17 +559,11 @@
                                         <label for="{{ form.member3_name.id_for_label }}"
                                             class="form-label required-field">Full Name</label>
                                         {{ form.member3_name }}
-                                        {% if form.member3_name.errors %}
-                                        <div class="text-danger small">{{ form.member3_name.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="{{ form.member3_email.id_for_label }}"
                                             class="form-label required-field">Email</label>
                                         {{ form.member3_email }}
-                                        {% if form.member3_email.errors %}
-                                        <div class="text-danger small">{{ form.member3_email.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -608,17 +571,11 @@
                                         <label for="{{ form.member3_phone.id_for_label }}"
                                             class="form-label required-field">Phone Number</label>
                                         {{ form.member3_phone }}
-                                        {% if form.member3_phone.errors %}
-                                        <div class="text-danger small">{{ form.member3_phone.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="{{ form.member3_roll.id_for_label }}"
                                             class="form-label required-field">Roll Number</label>
                                         {{ form.member3_roll }}
-                                        {% if form.member3_roll.errors %}
-                                        <div class="text-danger small">{{ form.member3_roll.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -626,33 +583,21 @@
                                         <label for="{{ form.member3_gender.id_for_label }}"
                                             class="form-label required-field">Gender</label>
                                         {{ form.member3_gender }}
-                                        {% if form.member3_gender.errors %}
-                                        <div class="text-danger small">{{ form.member3_gender.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-3 mb-3">
                                         <label for="{{ form.member3_year.id_for_label }}"
                                             class="form-label required-field">Year</label>
                                         {{ form.member3_year }}
-                                        {% if form.member3_year.errors %}
-                                        <div class="text-danger small">{{ form.member3_year.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="{{ form.member3_college_name.id_for_label }}"
                                             class="form-label required-field">College Name</label>
                                         {{ form.member3_college_name }}
-                                        {% if form.member3_college_name.errors %}
-                                        <div class="text-danger small">{{ form.member3_college_name.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-3 mb-3">
                                         <label for="{{ form.member3_college_code.id_for_label }}"
                                             class="form-label required-field">College Code</label>
                                         {{ form.member3_college_code }}
-                                        {% if form.member3_college_code.errors %}
-                                        <div class="text-danger small">{{ form.member3_college_code.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -660,25 +605,16 @@
                                         <label for="{{ form.member3_course_name.id_for_label }}"
                                             class="form-label required-field">Course Name</label>
                                         {{ form.member3_course_name }}
-                                        {% if form.member3_course_name.errors %}
-                                        <div class="text-danger small">{{ form.member3_course_name.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-3 mb-3">
                                         <label for="{{ form.member3_tshirt_size.id_for_label }}"
                                             class="form-label required-field">T-Shirt Size</label>
                                         {{ form.member3_tshirt_size }}
-                                        {% if form.member3_tshirt_size.errors %}
-                                        <div class="text-danger small">{{ form.member3_tshirt_size.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-3 mb-3">
                                         <label for="{{ form.member3_food_preference.id_for_label }}"
                                             class="form-label required-field">Food Preference</label>
                                         {{ form.member3_food_preference }}
-                                        {% if form.member3_food_preference.errors %}
-                                        <div class="text-danger small">{{ form.member3_food_preference.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -695,24 +631,18 @@
                             </div>
 
 
-                            <div class="member-card">
+                            <div class="member-card" id="member4-section">
                                 <h3 class="h5 text-dark mb-3">Member 4 <span class="text-danger">*</span></h3>
                                 <div class="row">
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="{{ form.member4_name.id_for_label }}"
                                             class="form-label required-field">Full Name</label>
                                         {{ form.member4_name }}
-                                        {% if form.member4_name.errors %}
-                                        <div class="text-danger small">{{ form.member4_name.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="{{ form.member4_email.id_for_label }}"
                                             class="form-label required-field">Email</label>
                                         {{ form.member4_email }}
-                                        {% if form.member4_email.errors %}
-                                        <div class="text-danger small">{{ form.member4_email.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -720,17 +650,11 @@
                                         <label for="{{ form.member4_phone.id_for_label }}"
                                             class="form-label required-field">Phone Number</label>
                                         {{ form.member4_phone }}
-                                        {% if form.member4_phone.errors %}
-                                        <div class="text-danger small">{{ form.member4_phone.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="{{ form.member4_roll.id_for_label }}"
                                             class="form-label required-field">Roll Number</label>
                                         {{ form.member4_roll }}
-                                        {% if form.member4_roll.errors %}
-                                        <div class="text-danger small">{{ form.member4_roll.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -738,33 +662,21 @@
                                         <label for="{{ form.member4_gender.id_for_label }}"
                                             class="form-label required-field">Gender</label>
                                         {{ form.member4_gender }}
-                                        {% if form.member4_gender.errors %}
-                                        <div class="text-danger small">{{ form.member4_gender.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-3 mb-3">
                                         <label for="{{ form.member4_year.id_for_label }}"
                                             class="form-label required-field">Year</label>
                                         {{ form.member4_year }}
-                                        {% if form.member4_year.errors %}
-                                        <div class="text-danger small">{{ form.member4_year.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="{{ form.member4_college_name.id_for_label }}"
                                             class="form-label required-field">College Name</label>
                                         {{ form.member4_college_name }}
-                                        {% if form.member4_college_name.errors %}
-                                        <div class="text-danger small">{{ form.member4_college_name.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-3 mb-3">
                                         <label for="{{ form.member4_college_code.id_for_label }}"
                                             class="form-label required-field">College Code</label>
                                         {{ form.member4_college_code }}
-                                        {% if form.member4_college_code.errors %}
-                                        <div class="text-danger small">{{ form.member4_college_code.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -772,25 +684,16 @@
                                         <label for="{{ form.member4_course_name.id_for_label }}"
                                             class="form-label required-field">Course Name</label>
                                         {{ form.member4_course_name }}
-                                        {% if form.member4_course_name.errors %}
-                                        <div class="text-danger small">{{ form.member4_course_name.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-3 mb-3">
                                         <label for="{{ form.member4_tshirt_size.id_for_label }}"
                                             class="form-label required-field">T-Shirt Size</label>
                                         {{ form.member4_tshirt_size }}
-                                        {% if form.member4_tshirt_size.errors %}
-                                        <div class="text-danger small">{{ form.member4_tshirt_size.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-3 mb-3">
                                         <label for="{{ form.member4_food_preference.id_for_label }}"
                                             class="form-label required-field">Food Preference</label>
                                         {{ form.member4_food_preference }}
-                                        {% if form.member4_food_preference.errors %}
-                                        <div class="text-danger small">{{ form.member4_food_preference.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -814,17 +717,11 @@
                                         <label for="{{ form.member5_name.id_for_label }}" class="form-label">Full
                                             Name</label>
                                         {{ form.member5_name }}
-                                        {% if form.member5_name.errors %}
-                                        <div class="text-danger small">{{ form.member5_name.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="{{ form.member5_email.id_for_label }}"
                                             class="form-label">Email</label>
                                         {{ form.member5_email }}
-                                        {% if form.member5_email.errors %}
-                                        <div class="text-danger small">{{ form.member5_email.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -832,17 +729,11 @@
                                         <label for="{{ form.member5_phone.id_for_label }}" class="form-label">Phone
                                             Number</label>
                                         {{ form.member5_phone }}
-                                        {% if form.member5_phone.errors %}
-                                        <div class="text-danger small">{{ form.member5_phone.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="{{ form.member5_roll.id_for_label }}" class="form-label">Roll
                                             Number</label>
                                         {{ form.member5_roll }}
-                                        {% if form.member5_roll.errors %}
-                                        <div class="text-danger small">{{ form.member5_roll.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -850,33 +741,21 @@
                                         <label for="{{ form.member5_gender.id_for_label }}"
                                             class="form-label">Gender</label>
                                         {{ form.member5_gender }}
-                                        {% if form.member5_gender.errors %}
-                                        <div class="text-danger small">{{ form.member5_gender.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-3 mb-3">
                                         <label for="{{ form.member5_year.id_for_label }}"
                                             class="form-label">Year</label>
                                         {{ form.member5_year }}
-                                        {% if form.member5_year.errors %}
-                                        <div class="text-danger small">{{ form.member5_year.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="{{ form.member5_college_name.id_for_label }}"
                                             class="form-label required-field">College Name</label>
                                         {{ form.member5_college_name }}
-                                        {% if form.member5_college_name.errors %}
-                                        <div class="text-danger small">{{ form.member5_college_name.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-3 mb-3">
                                         <label for="{{ form.member5_college_code.id_for_label }}"
                                             class="form-label">College Code</label>
                                         {{ form.member5_college_code }}
-                                        {% if form.member5_college_code.errors %}
-                                        <div class="text-danger small">{{ form.member5_college_code.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -884,25 +763,16 @@
                                         <label for="{{ form.member5_course_name.id_for_label }}"
                                             class="form-label">Course Name</label>
                                         {{ form.member5_course_name }}
-                                        {% if form.member5_course_name.errors %}
-                                        <div class="text-danger small">{{ form.member5_course_name.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-3 mb-3">
                                         <label for="{{ form.member5_tshirt_size.id_for_label }}"
                                             class="form-label">T-Shirt Size</label>
                                         {{ form.member5_tshirt_size }}
-                                        {% if form.member5_tshirt_size.errors %}
-                                        <div class="text-danger small">{{ form.member5_tshirt_size.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-3 mb-3">
                                         <label for="{{ form.member5_food_preference.id_for_label }}"
                                             class="form-label">Food Preference</label>
                                         {{ form.member5_food_preference }}
-                                        {% if form.member5_food_preference.errors %}
-                                        <div class="text-danger small">{{ form.member5_food_preference.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -926,17 +796,11 @@
                                         <label for="{{ form.member6_name.id_for_label }}" class="form-label">Full
                                             Name</label>
                                         {{ form.member6_name }}
-                                        {% if form.member6_name.errors %}
-                                        <div class="text-danger small">{{ form.member6_name.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="{{ form.member6_email.id_for_label }}"
                                             class="form-label">Email</label>
                                         {{ form.member6_email }}
-                                        {% if form.member6_email.errors %}
-                                        <div class="text-danger small">{{ form.member6_email.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -944,17 +808,11 @@
                                         <label for="{{ form.member6_phone.id_for_label }}" class="form-label">Phone
                                             Number</label>
                                         {{ form.member6_phone }}
-                                        {% if form.member6_phone.errors %}
-                                        <div class="text-danger small">{{ form.member6_phone.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="{{ form.member6_roll.id_for_label }}" class="form-label">Roll
                                             Number</label>
                                         {{ form.member6_roll }}
-                                        {% if form.member6_roll.errors %}
-                                        <div class="text-danger small">{{ form.member6_roll.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -962,33 +820,21 @@
                                         <label for="{{ form.member6_gender.id_for_label }}"
                                             class="form-label">Gender</label>
                                         {{ form.member6_gender }}
-                                        {% if form.member6_gender.errors %}
-                                        <div class="text-danger small">{{ form.member6_gender.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-3 mb-3">
                                         <label for="{{ form.member6_year.id_for_label }}"
                                             class="form-label">Year</label>
                                         {{ form.member6_year }}
-                                        {% if form.member6_year.errors %}
-                                        <div class="text-danger small">{{ form.member6_year.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="{{ form.member6_college_name.id_for_label }}"
                                             class="form-label required-field">College Name</label>
                                         {{ form.member6_college_name }}
-                                        {% if form.member6_college_name.errors %}
-                                        <div class="text-danger small">{{ form.member6_college_name.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-3 mb-3">
                                         <label for="{{ form.member6_college_code.id_for_label }}"
                                             class="form-label">College Code</label>
                                         {{ form.member6_college_code }}
-                                        {% if form.member6_college_code.errors %}
-                                        <div class="text-danger small">{{ form.member6_college_code.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -996,25 +842,16 @@
                                         <label for="{{ form.member6_course_name.id_for_label }}"
                                             class="form-label">Course Name</label>
                                         {{ form.member6_course_name }}
-                                        {% if form.member6_course_name.errors %}
-                                        <div class="text-danger small">{{ form.member6_course_name.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-3 mb-3">
                                         <label for="{{ form.member6_tshirt_size.id_for_label }}"
                                             class="form-label">T-Shirt Size</label>
                                         {{ form.member6_tshirt_size }}
-                                        {% if form.member6_tshirt_size.errors %}
-                                        <div class="text-danger small">{{ form.member6_tshirt_size.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                     <div class="col-12 col-md-3 mb-3">
                                         <label for="{{ form.member6_food_preference.id_for_label }}"
                                             class="form-label">Food Preference</label>
                                         {{ form.member6_food_preference }}
-                                        {% if form.member6_food_preference.errors %}
-                                        <div class="text-danger small">{{ form.member6_food_preference.errors.0 }}</div>
-                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -1032,13 +869,6 @@
                         </div>
 
 
-                        {% if form.non_field_errors %}
-                        <div class="alert alert-danger">
-                            {{ form.non_field_errors }}
-                        </div>
-                        {% endif %}
-
-
                         <div class="text-center mt-4 mb-4">
                             <button type="button" class="btn-submit" id="calculateBtn"
                                 style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
@@ -1054,7 +884,8 @@
                             <div class="row">
                                 <div class="col-12 col-md-6 mb-3">
                                     <div class="glass-panel p-4 text-center">
-                                        <p class="mb-3"><strong>Scan this QR code to make payment of ₹2,796:</strong>
+                                        <p class="mb-3"><strong>Scan this QR code to make payment of ₹<span
+                                                    id="qr-instruction-amount">2,796</span>:</strong>
                                         </p>
                                         <div id="qr-code-container"
                                             class="mb-3 d-flex flex-row overflow-auto gap-3 pb-2"
@@ -1145,7 +976,7 @@
                                         </div>
 
                                         <p class="text-muted small mt-4 font-bold text-lg">Amount to Pay: ₹<span
-                                                id="qr-amount" class="text-indigo-600">₹2,796</span></p>
+                                                id="qr-amount" class="text-indigo-600">2,796</span></p>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6 mb-3">
@@ -1171,15 +1002,12 @@
 
 
                         <div class="mb-4" id="transaction-id-section" style="display: none;">
-                            <h2 class="section-title">Transaction ID</h2>
+                            <h2 class="section-title">UTR ID</h2>
                             <div class="row">
                                 <div class="col-12 mb-3">
                                     <label for="{{ form.transaction_id.id_for_label }}"
-                                        class="form-label required-field">Transaction ID</label>
+                                        class="form-label required-field">UTR ID</label>
                                     {{ form.transaction_id }}
-                                    {% if form.transaction_id.errors %}
-                                    <div class="text-danger small">{{ form.transaction_id.errors.0 }}</div>
-                                    {% endif %}
                                     <small class="text-muted">Enter the transaction ID from your payment receipt. This
                                         must be unique and will be verified.</small>
                                 </div>
@@ -1188,20 +1016,16 @@
 
 
                         <div class="mb-4" id="payment-screenshot-section" style="display: none;">
-                            <h2 class="section-title">Payment Screenshot</h2>
+                            <h2 class="section-title">Payment Screenshot (with UTR id visible)</h2>
                             <div class="row">
                                 <div class="col-12 mb-3">
                                     <label for="{{ form.payment_screenshot.id_for_label }}"
                                         class="form-label required-field">Payment Screenshot (.jpg, .jpeg, .png)</label>
                                     {{ form.payment_screenshot }}
-                                    {% if form.payment_screenshot.errors %}
-                                    <div class="text-danger small">{{ form.payment_screenshot.errors.0 }}</div>
-                                    {% endif %}
                                     {% if preserved_file_info %}
                                     <div class="alert alert-info mt-2">
                                         <i class="fas fa-check-circle me-2"></i>
-                                        <strong>File uploaded:</strong> {{ preserved_file_info.name }} ({{
-                                        preserved_file_info.size|filesizeformat }})
+                                        <strong>File uploaded:</strong> {{ preserved_file_info.name }}
                                         <br><small class="text-muted">This file will be used for your registration.
                                             Upload a new file to replace it.</small>
                                     </div>
@@ -1254,13 +1078,17 @@
             const noDiscountInfo = document.getElementById('no-discount-info');
             const discountMessage = document.getElementById('discount-message');
             const qrAmount = document.getElementById('qr-amount');
+            const qrInstructionAmount = document.getElementById('qr-instruction-amount');
+
+            const formattedAmount = finalAmount.toLocaleString('en-IN');
 
             if (displayTeamSize) displayTeamSize.textContent = teamSize;
             if (totalBaseFeeEl) totalBaseFeeEl.textContent = totalBaseFee;
             if (discountAmountEl) discountAmountEl.textContent = discountAmount;
             if (finalAmountEl) finalAmountEl.textContent = finalAmount;
             if (finalAmountNoDiscountEl) finalAmountNoDiscountEl.textContent = finalAmount;
-            if (qrAmount) qrAmount.textContent = finalAmount;
+            if (qrAmount) qrAmount.textContent = formattedAmount;
+            if (qrInstructionAmount) qrInstructionAmount.textContent = formattedAmount;
 
             if (discountEligible) {
                 if (discountInfo) discountInfo.classList.remove('d-none');
@@ -1316,7 +1144,7 @@
             const transactionIdSection = document.getElementById('transaction-id-section');
 
             if (calculateBtn) {
-                calculateBtn.addEventListener('click', function () {
+                calculateBtn.addEventListener('click', async function () {
                     const teamSizeSelect = document.querySelector('[name="team_size"]');
                     const teamSize = teamSizeSelect ? parseInt(teamSizeSelect.value) || 4 : 4;
 
@@ -1335,7 +1163,7 @@
                         errorMessage = 'Please select a theme.';
                     }
 
-                    for (let i = 1; i <= Math.min(teamSize, 4); i++) {
+                    for (let i = 1; i <= teamSize; i++) {
                         const name = document.querySelector(`[name="member${i}_name"]`);
                         const email = document.querySelector(`[name="member${i}_email"]`);
                         const phone = document.querySelector(`[name="member${i}_phone"]`);
@@ -1369,29 +1197,42 @@
                         }
                     }
 
-                    if (teamSize > 4) {
-                        for (let i = 5; i <= teamSize; i++) {
-                            const name = document.querySelector(`[name="member${i}_name"]`);
-                            const email = document.querySelector(`[name="member${i}_email"]`);
-                            const phone = document.querySelector(`[name="member${i}_phone"]`);
-                            const roll = document.querySelector(`[name="member${i}_roll"]`);
-                            const collegeCode = document.querySelector(`[name="member${i}_college_code"]`);
-
-                            if (name && name.value.trim()) {
-                                if (!email || !email.value.trim() || !phone || !phone.value.trim() ||
-                                    !roll || !roll.value.trim() || !collegeCode || !collegeCode.value.trim()) {
-                                    isValid = false;
-                                    errorMessage = `Please fill in all details for Member ${i} or leave all fields empty.`;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
                     if (!isValid) {
-                        alert(errorMessage);
+                        Swal.fire({ icon: "error", title: "Validation Error", text: errorMessage, confirmButtonColor: "#2563EB" });
                         return;
                     }
+
+                    // Check if team name already exists
+                    try {
+                        const originalBtnText = calculateBtn.innerHTML;
+                        calculateBtn.disabled = true;
+                        calculateBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Checking...';
+
+                        const response = await fetch('/check-team-name/?name=' + encodeURIComponent(teamName.value));
+                        const data = await response.json();
+
+                        calculateBtn.disabled = false;
+                        calculateBtn.innerHTML = originalBtnText;
+
+                        if (data.exists) {
+                            Swal.fire({ icon: "error", title: "Validation Error", text: "team name already exist", confirmButtonColor: "#2563EB" });
+                            return;
+                        }
+                    } catch (error) {
+                        console.error('Error checking team name:', error);
+                        calculateBtn.disabled = false;
+                        calculateBtn.innerHTML = '<i class="fas fa-calculator me-2"></i>Calculate Money';
+                    }
+
+                    const baseFeePerPerson = 699;
+                    const totalFee = baseFeePerPerson * teamSize;
+                    const formattedFee = totalFee.toLocaleString('en-IN');
+
+                    const qrInstructionAmount = document.getElementById('qr-instruction-amount');
+                    if (qrInstructionAmount) qrInstructionAmount.textContent = formattedFee;
+
+                    const qrAmount = document.getElementById('qr-amount');
+                    if (qrAmount) qrAmount.textContent = formattedFee;
 
                     if (qrSection) {
                         qrSection.style.display = 'block';
@@ -1448,7 +1289,7 @@
 
                     const leaderCheckboxes = document.querySelectorAll('input[type="checkbox"][name^="is_leader"]:checked');
                     if (leaderCheckboxes.length !== 1) {
-                        alert('Please select exactly one team leader.');
+                        Swal.fire({ icon: "warning", title: "Notice", text: 'Please select exactly one team leader.', confirmButtonColor: "#2563EB" });
                         restoreFilesAfterValidation();
                         event.preventDefault();
                         return;
@@ -1460,7 +1301,7 @@
                     for (let field of emailFields) {
                         if (field.value && !validateEmail(field.value)) {
                             field.classList.add('is-invalid');
-                            alert('Please enter a valid email address');
+                            Swal.fire({ icon: "warning", title: "Notice", text: 'Please enter a valid email address', confirmButtonColor: "#2563EB" });
                             field.focus();
                             restoreFilesAfterValidation();
                             event.preventDefault();
@@ -1474,7 +1315,7 @@
                     for (let field of phoneFields) {
                         if (field.value && !validatePhone(field.value)) {
                             field.classList.add('is-invalid');
-                            alert('Phone number must be 10 digits starting with 6, 7, 8, or 9');
+                            Swal.fire({ icon: "warning", title: "Notice", text: 'Phone number must be 10 digits starting with 6, 7, 8, or 9', confirmButtonColor: "#2563EB" });
                             field.focus();
                             restoreFilesAfterValidation();
                             event.preventDefault();
@@ -1507,11 +1348,28 @@
         function updateMemberVisibility() {
             const teamSizeSelect = document.querySelector('[name="team_size"]');
             const teamSize = teamSizeSelect ? teamSizeSelect.value : '4';
+            const member4Section = document.getElementById('member4-section');
             const member5Section = document.getElementById('member5-section');
             const member6Section = document.getElementById('member6-section');
 
+            if (member4Section) member4Section.style.display = 'none';
             if (member5Section) member5Section.style.display = 'none';
             if (member6Section) member6Section.style.display = 'none';
+
+            if (member4Section) makeFieldsRequired(member4Section, false);
+            if (member5Section) makeFieldsRequired(member5Section, false);
+            if (member6Section) makeFieldsRequired(member6Section, false);
+
+            if (teamSize === '4' || teamSize === '5' || teamSize === '6') {
+                if (member4Section) {
+                    member4Section.style.display = 'block';
+                    makeFieldsRequired(member4Section, true);
+                    const member4Label = member4Section.querySelector('h3');
+                    if (member4Label) {
+                        member4Label.innerHTML = 'Member 4 <span class="text-danger">*</span>';
+                    }
+                }
+            }
 
             if (teamSize === '5' || teamSize === '6') {
                 if (member5Section) {
@@ -1531,23 +1389,6 @@
                     const member6Label = member6Section.querySelector('h3');
                     if (member6Label) {
                         member6Label.innerHTML = 'Member 6 <span class="text-danger">*</span>';
-                    }
-                }
-            }
-
-            if (teamSize === '4' || teamSize === '3' || teamSize === '2') {
-                if (member5Section) {
-                    makeFieldsRequired(member5Section, false);
-                    const member5Label = member5Section.querySelector('h3');
-                    if (member5Label) {
-                        member5Label.innerHTML = 'Member 5 <span class="text-muted">(Optional)</span>';
-                    }
-                }
-                if (member6Section) {
-                    makeFieldsRequired(member6Section, false);
-                    const member6Label = member6Section.querySelector('h3');
-                    if (member6Label) {
-                        member6Label.innerHTML = 'Member 6 <span class="text-muted">(Optional)</span>';
                     }
                 }
             }
@@ -1655,7 +1496,7 @@
 
             const leaderCheckboxes = document.querySelectorAll('input[type="checkbox"][name^="is_leader"]:checked');
             if (leaderCheckboxes.length !== 1) {
-                alert('Please select exactly one team leader.');
+                Swal.fire({ icon: "warning", title: "Notice", text: 'Please select exactly one team leader.', confirmButtonColor: "#2563EB" });
                 restoreFilesAfterValidation();
                 event.preventDefault();
                 return false;
@@ -1665,7 +1506,7 @@
             for (let field of emailFields) {
                 if (field.value && !validateEmail(field.value)) {
                     field.classList.add('is-invalid');
-                    alert('Please enter a valid email address');
+                    Swal.fire({ icon: "warning", title: "Notice", text: 'Please enter a valid email address', confirmButtonColor: "#2563EB" });
                     field.focus();
                     restoreFilesAfterValidation();
                     event.preventDefault();
@@ -1679,7 +1520,7 @@
             for (let field of phoneFields) {
                 if (field.value && !validatePhone(field.value)) {
                     field.classList.add('is-invalid');
-                    alert('Phone number must be 10 digits starting with 6, 7, 8, or 9');
+                    Swal.fire({ icon: "warning", title: "Notice", text: 'Phone number must be 10 digits starting with 6, 7, 8, or 9', confirmButtonColor: "#2563EB" });
                     field.focus();
                     restoreFilesAfterValidation();
                     event.preventDefault();
@@ -1753,7 +1594,7 @@
             const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
             if (!csrfToken) {
                 console.error('CSRF token missing before form submission!');
-                alert('CSRF token missing. Please refresh the page and try again.');
+                Swal.fire({ icon: "warning", title: "Notice", text: 'CSRF token missing. Please refresh the page and try again.', confirmButtonColor: "#2563EB" });
                 return false;
             }
 
@@ -1774,7 +1615,7 @@
             const leaderCheckboxes = document.querySelectorAll('input[type="checkbox"][name^="is_leader"]:checked');
             console.log('Leader checkboxes found:', leaderCheckboxes.length);
             if (leaderCheckboxes.length !== 1) {
-                alert('Please select exactly one team leader.');
+                Swal.fire({ icon: "warning", title: "Notice", text: 'Please select exactly one team leader.', confirmButtonColor: "#2563EB" });
                 restoreFileSelections(fileData);
                 return false;
             }
@@ -1783,7 +1624,7 @@
             for (let field of emailFields) {
                 if (field.value && !validateEmail(field.value)) {
                     field.classList.add('is-invalid');
-                    alert('Please enter a valid email address');
+                    Swal.fire({ icon: "warning", title: "Notice", text: 'Please enter a valid email address', confirmButtonColor: "#2563EB" });
                     field.focus();
                     restoreFileSelections(fileData);
                     return false;
@@ -1796,7 +1637,7 @@
             for (let field of phoneFields) {
                 if (field.value && !validatePhone(field.value)) {
                     field.classList.add('is-invalid');
-                    alert('Phone number must be 10 digits starting with 6, 7, 8, or 9');
+                    Swal.fire({ icon: "warning", title: "Notice", text: 'Phone number must be 10 digits starting with 6, 7, 8, or 9', confirmButtonColor: "#2563EB" });
                     field.focus();
                     restoreFileSelections(fileData);
                     return false;
@@ -1954,7 +1795,7 @@
             });
 
             if (!isValid && errors.length > 0) {
-                alert('Please fix the following errors:\n\n' + errors.join('\n'));
+                Swal.fire({ icon: "warning", title: "Notice", text: 'Please fix the following errors:\n\n' + errors.join('\n'), confirmButtonColor: "#2563EB" });
             }
 
             return isValid;
@@ -1968,7 +1809,7 @@
                     field.addEventListener('blur', function () {
                         if (this.value && !validateEmail(this.value)) {
                             this.classList.add('is-invalid');
-                            alert('Please enter a valid email address');
+                            Swal.fire({ icon: "warning", title: "Notice", text: 'Please enter a valid email address', confirmButtonColor: "#2563EB" });
                         } else {
                             this.classList.remove('is-invalid');
                         }
@@ -1980,7 +1821,7 @@
                     field.addEventListener('blur', function () {
                         if (this.value && !validatePhone(this.value)) {
                             this.classList.add('is-invalid');
-                            alert('Phone number must be 10 digits starting with 6, 7, 8, or 9');
+                            Swal.fire({ icon: "warning", title: "Notice", text: 'Phone number must be 10 digits starting with 6, 7, 8, or 9', confirmButtonColor: "#2563EB" });
                         } else {
                             this.classList.remove('is-invalid');
                         }

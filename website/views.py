@@ -106,6 +106,8 @@ def register_team(request):
             print(f"=============================")
 
             for field, errors in form.errors.items():
+                if field == '__all__':
+                    continue
                 for error in errors:
                     messages.error(request, f"{field}: {error}")
             for error in form.non_field_errors():
@@ -175,7 +177,7 @@ def register_team(request):
 
                 def get_member_data(member_num, prefix=''):
 
-                    if member_num >= 5:
+                    if member_num >= 4:
                         member_name = form.cleaned_data.get(f'{prefix}member{member_num}_name')
 
                         if not member_name:
@@ -198,7 +200,7 @@ def register_team(request):
                         year_val = form.cleaned_data.get(year_key, '')
 
 
-                        if member_num >= 5:
+                        if member_num >= 4:
                             return {
                                 f'member{member_num}_college_name': college_val if college_val else None,
                                 f'member{member_num}_college_code': college_code_val if college_code_val else None,
@@ -220,7 +222,7 @@ def register_team(request):
                         year_val = form.cleaned_data.get(f'{prefix}member{member_num}_year', '')
 
 
-                        if member_num >= 5:
+                        if member_num >= 4:
                             return {
                                 f'member{member_num}_college_name': college_val if college_val else None,
                                 f'member{member_num}_college_code': college_code_val if college_code_val else None,
@@ -310,9 +312,13 @@ def register_team(request):
 
 
                 try:
+                    if TeamRegistration.objects.filter(team_name__iexact=registration_data['team_name']).exists():
+                        raise Exception("conflict: team_name")
+                    if TeamRegistration.objects.filter(transaction_id=registration_data['transaction_id']).exists():
+                        raise Exception("conflict: transaction_id")
                     registration = TeamRegistration.objects.create(**registration_data)
-                except IntegrityError:
-                    raise Exception("conflict")
+                except IntegrityError as e:
+                    raise Exception(f"conflict: {str(e)}")
 
                 print(f"=== CLOUDINARY UPLOAD DEBUG ===")
                 print(f"payment_screenshot_path: {payment_screenshot_path}")
@@ -400,12 +406,12 @@ def register_team(request):
                 elif 'cannot access local variable' in error_msg:
                     messages.error(request, 'Server configuration error. Please try again or contact support.')
                 elif 'conflict' in error_msg.lower() or 'duplicate' in error_msg.lower():
-                    if 'transaction_id' in error_msg.lower():
-                        messages.error(request, 'This transaction ID has already been used. Please verify your transaction ID and try again.')
-                    elif 'team_name' in error_msg.lower():
-                        messages.error(request, 'A team with this name already exists. Please choose a different team name.')
+                    if 'transaction_id' in error_msg.lower() or 'transaction id' in error_msg.lower():
+                        messages.error(request, 'UTR id must be unique please enter correct UTR id')
+                    elif 'team_name' in error_msg.lower() or 'team name' in error_msg.lower():
+                        messages.error(request, 'team name already exist')
                     else:
-                        messages.error(request, 'A registration with this information already exists. Please check your details.')
+                        messages.error(request, 'Registration failed due to a duplicate entry.')
                 else:
                     messages.error(request, f'Error submitting registration: {error_msg}')
 
@@ -496,4 +502,14 @@ def send_receipt_email(request):
             return JsonResponse({'status': 'success'})
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
+    return JsonResponse({'error': 'Invalid method'}, status=405)
+
+@csrf_exempt
+def check_team_name(request):
+    if request.method == 'GET':
+        team_name = request.GET.get('name', '').strip()
+        if team_name:
+            exists = TeamRegistration.objects.filter(team_name__iexact=team_name).exists()
+            return JsonResponse({'exists': exists})
+        return JsonResponse({'exists': False})
     return JsonResponse({'error': 'Invalid method'}, status=405)

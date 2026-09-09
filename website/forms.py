@@ -5,12 +5,12 @@ class TeamRegistrationForm(forms.Form):
 
     team_size = forms.ChoiceField(
         choices=[
-            ('4', '4 Members')
+            ('3', '3 Members'),
+            ('4', '4 Members'),
+            ('5', '5 Members')
         ],
         widget=forms.Select(attrs={
-            'class': 'w-full px-4 py-3 form-control bg-gray-100',
-            'readonly': 'readonly',
-            'style': 'pointer-events: none;'
+            'class': 'w-full px-4 py-3 form-control'
         })
     )
 
@@ -371,12 +371,14 @@ class TeamRegistrationForm(forms.Form):
 
     member4_name = forms.CharField(
         max_length=255,
+        required=False,
         widget=forms.TextInput(attrs={
             'class': 'w-full px-4 py-3 form-control',
             'placeholder': 'Full Name'
         })
     )
     member4_email = forms.EmailField(
+        required=False,
         widget=forms.EmailInput(attrs={
             'class': 'w-full px-4 py-3 form-control',
             'placeholder': 'Email Address'
@@ -384,6 +386,7 @@ class TeamRegistrationForm(forms.Form):
     )
     member4_phone = forms.CharField(
         max_length=20,
+        required=False,
         widget=forms.TextInput(attrs={
             'class': 'w-full px-4 py-3 form-control',
             'placeholder': 'Phone Number',
@@ -394,12 +397,14 @@ class TeamRegistrationForm(forms.Form):
     )
     member4_roll = forms.CharField(
         max_length=50,
+        required=False,
         widget=forms.TextInput(attrs={
             'class': 'w-full px-4 py-3 form-control',
             'placeholder': 'Roll Number'
         })
     )
     member4_gender = forms.ChoiceField(
+        required=False,
         choices=[
             ('Male', 'Male'),
             ('Female', 'Female'),
@@ -411,6 +416,7 @@ class TeamRegistrationForm(forms.Form):
     )
     member4_college_code = forms.CharField(
         max_length=50,
+        required=False,
         widget=forms.TextInput(attrs={
             'class': 'w-full px-4 py-3 form-control',
             'placeholder': 'College Code'
@@ -418,12 +424,14 @@ class TeamRegistrationForm(forms.Form):
     )
     member4_course_name = forms.CharField(
         max_length=255,
+        required=False,
         widget=forms.TextInput(attrs={
             'class': 'w-full px-4 py-3 form-control',
             'placeholder': 'Course Name (Eg.. BTECH-CSE)'
         })
     )
     member4_year = forms.ChoiceField(
+        required=False,
         choices=[
             ('1st Year', '1st Year'),
             ('2nd Year', '2nd Year'),
@@ -436,6 +444,7 @@ class TeamRegistrationForm(forms.Form):
     )
     member4_college_name = forms.CharField(
         max_length=255,
+        required=False,
         widget=forms.TextInput(attrs={
             'class': 'w-full px-4 py-3 form-control',
             'placeholder': 'College Name'
@@ -449,6 +458,7 @@ class TeamRegistrationForm(forms.Form):
         })
     )
     member4_tshirt_size = forms.ChoiceField(
+        required=False,
         choices=[
              ('S', 'S'),
             ('M', 'M'),
@@ -461,6 +471,7 @@ class TeamRegistrationForm(forms.Form):
         })
     )
     member4_food_preference = forms.ChoiceField(
+        required=False,
         choices=[
             ('Veg', 'Veg'),
             ('Non Veg', 'Non Veg')
@@ -924,9 +935,8 @@ class TeamRegistrationForm(forms.Form):
 
 
         payment_screenshot = cleaned_data.get('payment_screenshot')
-        has_preserved_file = hasattr(self, 'preserved_file_info')
 
-        if not payment_screenshot and not has_preserved_file:
+        if not payment_screenshot and not 'preserved_payment_screenshot' in self.data:
             raise forms.ValidationError('Payment screenshot is required. Please upload a screenshot of your payment confirmation.')
 
 
