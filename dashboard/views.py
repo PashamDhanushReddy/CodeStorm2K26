@@ -532,6 +532,7 @@ def export_registrations_view(request):
                     col_wise = df['College Code'].replace('', 'N/A').fillna('N/A')
                     col_wise = col_wise.value_counts().reset_index()
                     col_wise.columns = ['College Code', 'Registrations']
+                    col_wise['College Code'] = col_wise['College Code'].astype(str)
                     
                     if not col_wise.empty:
                         col_wise.to_excel(writer, index=False, sheet_name='College Wise Registrations')
@@ -653,10 +654,10 @@ def export_team_data_view(request):
     
     # Prepare data for Excel export
     export_data = []
-    for college_code in sorted(college_groups.keys()):
+    for college_code in sorted(college_groups.keys(), key=lambda x: str(x)):
         data = college_groups[college_code]
         export_data.append({
-            'College Code': college_code,
+            'College Code': str(college_code),
             'College Names': ' | '.join(sorted(data['college_names'])),
             'No of Teams Registered': data['count'],
             'Transaction IDs': ', '.join(data['transaction_ids'])
