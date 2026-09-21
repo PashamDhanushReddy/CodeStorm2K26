@@ -10,11 +10,20 @@ from docx.enum.table import WD_TABLE_ALIGNMENT, WD_ALIGN_VERTICAL
 from docx.oxml.ns import nsdecls
 from docx.oxml import parse_xml
 
+from PIL import Image
+
 def get_logo():
     try:
         r = requests.get('https://www.nrcmec.org/Student/images/NRCM-Logo.png', timeout=5)
         if r.status_code == 200:
-            return BytesIO(r.content)
+            img = Image.open(BytesIO(r.content))
+            # Crop the tree icon from the left side (it's 320x132, we just take 132x132)
+            cropped = img.crop((0, 0, 132, 132))
+            
+            buf = BytesIO()
+            cropped.save(buf, format='PNG')
+            buf.seek(0)
+            return buf
     except:
         pass
     return None

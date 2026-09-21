@@ -770,12 +770,14 @@ def export_team_data_word_view(request):
                 date_str = reg_date_raw[:10]
                 day_wise_counts[date_str] = day_wise_counts.get(date_str, 0) + 1
             
-            college_code = reg.get('college_code')
-            if not college_code or college_code.lower() == 'null' or college_code.strip() == '':
+            data = reg.get('data', {})
+            
+            college_code = data.get('collegeCode')
+            if not college_code or str(college_code).lower() == 'null' or str(college_code).strip() == '':
                 college_code = 'N/A'
             college_code = str(college_code).strip()
             
-            college_name = reg.get('college_name') or 'N/A'
+            college_name = data.get('collegeName') or 'N/A'
             if college_code not in college_groups:
                 college_groups[college_code] = {'count': 0, 'college_names': set()}
             college_groups[college_code]['count'] += 1
