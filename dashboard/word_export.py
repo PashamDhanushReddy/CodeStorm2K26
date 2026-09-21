@@ -18,7 +18,7 @@ def get_logo():
         if r.status_code == 200:
             img = Image.open(BytesIO(r.content))
             # Crop the tree icon from the left side (it's 320x132, we just take 132x132)
-            cropped = img.crop((0, 0, 132, 132))
+            cropped = img.crop((0, 0, 92, 132))
             
             buf = BytesIO()
             cropped.save(buf, format='PNG')
@@ -32,7 +32,7 @@ def set_cell_bg_color(cell, color_hex):
     shading_elm = parse_xml(r'<w:shd {} w:fill="{}"/>'.format(nsdecls('w'), color_hex))
     cell._tc.get_or_add_tcPr().append(shading_elm)
 
-def generate_chart(codes, counts):
+def generate_chart(codes, counts, xlabel="College Code", ylabel="Number of Teams"):
     fig, ax = plt.subplots(figsize=(8, 4))
     bars = ax.bar(codes, counts, color='#5870f0', width=0.8, edgecolor='white')
     
@@ -48,8 +48,8 @@ def generate_chart(codes, counts):
     ax.xaxis.grid(False)
     ax.set_axisbelow(True)
     
-    ax.set_ylabel('Number of Teams', color='gray')
-    ax.set_xlabel('College Code', color='gray')
+    ax.set_ylabel(ylabel, color='gray')
+    ax.set_xlabel(xlabel, color='gray')
     
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
@@ -64,7 +64,7 @@ def generate_chart(codes, counts):
     buf.seek(0)
     return buf
 
-def create_word_report(total_teams, total_colleges, peak_day, col_wise_data):
+def create_word_report(total_teams, total_colleges, peak_day, col_wise_data, day_wise_counts):
     doc = Document()
     
     # Set narrow margins
@@ -225,7 +225,64 @@ def create_word_report(total_teams, total_colleges, peak_day, col_wise_data):
             run = para.add_run(str(val))
             run.font.size = Pt(9)
             
+
+    # Day-wise Registrations
+    p_heading2 = doc.add_paragraph()
+    r_h1_2 = p_heading2.add_run("2. ")
+    r_h1_2.font.color.rgb = RGBColor(68, 114, 196)
+    r_h1_2.font.size = Pt(14)
+    r_h1_2.font.bold = True
+    r_h2_2 = p_heading2.add_run("Day-wise Registrations")
+    r_h2_2.font.color.rgb = RGBColor(0, 0, 0)
+    r_h2_2.font.size = Pt(14)
+    r_h2_2.font.bold = True
+    
+    p_ctitle2 = doc.add_paragraph()
+    p_ctitle2.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r_ctitle2 = p_ctitle2.add_run("Day Wise Team Registrations")
+    r_ctitle2.font.bold = True
+    
+    dates = sorted(list(day_wise_counts.keys()))
+    counts = [day_wise_counts[d] for d in dates]
+    
+    if len(dates) > 0:
+        chart_buf2 = generate_chart(dates, counts, xlabel="Date", ylabel="Registrations")
+        p_img2 = doc.add_paragraph()
+        p_img2.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p_img2.add_run().add_picture(chart_buf2, width=Inches(6.5))
+        
+    doc.add_paragraph()
+    
+    # Table for Day-wise
+    day_table = doc.add_table(rows=len(dates)+1, cols=2)
+    day_table.style = 'Table Grid'
+    
+    headers2 = ['Date', 'Registrations']
+    for j, h in enumerate(headers2):
+        cell = day_table.cell(0, j)
+        para = cell.paragraphs[0]
+        para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        run = para.add_run(h)
+        set_cell_bg_color(cell, '0B163F')
+        run.font.color.rgb = RGBColor(255, 255, 255)
+        run.font.bold = True
+        
+    for i, date in enumerate(dates):
+        # Date cell
+        cell1 = day_table.cell(i+1, 0)
+        para1 = cell1.paragraphs[0]
+        para1.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        run1 = para1.add_run(str(date))
+        run1.font.size = Pt(9)
+        # Count cell
+        cell2 = day_table.cell(i+1, 1)
+        para2 = cell2.paragraphs[0]
+        para2.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        run2 = para2.add_run(str(day_wise_counts[date]))
+        run2.font.size = Pt(9)
+
     output = BytesIO()
+
     doc.save(output)
     output.seek(0)
     return output
