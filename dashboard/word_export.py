@@ -51,6 +51,7 @@ def generate_chart(codes, counts, xlabel="College Code", ylabel="Number of Teams
     ax.spines['left'].set_color('gray')
     ax.spines['bottom'].set_color('gray')
     ax.tick_params(colors='gray')
+    plt.xticks(rotation=45, ha='right')
     
     plt.tight_layout()
     buf = BytesIO()
