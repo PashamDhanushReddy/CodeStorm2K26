@@ -489,12 +489,13 @@ def export_registrations_view(request):
         # Create Excel file in memory
         output = BytesIO()
         with pd.ExcelWriter(output, engine='openpyxl') as writer:
-            df.to_excel(writer, index=False, sheet_name='Detailed Registrations')
+            df.to_excel(writer, index=False, sheet_name='Detailed Registrations', startrow=18)
             
             # Auto-adjust column widths
             worksheet = writer.sheets['Detailed Registrations']
             for column_cells in worksheet.columns:
-                length = max(len(str(cell.value)) for cell in column_cells)
+                # Need to check rows below startrow for length, but iterating all works
+                length = max(len(str(cell.value)) for cell in column_cells if cell.value)
                 worksheet.column_dimensions[column_cells[0].column_letter].width = min(length + 2, 50)  # Cap at 50 chars
                 
             # --- Generate Day-wise Registrations Graph ---
@@ -519,7 +520,7 @@ def export_registrations_view(request):
                         cats_day = Reference(ws_day, min_col=1, min_row=2, max_row=len(day_wise)+1)
                         chart_day.add_data(data_day, titles_from_data=True)
                         chart_day.set_categories(cats_day)
-                        ws_day.add_chart(chart_day, "D2")
+                        worksheet.add_chart(chart_day, "A2")
                 except Exception as e:
                     import traceback
                     with open("export_error_day.log", "w") as f:
@@ -546,7 +547,7 @@ def export_registrations_view(request):
                         cats_col = Reference(ws_col, min_col=1, min_row=2, max_row=len(col_wise)+1)
                         chart_col.add_data(data_col, titles_from_data=True)
                         chart_col.set_categories(cats_col)
-                        ws_col.add_chart(chart_col, "D2")
+                        worksheet.add_chart(chart_col, "I2")
                 except Exception as e:
                     import traceback
                     with open("export_error_col.log", "w") as f:
@@ -667,12 +668,12 @@ def export_team_data_view(request):
     # Create Excel file in memory
     output = BytesIO()
     with pd.ExcelWriter(output, engine='openpyxl') as writer:
-        df.to_excel(writer, index=False, sheet_name='Team Data by College')
+        df.to_excel(writer, index=False, sheet_name='Team Data by College', startrow=18)
         
         # Auto-adjust column widths
         worksheet = writer.sheets['Team Data by College']
         for column_cells in worksheet.columns:
-            length = max(len(str(cell.value)) for cell in column_cells)
+            length = max(len(str(cell.value)) for cell in column_cells if cell.value)
             worksheet.column_dimensions[column_cells[0].column_letter].width = min(length + 2, 80)
             
         # --- Generate College-wise Registrations Graph ---
@@ -684,11 +685,11 @@ def export_team_data_view(request):
                 chart_col.x_axis.title = "College Code"
                 chart_col.y_axis.title = "Number of Teams"
                 
-                data_col = Reference(worksheet, min_col=3, min_row=1, max_row=len(df)+1)
-                cats_col = Reference(worksheet, min_col=1, min_row=2, max_row=len(df)+1)
+                data_col = Reference(worksheet, min_col=3, min_row=19, max_row=19+len(df))
+                cats_col = Reference(worksheet, min_col=1, min_row=20, max_row=19+len(df))
                 chart_col.add_data(data_col, titles_from_data=True)
                 chart_col.set_categories(cats_col)
-                worksheet.add_chart(chart_col, "F2")
+                worksheet.add_chart(chart_col, "A2")
             except Exception as e:
                 pass
 
@@ -722,7 +723,7 @@ def export_team_data_view(request):
                 cats_day = Reference(ws_day, min_col=1, min_row=2, max_row=len(day_wise_df)+1)
                 chart_day.add_data(data_day, titles_from_data=True)
                 chart_day.set_categories(cats_day)
-                ws_day.add_chart(chart_day, "D2")
+                worksheet.add_chart(chart_day, "I2")
             except Exception as e:
                 pass    
     output.seek(0)
