@@ -512,7 +512,6 @@ def export_registrations_view(request):
                         
                         chart_day = BarChart()
                         chart_day.title = "Day Wise Team Registrations"
-                        chart_day.style = 10
                         chart_day.x_axis.title = "Date"
                         chart_day.y_axis.title = "Number of Registrations"
                         chart_day.varyColors = False
@@ -542,7 +541,6 @@ def export_registrations_view(request):
                         
                         chart_col = BarChart()
                         chart_col.title = "College Wise Registrations"
-                        chart_col.style = 10
                         chart_col.x_axis.title = "College Code"
                         chart_col.y_axis.title = "Number of Registrations"
                         chart_col.varyColors = False
@@ -685,7 +683,6 @@ def export_team_data_view(request):
             try:
                 chart_col = BarChart()
                 chart_col.title = "College Wise Registrations"
-                chart_col.style = 10
                 chart_col.x_axis.title = "College Code"
                 chart_col.y_axis.title = "Number of Teams"
                 chart_col.varyColors = False
@@ -719,7 +716,6 @@ def export_team_data_view(request):
                 
                 chart_day = BarChart()
                 chart_day.title = "Day Wise Team Registrations"
-                chart_day.style = 10
                 chart_day.x_axis.title = "Date"
                 chart_day.y_axis.title = "Number of Registrations"
                 chart_day.varyColors = False
