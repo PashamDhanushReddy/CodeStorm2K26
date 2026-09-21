@@ -515,6 +515,8 @@ def export_registrations_view(request):
                         chart_day.style = 10
                         chart_day.x_axis.title = "Date"
                         chart_day.y_axis.title = "Number of Registrations"
+                        chart_day.varyColors = False
+                        chart_day.legend = None
                         
                         data_day = Reference(ws_day, min_col=2, min_row=1, max_row=len(day_wise)+1)
                         cats_day = Reference(ws_day, min_col=1, min_row=2, max_row=len(day_wise)+1)
@@ -543,6 +545,8 @@ def export_registrations_view(request):
                         chart_col.style = 10
                         chart_col.x_axis.title = "College Code"
                         chart_col.y_axis.title = "Number of Registrations"
+                        chart_col.varyColors = False
+                        chart_col.legend = None
                         
                         data_col = Reference(ws_col, min_col=2, min_row=1, max_row=len(col_wise)+1)
                         cats_col = Reference(ws_col, min_col=1, min_row=2, max_row=len(col_wise)+1)
@@ -684,6 +688,8 @@ def export_team_data_view(request):
                 chart_col.style = 10
                 chart_col.x_axis.title = "College Code"
                 chart_col.y_axis.title = "Number of Teams"
+                chart_col.varyColors = False
+                chart_col.legend = None
                 
                 data_col = Reference(worksheet, min_col=3, min_row=19, max_row=19+len(df))
                 cats_col = Reference(worksheet, min_col=1, min_row=20, max_row=19+len(df))
@@ -716,6 +722,8 @@ def export_team_data_view(request):
                 chart_day.style = 10
                 chart_day.x_axis.title = "Date"
                 chart_day.y_axis.title = "Number of Registrations"
+                chart_day.varyColors = False
+                chart_day.legend = None
                 
                 data_day = Reference(ws_day, min_col=2, min_row=1, max_row=len(day_wise_df)+1)
                 cats_day = Reference(ws_day, min_col=1, min_row=2, max_row=len(day_wise_df)+1)
