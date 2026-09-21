@@ -158,8 +158,8 @@ def dashboard_view(request):
     # Get unique values for dropdowns from all data
     all_college_codes = sorted(set(reg['college_code'] for reg in all_processed if reg['college_code'] != 'N/A'))
     
-    # Team sizes should show all possible options (4, 5, 6 members)
-    all_team_sizes = ['4', '5', '6']
+    # Team sizes should show all possible options (3, 4, 5 members)
+    all_team_sizes = ['3', '4', '5']
     
     standard_themes = [
         'Generative AI & LLM Applications',
