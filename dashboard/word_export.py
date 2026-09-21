@@ -14,16 +14,11 @@ from PIL import Image
 
 def get_logo():
     try:
-        r = requests.get('https://www.nrcmec.org/Student/images/NRCM-Logo.png', timeout=5)
-        if r.status_code == 200:
-            img = Image.open(BytesIO(r.content))
-            # Crop the tree icon from the left side (it's 320x132, we just take 132x132)
-            cropped = img.crop((0, 0, 92, 132))
-            
-            buf = BytesIO()
-            cropped.save(buf, format='PNG')
-            buf.seek(0)
-            return buf
+        import os
+        logo_path = os.path.join(os.path.dirname(__file__), 'nrcm_logo.png')
+        if os.path.exists(logo_path):
+            with open(logo_path, 'rb') as f:
+                return BytesIO(f.read())
     except:
         pass
     return None
