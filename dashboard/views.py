@@ -502,7 +502,7 @@ def export_registrations_view(request):
             # --- Generate Day-wise Registrations Graph ---
             if 'Registration Date' in df.columns:
                 try:
-                    df['DateOnly'] = pd.to_datetime(df['Registration Date'], errors='coerce').dt.date
+                    df['DateOnly'] = pd.to_datetime(df['Registration Date'].astype(str).str[:10], errors='coerce').dt.date
                     day_wise = df['DateOnly'].dropna().value_counts().sort_index().reset_index()
                     day_wise.columns = ['Date', 'Registrations']
                     day_wise['Date'] = day_wise['Date'].astype(str)
@@ -511,9 +511,9 @@ def export_registrations_view(request):
                         day_wise.to_excel(writer, index=False, sheet_name='Day Wise Registrations')
                         ws_day = writer.sheets['Day Wise Registrations']
                         
-                        chart_day = LineChart()
+                        chart_day = BarChart()
                         chart_day.title = "Day Wise Team Registrations"
-                        chart_day.style = 13
+                        chart_day.style = 10
                         chart_day.x_axis.title = "Date"
                         chart_day.y_axis.title = "Number of Registrations"
                         
@@ -664,8 +664,7 @@ def export_team_data_view(request):
         export_data.append({
             'College Code': str(college_code),
             'College Names': ' | '.join(sorted(data['college_names'])),
-            'No of Teams Registered': data['count'],
-            'Transaction IDs': ', '.join(data['transaction_ids'])
+            'No of Teams Registered': data['count']
         })
     
     # Create DataFrame
@@ -704,15 +703,13 @@ def export_team_data_view(request):
         # --- Generate Day-wise Registrations Graph ---
         day_wise_counts = {}
         for reg in registrations:
-            reg_date_raw = reg.get('registration_date') or reg.get('created_at', '')
-            reg_date_str = reg_date_raw.isoformat() if isinstance(reg_date_raw, datetime) else reg_date_raw
-            if reg_date_str:
-                try:
-                    dt_obj = datetime.fromisoformat(reg_date_str.replace('Z', '+00:00')).date()
-                    date_str = str(dt_obj)
-                    day_wise_counts[date_str] = day_wise_counts.get(date_str, 0) + 1
-                except:
-                    pass
+            reg_date_raw = reg.get('registration_date') or reg.get('created_at')
+            if hasattr(reg_date_raw, 'date'):
+                date_str = str(reg_date_raw.date())
+                day_wise_counts[date_str] = day_wise_counts.get(date_str, 0) + 1
+            elif isinstance(reg_date_raw, str) and len(reg_date_raw) >= 10:
+                date_str = reg_date_raw[:10]
+                day_wise_counts[date_str] = day_wise_counts.get(date_str, 0) + 1
         
         if day_wise_counts:
             try:
@@ -721,9 +718,9 @@ def export_team_data_view(request):
                 day_wise_df.to_excel(writer, index=False, sheet_name='Day Wise Registrations')
                 ws_day = writer.sheets['Day Wise Registrations']
                 
-                chart_day = LineChart()
+                chart_day = BarChart()
                 chart_day.title = "Day Wise Team Registrations"
-                chart_day.style = 13
+                chart_day.style = 10
                 chart_day.x_axis.title = "Date"
                 chart_day.y_axis.title = "Number of Registrations"
                 
