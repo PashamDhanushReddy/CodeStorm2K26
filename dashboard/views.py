@@ -13,6 +13,18 @@ from datetime import datetime
 import pandas as pd
 from io import BytesIO
 from openpyxl.chart import BarChart, LineChart, Reference
+
+import requests
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+from docx import Document
+from docx.shared import Inches, Pt, RGBColor
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.enum.table import WD_TABLE_ALIGNMENT
+from docx.oxml.ns import nsdecls
+from docx.oxml import parse_xml
+
 def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
