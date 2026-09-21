@@ -72,8 +72,8 @@ def create_word_report(total_teams, total_colleges, peak_day, col_wise_data, day
 
     # 1. Header (Logo + Text)
     table = doc.add_table(rows=1, cols=2)
-    table.columns[0].width = Inches(1.5)
-    table.columns[1].width = Inches(6.0)
+    table.columns[0].width = Inches(2.5)
+    table.columns[1].width = Inches(5.0)
     
     logo_cell = table.cell(0, 0)
     text_cell = table.cell(0, 1)
@@ -83,9 +83,12 @@ def create_word_report(total_teams, total_colleges, peak_day, col_wise_data, day
         para = logo_cell.paragraphs[0]
         para.alignment = WD_ALIGN_PARAGRAPH.CENTER
         run = para.add_run()
-        run.add_picture(logo_buf, width=Inches(1.2))
+        run.add_picture(logo_buf, width=Inches(2.0))
+        logo_cell.vertical_alignment = WD_ALIGN_VERTICAL.CENTER
         
+    text_cell.vertical_alignment = WD_ALIGN_VERTICAL.CENTER
     para = text_cell.paragraphs[0]
+    para.alignment = WD_ALIGN_PARAGRAPH.CENTER
     run = para.add_run("NARSIMHA REDDY\nENGINEERING COLLEGE\n")
     run.font.name = 'Arial'
     run.font.size = Pt(16)
