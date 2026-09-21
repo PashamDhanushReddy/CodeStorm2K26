@@ -9,7 +9,6 @@ urlpatterns = [
     path('debug/fields/', views.debug_fields_view, name='debug_fields'),
     path('download/<path:ppt_path>/', views.download_ppt_view, name='download_ppt'),
     path('export/', views.export_registrations_view, name='export_registrations'),
-    path('export-team-data/', views.export_team_data_view, name='export_team_data'),
-    path('export-team-data-word/', views.export_team_data_word_view, name='export_team_data_word'),
+        path('export-team-data-word/', views.export_team_data_word_view, name='export_team_data_word'),
     path('logout/', views.logout_view, name='logout'),
 ]
