@@ -15,7 +15,7 @@ from PIL import Image
 def get_logo():
     try:
         import os
-        logo_path = os.path.join(os.path.dirname(__file__), 'nrcm_logo.png')
+        logo_path = os.path.join(os.path.dirname(__file__), 'nrcm_logo_full.png')
         if os.path.exists(logo_path):
             with open(logo_path, 'rb') as f:
                 return BytesIO(f.read())
@@ -71,37 +71,14 @@ def create_word_report(total_teams, total_colleges, peak_day, col_wise_data, day
         section.left_margin = Inches(0.5)
         section.right_margin = Inches(0.5)
 
-    # 1. Header (Logo + Text)
-    table = doc.add_table(rows=1, cols=2)
-    table.columns[0].width = Inches(2.5)
-    table.columns[1].width = Inches(5.0)
-    
-    logo_cell = table.cell(0, 0)
-    text_cell = table.cell(0, 1)
-    
+    # 1. Header (Full Logo Image)
     logo_buf = get_logo()
     if logo_buf:
-        para = logo_cell.paragraphs[0]
-        para.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        run = para.add_run()
-        run.add_picture(logo_buf, width=Inches(2.0))
-        logo_cell.vertical_alignment = WD_ALIGN_VERTICAL.CENTER
-        
-    text_cell.vertical_alignment = WD_ALIGN_VERTICAL.CENTER
-    para = text_cell.paragraphs[0]
-    para.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    run = para.add_run("NARSIMHA REDDY\nENGINEERING COLLEGE\n")
-    run.font.name = 'Arial'
-    run.font.size = Pt(16)
-    run.font.bold = True
-    run.font.color.rgb = RGBColor(79, 38, 131)
-    
-    run2 = para.add_run("An Autonomous Institution | Affiliated to JNTUH | Approved by AICTE\nAccredited by NBA & NAAC with 'A' Grade")
-    run2.font.name = 'Arial'
-    run2.font.size = Pt(8)
-    run2.font.color.rgb = RGBColor(128, 128, 128)
-    
-    doc.add_paragraph()
+        p = doc.add_paragraph()
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        run = p.add_run()
+        run.add_picture(logo_buf, width=Inches(7.0))
+        doc.add_paragraph()
     
     # CODESTORM 2K26 Title
     p = doc.add_paragraph()
