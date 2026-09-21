@@ -12,7 +12,7 @@ import json
 from datetime import datetime
 import pandas as pd
 from io import BytesIO
-
+from openpyxl.chart import BarChart, LineChart, Reference
 def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -496,6 +496,57 @@ def export_registrations_view(request):
             for column_cells in worksheet.columns:
                 length = max(len(str(cell.value)) for cell in column_cells)
                 worksheet.column_dimensions[column_cells[0].column_letter].width = min(length + 2, 50)  # Cap at 50 chars
+                
+            # --- Generate Day-wise Registrations Graph ---
+            if 'Registration Date' in df.columns:
+                try:
+                    df['DateOnly'] = pd.to_datetime(df['Registration Date'], errors='coerce').dt.date
+                    day_wise = df['DateOnly'].dropna().value_counts().sort_index().reset_index()
+                    day_wise.columns = ['Date', 'Registrations']
+                    day_wise['Date'] = day_wise['Date'].astype(str)
+                    
+                    if not day_wise.empty:
+                        day_wise.to_excel(writer, index=False, sheet_name='Day Wise Registrations')
+                        ws_day = writer.sheets['Day Wise Registrations']
+                        
+                        chart_day = LineChart()
+                        chart_day.title = "Day Wise Team Registrations"
+                        chart_day.style = 13
+                        chart_day.x_axis.title = "Date"
+                        chart_day.y_axis.title = "Number of Registrations"
+                        
+                        data_day = Reference(ws_day, min_col=2, min_row=1, max_row=len(day_wise)+1)
+                        cats_day = Reference(ws_day, min_col=1, min_row=2, max_row=len(day_wise)+1)
+                        chart_day.add_data(data_day, titles_from_data=True)
+                        chart_day.set_categories(cats_day)
+                        ws_day.add_chart(chart_day, "D2")
+                except Exception as e:
+                    pass
+
+            # --- Generate College-wise Registrations Graph ---
+            if 'College Code' in df.columns:
+                try:
+                    col_wise = df['College Code'].replace('', 'N/A').fillna('N/A')
+                    col_wise = col_wise.value_counts().reset_index()
+                    col_wise.columns = ['College Code', 'Registrations']
+                    
+                    if not col_wise.empty:
+                        col_wise.to_excel(writer, index=False, sheet_name='College Wise Registrations')
+                        ws_col = writer.sheets['College Wise Registrations']
+                        
+                        chart_col = BarChart()
+                        chart_col.title = "College Wise Registrations"
+                        chart_col.style = 10
+                        chart_col.x_axis.title = "College Code"
+                        chart_col.y_axis.title = "Number of Registrations"
+                        
+                        data_col = Reference(ws_col, min_col=2, min_row=1, max_row=len(col_wise)+1)
+                        cats_col = Reference(ws_col, min_col=1, min_row=2, max_row=len(col_wise)+1)
+                        chart_col.add_data(data_col, titles_from_data=True)
+                        chart_col.set_categories(cats_col)
+                        ws_col.add_chart(chart_col, "D2")
+                except Exception as e:
+                    pass
         
         output.seek(0)
         
