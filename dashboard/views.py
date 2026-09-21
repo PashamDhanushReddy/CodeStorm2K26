@@ -521,7 +521,9 @@ def export_registrations_view(request):
                         chart_day.set_categories(cats_day)
                         ws_day.add_chart(chart_day, "D2")
                 except Exception as e:
-                    pass
+                    import traceback
+                    with open("export_error_day.log", "w") as f:
+                        f.write(traceback.format_exc())
 
             # --- Generate College-wise Registrations Graph ---
             if 'College Code' in df.columns:
@@ -546,7 +548,9 @@ def export_registrations_view(request):
                         chart_col.set_categories(cats_col)
                         ws_col.add_chart(chart_col, "D2")
                 except Exception as e:
-                    pass
+                    import traceback
+                    with open("export_error_col.log", "w") as f:
+                        f.write(traceback.format_exc())
         
         output.seek(0)
         
@@ -670,7 +674,57 @@ def export_team_data_view(request):
         for column_cells in worksheet.columns:
             length = max(len(str(cell.value)) for cell in column_cells)
             worksheet.column_dimensions[column_cells[0].column_letter].width = min(length + 2, 80)
-    
+            
+        # --- Generate College-wise Registrations Graph ---
+        if not df.empty:
+            try:
+                chart_col = BarChart()
+                chart_col.title = "College Wise Registrations"
+                chart_col.style = 10
+                chart_col.x_axis.title = "College Code"
+                chart_col.y_axis.title = "Number of Teams"
+                
+                data_col = Reference(worksheet, min_col=3, min_row=1, max_row=len(df)+1)
+                cats_col = Reference(worksheet, min_col=1, min_row=2, max_row=len(df)+1)
+                chart_col.add_data(data_col, titles_from_data=True)
+                chart_col.set_categories(cats_col)
+                worksheet.add_chart(chart_col, "F2")
+            except Exception as e:
+                pass
+
+        # --- Generate Day-wise Registrations Graph ---
+        day_wise_counts = {}
+        for reg in registrations:
+            reg_date_raw = reg.get('registration_date') or reg.get('created_at', '')
+            reg_date_str = reg_date_raw.isoformat() if isinstance(reg_date_raw, datetime) else reg_date_raw
+            if reg_date_str:
+                try:
+                    dt_obj = datetime.fromisoformat(reg_date_str.replace('Z', '+00:00')).date()
+                    date_str = str(dt_obj)
+                    day_wise_counts[date_str] = day_wise_counts.get(date_str, 0) + 1
+                except:
+                    pass
+        
+        if day_wise_counts:
+            try:
+                day_wise_df = pd.DataFrame(list(day_wise_counts.items()), columns=['Date', 'Registrations'])
+                day_wise_df = day_wise_df.sort_values('Date')
+                day_wise_df.to_excel(writer, index=False, sheet_name='Day Wise Registrations')
+                ws_day = writer.sheets['Day Wise Registrations']
+                
+                chart_day = LineChart()
+                chart_day.title = "Day Wise Team Registrations"
+                chart_day.style = 13
+                chart_day.x_axis.title = "Date"
+                chart_day.y_axis.title = "Number of Registrations"
+                
+                data_day = Reference(ws_day, min_col=2, min_row=1, max_row=len(day_wise_df)+1)
+                cats_day = Reference(ws_day, min_col=1, min_row=2, max_row=len(day_wise_df)+1)
+                chart_day.add_data(data_day, titles_from_data=True)
+                chart_day.set_categories(cats_day)
+                ws_day.add_chart(chart_day, "D2")
+            except Exception as e:
+                pass    
     output.seek(0)
     
     response = HttpResponse(
