@@ -748,3 +748,63 @@ def export_team_data_view(request):
     )
     response['Content-Disposition'] = 'attachment; filename="team_data_by_college.xlsx"'
     return response
+
+@login_required(login_url='login')
+def export_team_data_word_view(request):
+    try:
+        from .word_export import create_word_report
+        registrations = list(TeamRegistration.objects.all().values())
+        
+        # Calculate stats
+        total_teams = len(registrations)
+        
+        college_groups = {}
+        day_wise_counts = {}
+        
+        for reg in registrations:
+            reg_date_raw = reg.get('registration_date') or reg.get('created_at')
+            if hasattr(reg_date_raw, 'date'):
+                date_str = str(reg_date_raw.date())
+                day_wise_counts[date_str] = day_wise_counts.get(date_str, 0) + 1
+            elif isinstance(reg_date_raw, str) and len(reg_date_raw) >= 10:
+                date_str = reg_date_raw[:10]
+                day_wise_counts[date_str] = day_wise_counts.get(date_str, 0) + 1
+            
+            college_code = reg.get('college_code')
+            if not college_code or college_code.lower() == 'null' or college_code.strip() == '':
+                college_code = 'N/A'
+            college_code = str(college_code).strip()
+            
+            college_name = reg.get('college_name') or 'N/A'
+            if college_code not in college_groups:
+                college_groups[college_code] = {'count': 0, 'college_names': set()}
+            college_groups[college_code]['count'] += 1
+            if college_name != 'N/A':
+                college_groups[college_code]['college_names'].add(college_name)
+                
+        total_colleges = len(college_groups)
+        peak_day = 0
+        if day_wise_counts:
+            peak_day = max(day_wise_counts.values())
+            
+        export_data = []
+        for college_code, data in college_groups.items():
+            names = ' | '.join(sorted(data['college_names'])) if data['college_names'] else 'N/A'
+            export_data.append((college_code, names, data['count']))
+            
+        # Sort by count
+        export_data.sort(key=lambda x: x[2])
+        
+        docx_buf = create_word_report(total_teams, total_colleges, peak_day, export_data)
+        
+        response = HttpResponse(
+            docx_buf.getvalue(),
+            content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        )
+        response['Content-Disposition'] = f'attachment; filename="Team_Data_by_College_{datetime.now().strftime("%Y%m%d_%H%M%S")}.docx"'
+        return response
+    except Exception as e:
+        import traceback
+        with open("export_error_word.log", "w") as f:
+            f.write(traceback.format_exc())
+        return HttpResponse(f"Error exporting word data: {str(e)}", status=500)
